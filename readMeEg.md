@@ -3,12 +3,12 @@
 #### 
 
 * Package name
-com.owl.magicUtil
+com.owl.comment
 * The way of reference is
 ```
 <dependency>
-    <groupId>owl.magic.util</groupId>
-    <artifactId>owlMagicComment</artifactId>
+    <groupId>com.github.engwen</groupId>
+    <artifactId>OwlMagicComment</artifactId>
     <version>1.0</version>
 </dependency>
 ```

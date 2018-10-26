@@ -3,12 +3,12 @@
 #### 
 
 * 包名
-com.owl.magicUtil
+com.owl.comment
 * 引用方式为
 ```
 <dependency>
-    <groupId>owl.magic.util</groupId>
-    <artifactId>owlMagicComment</artifactId>
+    <groupId>com.github.engwen</groupId>
+    <artifactId>OwlMagicComment</artifactId>
     <version>1.0</version>
 </dependency>
 ```
