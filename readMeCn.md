@@ -8,7 +8,7 @@ com.owl.comment
 ```
 <dependency>
     <groupId>com.github.engwen</groupId>
-    <artifactId>OwlMagicComment</artifactId>
+    <artifactId>owlMagicComment</artifactId>
     <version>1.0</version>
 </dependency>
 ```
