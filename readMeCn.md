@@ -12,7 +12,22 @@ com.owl.comment
     <version>1.0</version>
 </dependency>
 ```
+
 本包依赖于我的另一个项目OwlMagicUtil包，返回对象 MsgResultVO 请参考 https://github.com/engwen/owlMagicUtil
+
+spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以下配置
+
+    <context:component-scan base-package="com.owl.comment">
+      <!--  <context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>-->
+    </context:component-scan>
+    <aop:aspectj-autoproxy/>
+    <!-- 启动AspectJ支持   只对扫描过的bean有效-->
+    <!--Aop配置-->
+    <aop:config proxy-target-class="false"> </aop:config>
+    
+ SpringBoot 用户需要在 项目启动类上配置扫描
+ 
+    @ComponentScan(basePackages = { "***","com.owl" ,"***"})
 
 -------
 > 自定义注解
@@ -63,42 +78,28 @@ com.owl.comment
                <version>2.3</version>
         </dependency>
         <!--aop 核心依赖以及完成本功能所需依赖 -->
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>4.2.5.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>4.2.5.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>4.2.5.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.9.1</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.1</version>
-        </dependency>
-
-        <!-- 添加日志相关jar包 -->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
+       <dependency>
+                  <groupId>javax</groupId>
+                  <artifactId>javaee-api</artifactId>
+                  <version>7.0</version>
+              </dependency>
+      
+              <dependency>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-web</artifactId>
+                  <version>4.2.5.RELEASE</version>
+              </dependency>
+      
+              <dependency>
+                  <groupId>org.aspectj</groupId>
+                  <artifactId>aspectjrt</artifactId>
+                  <version>1.9.1</version>
+              </dependency>
+      
+              <!-- 添加日志相关jar包 -->
+              <dependency>
+                  <groupId>log4j</groupId>
+                  <artifactId>log4j</artifactId>
+                  <version>1.2.17</version>
+              </dependency>
 ```
