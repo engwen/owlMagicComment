@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 public class OwlLogInfoAS {
     private static Logger logger = Logger.getLogger(OwlLogInfoAS.class.getName());
 
-    //    @Pointcut("@annotation(com.owl.shiro.aop.OwlLogInfo)")
-    @Pointcut("execution(* com.owl.comment.*.*(..))")
+    //    @Pointcut("execution(* com.owl.comment.*.*(..))")
+    @Pointcut("@annotation(com.owl.comment.OwlLogInfo)")
     public void logInfo() {
     }
 
