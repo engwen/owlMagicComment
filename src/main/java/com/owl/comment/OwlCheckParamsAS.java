@@ -37,7 +37,6 @@ public class OwlCheckParamsAS {
     @Around("checkedParams()")
     public Object checkParams(ProceedingJoinPoint joinPoint) throws Throwable {
         MsgResultVO result = new MsgResultVO();
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 //        獲取被標記不能爲空的屬性集合
         String[] notNull = methodSignature.getMethod().getAnnotation(OwlCheckParams.class).notNull();
@@ -47,7 +46,9 @@ public class OwlCheckParamsAS {
         boolean allOrNull = true;
 //        存放含有空的屬性
         List<String> paramsIsNull = new ArrayList<>();
+
 //        此處從requestHead頭中獲取參數，
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Map<String, String[]> paramsHeadMap = request.getParameterMap();
 
         if (null != paramsHeadMap && paramsHeadMap.keySet().size() > 0) {
@@ -70,10 +71,16 @@ public class OwlCheckParamsAS {
             if (notNull.length > 0 && paramsVO instanceof String) {
                 logger.debug("本注解仅限使用对象接收参数时使用");
             } else {
-                Field[] fields = paramsVO.getClass().getDeclaredFields();
-                for (Field field : fields) {
-                    field.setAccessible(true);
-                    paramsBodyMap.put(field.getName(), field.get(paramsVO));
+//                使用Map接收参数
+                if (paramsVO instanceof Map) {
+                    paramsBodyMap = (Map<String, Object>) paramsVO;
+                } else {
+//                  使用对象接收参数
+                    Field[] fields = paramsVO.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        field.setAccessible(true);
+                        paramsBodyMap.put(field.getName(), field.get(paramsVO));
+                    }
                 }
                 for (String param : notNull) {
                     if (RegexUtil.isEmpty(paramsBodyMap.get(param))) {
@@ -100,4 +107,5 @@ public class OwlCheckParamsAS {
             return joinPoint.proceed(joinPoint.getArgs());
         }
     }
+
 }
