@@ -31,10 +31,10 @@ public class OwlCheckParamsAS {
     private static Logger logger = Logger.getLogger(OwlCheckParamsAS.class.getName());
 
     @Pointcut("@annotation(com.owl.comment.OwlCheckParams)")
-    public void checkedParams() {
+    public void checkParamsCut() {
     }
 
-    @Around("checkedParams()")
+    @Around("checkParamsCut()")
     public Object checkParams(ProceedingJoinPoint joinPoint) throws Throwable {
         MsgResultVO result = new MsgResultVO();
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();

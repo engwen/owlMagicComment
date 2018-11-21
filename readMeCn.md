@@ -17,13 +17,8 @@ com.owl.comment
 
 spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以下配置
 
-    <context:component-scan base-package="com.owl.comment">
-      <!--  <context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>-->
-    </context:component-scan>
-    <aop:aspectj-autoproxy/>
-    <!-- 启动AspectJ支持   只对扫描过的bean有效-->
-    <!--Aop配置-->
-    <aop:config proxy-target-class="false"> </aop:config>
+     <context:component-scan base-package="com.owl.comment"/>
+     <aop:aspectj-autoproxy/>
     
  SpringBoot 用户需要在 项目启动类上配置扫描
  
@@ -34,7 +29,11 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
 
 1. @OwlCheckParams
 
-     该注解用于controller层校验请求参数，包含notAllNull（不可全部为空），notNull（不能为空）以及canNull（可以为空）三个属性，为方便书写接口文档以及后期查询代码，此三个属性合并起来应当为本接口可接收的所有参数，notAllNull中的参数不能全部为null，否则该接口将返回 "请求参数 \*\* 不能全为空"，notNull中的参数不能为空，否则该接口将返回 "请求参数 \*\* 不能为空"，canNull中的参数可以为空
+     该注解用于controller层校验请求参数，包含notAllNull（不可全部为空），notNull（不能为空）以及canNull
+     （可以为空）三个属性，为方便书写接口文档以及后期查询代码，此三个属性合并起来应当为本接口可接收的所
+     有参数，notAllNull中的参数不能全部为null，否则该接口将返回 "请求参数 \*\* 不能全为空"，notNull中的
+     参数不能为空，否则该接口将返回 "请求参数 \*\* 不能为空"，canNull中的参数可以为空。
+     使用本注解需设置默认返回的对象为MsgResultVO
 
      例如：
 

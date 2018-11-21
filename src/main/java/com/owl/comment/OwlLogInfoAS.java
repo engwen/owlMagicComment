@@ -22,11 +22,11 @@ public class OwlLogInfoAS {
 
     //    @Pointcut("execution(* com.owl.comment.*.*(..))")
     @Pointcut("@annotation(com.owl.comment.OwlLogInfo)")
-    public void logInfo() {
+    public void logCut() {
     }
 
-    @Before("logInfo()")
-    public void checkParams(JoinPoint joinPoint) {
+    @Before("logCut()")
+    public void logInfo(JoinPoint joinPoint) {
 //        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 //        logger.info("----------------------" + request.getMethod());
 //        Signature signature = joinPoint.getSignature();
