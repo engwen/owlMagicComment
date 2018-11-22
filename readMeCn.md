@@ -9,7 +9,7 @@ com.owl.comment
 <dependency>
     <groupId>com.github.engwen</groupId>
     <artifactId>owlMagicComment</artifactId>
-    <version>1.0</version>
+    <version>*.*.*</version>
 </dependency>
 ```
 
@@ -63,10 +63,7 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
     
     节省编写判断代码的时间
     
-1. @OwlLogInfo
-    
-    该注解将会在使用他的地方打印"now in class %s , method %s" ，注意，这并不能给你一些额外的有用信息，只是用来输出一些日志帮助你快速定位被调用的接口。
-    
+
            
 本包引入的jar包包括
  
@@ -102,3 +99,49 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
                   <version>1.2.17</version>
               </dependency>
 ```
+
+
+1.1 
+
+- 添加
+
+ @OwlLogInfo
+    
+   该注解将会在使用它的地方打印"now in class %s , method %s" ，注意，这并不能给你一些额外的有用信息，只是用
+   来输出一些日志帮助你快速定位被调用的接口。
+    
+1.1.1 
+
+- 升级
+
+   修复了一些BUG，优化了一些代码
+   
+1.1.2 
+
+- 升级
+
+ 去除返回值中的[]，优化了一些代码
+  
+- 添加
+   
+ @OwlSetNullData(value={"",""}) 或  @OwlSetNullData("") @OwlSetNullData({"",""})
+ 
+ 该注解将会在使用它地方清除指定的返回值。有时某些属性并不想让它返回给前台，但是后期去底层修改又显得非常麻烦，
+ sql或是service的改动往往会导致其它使用这些的地方发生意想不到的事情，基于这些考虑，我添加了这个注解，用于将
+ 返回值去除。
+ 注意：这个方法只支持 MsgResultVO 中的封装对象，也就是说，和 OwlCheckParams 这个接口一样，你需要将返回值设定
+ 为 MsgResultVO<T> ，你可以将返回的对象放在 resultData 中，但它必须是自定义对象或者Map，其他的对象都不会被支
+ 持，它所支持的属性也只是包装类，String，Long，Integer，Float，Double，List和Date
+ 
+ 例如 ：
+        
+        @RequestMapping("/signin")
+        @OwlCheckParams(notNull={"account","password"})
+        @OwlSetNullData("password")
+        public MsgResultVO signin(User user) {
+            return userService.signin(user);
+        }
+        返回值
+        {"result":true,"resultCode":"0000","resultMsg":"请求成功","resultData":{"id":1,"name":"admin",
+        "password":null,"account":"admin","email":"admin@admin.com","mobile":null,"status":true,
+        "lastSigninTime":1541668514000,"createTime":1541668514000,"updateTime":1542622682000},"params":{}}

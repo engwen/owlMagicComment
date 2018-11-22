@@ -9,7 +9,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.context.annotation.Description;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -44,14 +43,18 @@ public class OwlSetNullDataAS {
             Object resultDataObj = resultVO.getResultData();
             if (!RegexUtil.isEmpty(resultDataObj)) {
                 MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-                String[] setNullDatas = methodSignature.getMethod().getAnnotation(OwlSetNullData.class).values();
+                String[] setNullDatas = methodSignature.getMethod().getAnnotation(OwlSetNullData.class).value();
                 if (ClassTypeUtil.isBaseClass(resultDataObj) || ClassTypeUtil.isPackClass(resultDataObj) || resultDataObj instanceof Collection) {
                     logger.error("不支持除 resultData 为基础类型及其包装类或是集合的对象");
                 } else if (resultDataObj instanceof Map) {
                     logger.info("支持 resultData 为 Map<String,Pack> 的对象，开始置空");
                     Map temp = (Map) resultDataObj;
                     for (String param : setNullDatas) {
-                        temp.put(param, null);
+                        if (ClassTypeUtil.isBaseClass(temp.get(param))) {
+                            logger.error("不支持除 Map的value 为基础类型及其包装类或是集合的对象");
+                        } else {
+                            temp.put(param, null);
+                        }
                     }
                 } else {
                     logger.info("支持 resultData 为 Class 的对象，开始反射置空");

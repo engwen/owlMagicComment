@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface OwlSetNullData {
-    String[] values() default {};
+    String[] value() default {};
 }
