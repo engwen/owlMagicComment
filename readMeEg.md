@@ -9,17 +9,17 @@ com.owl.comment
 <dependency>
     <groupId>com.github.engwen</groupId>
     <artifactId>owlMagicComment</artifactId>
-    <version>1.0</version>
+    <version>*.*.*</version>
 </dependency>
 ```
 This package relies on my other project, the OwlMagicUtil package, and the return object, MsgResultVO, is available at https://github.com/engwen/owlMagicUtil.
 
 -------
-> 自定义注解
+> 
 
 1. @OwlCheckParams
 
-  This annotation is used for the controller layer to check the request parameters, including notAllNull (not all null), notNull (not all null) and canNull (null) attributes. To facilitate writing interface documents and later query code, these three attributes should be combined with all the parameters that this interface can accept, notAllNull The parameters in the interface can not be all null, otherwise the interface will return "request parameters can not be all empty", the parameters in notNull can not be empty, otherwise the interface will return "request parameters can not be empty", the parameters in canNull can be empty.
+  This annotation is used for the controller layer to check the request parameters, including notAllNull, notNull and canNull attributes. To facilitate writing interface documents and later query code, these three attributes should be combined with all the parameters that this interface can accept, notAllNull The parameters in the interface can not be all null, otherwise the interface will return "request parameters can not be all empty", the parameters in notNull can not be empty, otherwise the interface will return "request parameters can not be empty", the parameters in canNull can be empty.
      For example:
 
     Original code:
