@@ -1,6 +1,6 @@
 package com.owl.comment;
 
-import com.owl.magicUtil.constant.MsgConstantEM;
+import com.owl.magicUtil.model.MsgConstant;
 import com.owl.magicUtil.util.ClassTypeUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.magicUtil.vo.MsgResultVO;
@@ -99,10 +99,10 @@ public class OwlCheckParamsAS {
         }
         if (hasNull) {
             logger.debug("请求参数错误");
-            return result.errorResult(MsgConstantEM.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能为空", paramsIsNull));
+            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能为空", paramsIsNull));
         } else if (notAllNull.length > 0 && allOrNull) {
             logger.debug("请求参数错误");
-            return result.errorResult(MsgConstantEM.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能全为空", Arrays.asList(notAllNull)));
+            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能全为空", Arrays.asList(notAllNull)));
         } else {
             logger.debug("参数校验成功");
             return joinPoint.proceed(joinPoint.getArgs());
