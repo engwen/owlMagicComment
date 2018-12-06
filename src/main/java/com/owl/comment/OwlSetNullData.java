@@ -7,7 +7,7 @@ import java.lang.annotation.*;
  * email xiachanzou@outlook.com
  * 2018/11/20.
  */
-@Target({ElementType.PARAMETER, ElementType.METHOD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface OwlSetNullData {

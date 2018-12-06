@@ -1,10 +1,12 @@
 package com.owl.comment;
 
+import com.owl.magicUtil.util.RegexUtil;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -20,16 +22,26 @@ import org.springframework.stereotype.Component;
 public class OwlLogInfoAS {
     private static Logger logger = Logger.getLogger(OwlLogInfoAS.class.getName());
 
-    //    @Pointcut("execution(* com.owl.comment.*.*(..))")
-    @Pointcut("@annotation(com.owl.comment.OwlLogInfo)")
+    @Pointcut("@within(com.owl.comment.OwlLogInfo)")
     public void logCut() {
     }
 
     @Before("logCut()")
     public void logInfo(JoinPoint joinPoint) {
-//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//        logger.info("----------------------" + request.getMethod());
-//        Signature signature = joinPoint.getSignature();
-        logger.info(String.format("now in class %s , method %s", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName()));
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Logger temp = logger;
+        try {
+            temp = Logger.getLogger(joinPoint.getSignature().getDeclaringTypeName());
+        } catch (Exception e) {
+            temp.info("get class logger error,we will use aop OwlLogInfo default logger");
+        }
+        OwlLogInfo owlLogInfo = methodSignature.getMethod().getAnnotation(OwlLogInfo.class);
+        //方法注解
+        if (null != owlLogInfo && !RegexUtil.isEmpty(owlLogInfo.value())) {
+            temp.info(owlLogInfo.value());
+        } else {
+//          joinPoint.getSignature().getDeclaringTypeName(),
+            temp.info(String.format("now in %s", joinPoint.getSignature().getName()));
+        }
     }
 }

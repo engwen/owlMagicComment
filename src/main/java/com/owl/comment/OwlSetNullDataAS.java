@@ -65,26 +65,19 @@ public class OwlSetNullDataAS {
                                 String methodName = "set" + param.substring(0, 1).toUpperCase() + param.substring(1);
                                 Method method = resultDataObj.getClass().getDeclaredMethod(methodName, field.getType());
                                 if (field.getType().equals(String.class)) {
-                                    String temp = null;
-                                    method.invoke(resultDataObj, temp);
+                                    method.invoke(resultDataObj, (String)null);
                                 } else if (field.getType().equals(Long.class)) {
-                                    Long temp = null;
-                                    method.invoke(resultDataObj, temp);
+                                    method.invoke(resultDataObj, (Long)null);
                                 } else if (field.getType().equals(Integer.class)) {
-                                    Integer temp = null;
-                                    method.invoke(resultDataObj, temp);
+                                    method.invoke(resultDataObj, (Integer)null);
                                 } else if (field.getType().equals(Float.class)) {
-                                    Float temp = null;
-                                    method.invoke(resultDataObj, temp);
+                                    method.invoke(resultDataObj, (Float)null);
                                 } else if (field.getType().equals(Double.class)) {
-                                    Double temp = null;
-                                    method.invoke(resultDataObj, temp);
+                                    method.invoke(resultDataObj, (Double)null);
                                 } else if (field.getType().equals(List.class)) {
-                                    List temp = null;
-                                    method.invoke(resultDataObj, temp);
+                                    method.invoke(resultDataObj, (List)null);
                                 } else if (field.getType().equals(Date.class)) {
-                                    Date temp = null;
-                                    method.invoke(resultDataObj, temp);
+                                    method.invoke(resultDataObj, (Date)null);
                                 } else {
                                     logger.error(field.getType() + "类型不予支持");
                                 }
