@@ -5,13 +5,17 @@ import java.lang.annotation.*;
 /**
  * @author engwen
  * email xiachanzou@outlook.com
- * 2018/11/20.
+ * 2018/12/7.
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface OwlSetNullData {
-    String[] paramsValue() default {};
+public @interface OwlBackToMsgResult {
+    String msg() default "";
 
-    String[] backValue() default {};
+    String code() default "";
+
+    String result() default "";
+
+    String data() default "";
 }
