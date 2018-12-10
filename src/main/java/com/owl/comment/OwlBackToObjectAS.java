@@ -31,7 +31,7 @@ public class OwlBackToObjectAS {
     }
 
     @Around("changeBackClassCut()")
-    public Object changeBackClassCut(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object changeBackClass(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         String classPath = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).classPath();
         String codeName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).code();
