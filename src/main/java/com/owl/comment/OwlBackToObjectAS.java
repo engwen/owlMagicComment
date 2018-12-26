@@ -16,8 +16,8 @@ import java.lang.reflect.Method;
 
 /**
  * @author engwen
- *         email xiachanzou@outlook.com
- *         2018/12/10.
+ * email xiachanzou@outlook.com
+ * 2018/12/10.
  */
 
 @Aspect
@@ -46,9 +46,9 @@ public class OwlBackToObjectAS {
                 MsgResultVO temp = (MsgResultVO) obj;
                 result = Class.forName(classPath).newInstance();
                 setProValue(codeName, temp.getResultCode(), result);
-                setProValue(msgName, temp.getResultData(), result);
+                setProValue(msgName, temp.getResultMsg(), result);
                 setProValue(dataName, temp.getResultData(), result);
-                setProValue(resultName, temp.getResultData(), result);
+                setProValue(resultName, temp.getResult(), result);
             } else {
                 logger.error("本注仅适用于将MsgResultVO类型转化为指定类型");
             }
@@ -65,9 +65,20 @@ public class OwlBackToObjectAS {
             String getMethodStr = "set" + proName.substring(0, 1).toUpperCase() + proName.substring(1);
             Field[] fields = obj.getClass().getDeclaredFields();
             for (Field field : fields) {
-                if (proName.equals(field.getName())) {
-                    Method getMethod = obj.getClass().getDeclaredMethod(getMethodStr, value.getClass());
-                    getMethod.invoke(obj, value);
+                if (proName.equals(field.getName()) && !RegexUtil.isEmpty(value)) {
+                    try {
+                        Method getMethod = obj.getClass().getDeclaredMethod(getMethodStr, value.getClass());
+                        getMethod.invoke(obj, value);
+                    } catch (NoSuchMethodException e) {
+                        logger.debug("没有查询到对应属性方法,尝试进行Object对象插入。此方法同样适用适用泛型对象");
+                        try {
+                            Method getMethod = obj.getClass().getDeclaredMethod(getMethodStr, Object.class);
+                            getMethod.invoke(obj, value);
+                        } catch (NoSuchMethodException ex) {
+                            logger.error(String.format("插入%s属性失败，请检查方法%s的返回类型，并确保类型一致", proName, getMethodStr));
+                            throw ex;
+                        }
+                    }
                     break;
                 }
             }
