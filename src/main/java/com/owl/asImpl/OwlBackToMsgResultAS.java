@@ -1,5 +1,6 @@
-package com.owl.comment;
+package com.owl.asImpl;
 
+import com.owl.annotations.OwlBackToMsgResult;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.magicUtil.vo.MsgResultVO;
 import org.apache.log4j.Logger;
@@ -25,7 +26,7 @@ import java.lang.reflect.Method;
 public class OwlBackToMsgResultAS {
     private static Logger logger = Logger.getLogger(OwlBackToMsgResultAS.class.getName());
 
-    @Pointcut("@annotation(com.owl.comment.OwlBackToMsgResult)")
+    @Pointcut("@annotation(com.owl.annotations.OwlBackToMsgResult)")
     public void changeBackClassCut() {
     }
 

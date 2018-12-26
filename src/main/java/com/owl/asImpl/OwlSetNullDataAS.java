@@ -1,5 +1,6 @@
-package com.owl.comment;
+package com.owl.asImpl;
 
+import com.owl.annotations.OwlSetNullData;
 import com.owl.magicUtil.util.ClassTypeUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.magicUtil.vo.MsgResultVO;
@@ -30,7 +31,7 @@ import java.util.*;
 public class OwlSetNullDataAS {
     private static Logger logger = Logger.getLogger(OwlSetNullDataAS.class.getName());
 
-    @Pointcut("@annotation(com.owl.comment.OwlSetNullData)")
+    @Pointcut("@annotation(com.owl.annotations.OwlSetNullData)")
     public void setNullDataCut() {
     }
 

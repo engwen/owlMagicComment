@@ -1,5 +1,6 @@
-package com.owl.comment;
+package com.owl.asImpl;
 
+import com.owl.annotations.OwlLogInfo;
 import com.owl.magicUtil.util.RegexUtil;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class OwlLogInfoAS {
     private static Logger logger = Logger.getLogger(OwlLogInfoAS.class.getName());
 
-    @Pointcut("@within(com.owl.comment.OwlLogInfo)")
+    @Pointcut("@within(com.owl.annotations.OwlLogInfo)")
     public void logCut() {
     }
 

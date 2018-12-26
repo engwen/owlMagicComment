@@ -1,5 +1,6 @@
-package com.owl.comment;
+package com.owl.asImpl;
 
+import com.owl.annotations.OwlCheckParams;
 import com.owl.magicUtil.model.MsgConstant;
 import com.owl.magicUtil.util.ClassTypeUtil;
 import com.owl.magicUtil.util.RegexUtil;
@@ -31,7 +32,7 @@ import java.util.*;
 public class OwlCheckParamsAS {
     private static Logger logger = Logger.getLogger(OwlCheckParamsAS.class.getName());
 
-    @Pointcut("@annotation(com.owl.comment.OwlCheckParams)")
+    @Pointcut("@annotation(com.owl.annotations.OwlCheckParams)")
     public void checkParamsCut() {
     }
 

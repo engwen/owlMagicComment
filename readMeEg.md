@@ -3,7 +3,7 @@
 #### 
 
 * Package name
-com.owl.comment
+com.owl.annotations
 * The way of reference is
 ```
 <dependency>
