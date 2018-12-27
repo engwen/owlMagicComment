@@ -145,3 +145,59 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
         {"result":true,"resultCode":"0000","resultMsg":"请求成功","resultData":{"id":1,"name":"admin",
         "password":null,"account":"admin","email":"admin@admin.com","mobile":null,"status":true,
         "lastSigninTime":1541668514000,"createTime":1541668514000,"updateTime":1542622682000},"params":{}}
+        
+1.1.3 
+ 
+- 升级
+   
+ @OwlSetNullData(paramsValue={"",""}) 或  @OwlSetNullData(backValue={""})
+ 
+ 添加设定请求参数集合 paramsValue 为null，设定返回参数集合为nul修改为 backValue
+ 
+ 
+1.1.4
+
+- 添加
+
+ @OwlBackToObject(msg = "",code = "",data = "",classPath = "com.*.*.*.TestVO")
+ 
+ 该注解将会改变返回值类型，将msg code data设定到 指定的返回值类型 （classPath = "com.*.*.*.TestVO"） 中，
+ 由于返回类型改变，需要将方法返回值设定为Object对象
+ 
+ 例：
+ 
+        @RequestMapping("/test1")
+        @OwlBackToObject(msg = "msg",code = "code",data = "data",classPath = "com.owl.shiro.util.TestVO")
+        public Object test1() {
+            MsgResultVO result = new MsgResultVO();
+            result.errorResult(MsgConstant.REQUEST_NO_SIGNIN);
+            result.setResultData(new Date());
+            return result;
+        }
+        
+ 上例中，返回值类型将由 MsgResultVO 转为 TestVO ，内容为：{"msg":"用户未登录","code":"0004","data":1545889878416}
+ 
+
+- 添加
+
+ @OwlBackToMsgResult(msg = "",code = "",data = "")
+ 
+ 该注解将会改变返回值类型，将msg code data设定到 MsgResultVO 中，
+ 由于返回类型改变，需要将方法返回值设定为Object对象
+ 
+ 例：
+ 
+        @RequestMapping("/test2")
+        @OwlBackToMsgResult(msg = "msg",code = "code",data = "data")
+        public Object test2() {
+               TestVO<Date> result = new TestVO();
+               result.setMsg("test");
+               result.setCode("0000");
+               result.setData(new Date());
+               return result;
+        }
+        
+ 上例中，返回值类型将由 TestVO 转为 MsgResultVO ，内容为：{"result":null,"resultCode":"0000","resultMsg":"test","resultData":1545890084447,"params":{}}
+ 
+ 
+ 

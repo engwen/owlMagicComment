@@ -127,3 +127,57 @@ For example:
         {"result":true,"resultCode":"0000","resultMsg":"请求成功","resultData":{"id":1,"name":"admin",
         "password":null,"account":"admin","email":"admin@admin.com","mobile":null,"status":true,
         "lastSigninTime":1541668514000,"createTime":1541668514000,"updateTime":1542622682000},"params":{}}
+        
+1.1.3
+    
+- Upgrading（@OwlSetNullData）
+    
+ change @OwlSetNullData(value={})  to @OwlSetNullData (paramsValue={""}) or @OwlSetNullData (backValue={"})
+    
+Add the set request parameter set paramsValue to null, and set the set of return parameters to nul to backValue.
+
+
+1.1.4
+
+-add
+
+@OwlBackToObject(msg="",code="",data="",classPath="com.*.*.TestVO")
+
+It's use the returns value type, the msg code dataset to the returns value type(classPath="com.*.*.*.TestVO"),
+In the returning type, the methods returns value to Objectobject
+
+For example:    
+
+        @RequestMapping("/test1")
+        @OwlBackToObject(msg = "msg",code = "code",data = "data",classPath = "com.owl.shiro.util.TestVO")
+        public Object test1() {
+            MsgResultVO result = new MsgResultVO();
+            result.errorResult(MsgConstant.REQUEST_NO_SIGNIN);
+            result.setResultData(new Date());
+            return result;
+        }
+
+In example, returns value types to the MsgResultVO to TestVO, contents: {"msg":"User is登录","code","0004","data":1545889878416}
+
+
+-add
+
+@OwlBackToMsgResult(msg="",code="",data="")
+
+It's use the returns value type, and the msg code dataset to MsgResultVO,
+In the returning type, the methods returns value to Objectobject
+
+For example:    
+
+        @RequestMapping("/test2")
+        @OwlBackToMsgResult(msg = "msg",code = "code",data = "data")
+        public Object test2() {
+               TestVO<Date> result = new TestVO();
+               result.setMsg("test");
+               result.setCode("0000");
+               result.setData(new Date());
+               return result;
+        }
+        
+
+In example, returns value types to the TestVO to MsgResultVO, content to: {"result":null,"resultCode","0000","resultMsg","test","resultData":1545890084447,"params": {}}
