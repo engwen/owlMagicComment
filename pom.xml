@@ -6,7 +6,7 @@
 
     <groupId>com.github.engwen</groupId>
     <artifactId>owlMagicComment</artifactId>
-    <version>1.1</version>
+    <version>1.1.4</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,8 +27,14 @@
         <dependency>
             <groupId>com.github.engwen</groupId>
             <artifactId>owlMagicUtil</artifactId>
-            <version>2.3</version>
+            <version>2.3.2</version>
         </dependency>
+
+        <!--<dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.11</version>
+        </dependency>-->
 
         <!--aop 依赖-->
         <dependency>

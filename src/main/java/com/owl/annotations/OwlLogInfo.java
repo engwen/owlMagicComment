@@ -1,4 +1,4 @@
-package com.owl.comment;
+package com.owl.annotations;
 
 import java.lang.annotation.*;
 
@@ -12,4 +12,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface OwlLogInfo {
+    String value() default "";
 }

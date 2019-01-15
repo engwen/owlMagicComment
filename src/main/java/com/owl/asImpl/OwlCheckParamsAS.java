@@ -1,6 +1,8 @@
-package com.owl.comment;
+package com.owl.asImpl;
 
-import com.owl.magicUtil.constant.MsgConstantEM;
+import com.owl.annotations.OwlCheckParams;
+import com.owl.magicUtil.model.MsgConstant;
+import com.owl.magicUtil.util.ClassTypeUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.magicUtil.vo.MsgResultVO;
 import org.apache.log4j.Logger;
@@ -30,14 +32,13 @@ import java.util.*;
 public class OwlCheckParamsAS {
     private static Logger logger = Logger.getLogger(OwlCheckParamsAS.class.getName());
 
-    @Pointcut("@annotation(com.owl.comment.OwlCheckParams)")
-    public void checkedParams() {
+    @Pointcut("@annotation(com.owl.annotations.OwlCheckParams)")
+    public void checkParamsCut() {
     }
 
-    @Around("checkedParams()")
+    @Around("checkParamsCut()")
     public Object checkParams(ProceedingJoinPoint joinPoint) throws Throwable {
         MsgResultVO result = new MsgResultVO();
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 //        獲取被標記不能爲空的屬性集合
         String[] notNull = methodSignature.getMethod().getAnnotation(OwlCheckParams.class).notNull();
@@ -47,7 +48,9 @@ public class OwlCheckParamsAS {
         boolean allOrNull = true;
 //        存放含有空的屬性
         List<String> paramsIsNull = new ArrayList<>();
+
 //        此處從requestHead頭中獲取參數，
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Map<String, String[]> paramsHeadMap = request.getParameterMap();
 
         if (null != paramsHeadMap && paramsHeadMap.keySet().size() > 0) {
@@ -67,13 +70,19 @@ public class OwlCheckParamsAS {
 //          requestBody中獲取參數
             Map<String, Object> paramsBodyMap = new HashMap<>();
             Object paramsVO = joinPoint.getArgs()[0];
-            if (notNull.length > 0 && paramsVO instanceof String) {
-                logger.debug("本注解仅限使用对象接收参数时使用");
+            if (ClassTypeUtil.isPackClass(paramsVO) || ClassTypeUtil.isBaseClass(paramsVO)) {
+                logger.debug("本注解仅限使用对象或Map接收参数时使用");
             } else {
-                Field[] fields = paramsVO.getClass().getDeclaredFields();
-                for (Field field : fields) {
-                    field.setAccessible(true);
-                    paramsBodyMap.put(field.getName(), field.get(paramsVO));
+//                使用Map接收参数
+                if (paramsVO instanceof Map) {
+                    paramsBodyMap = (Map<String, Object>) paramsVO;
+                } else {
+//                  使用对象接收参数
+                    Field[] fields = paramsVO.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        field.setAccessible(true);
+                        paramsBodyMap.put(field.getName(), field.get(paramsVO));
+                    }
                 }
                 for (String param : notNull) {
                     if (RegexUtil.isEmpty(paramsBodyMap.get(param))) {
@@ -91,13 +100,19 @@ public class OwlCheckParamsAS {
         }
         if (hasNull) {
             logger.debug("请求参数错误");
-            return result.errorResult(MsgConstantEM.REQUEST_PARAMETER_ERROR.getCode(), String.format("请求参数 %s 不能为空", paramsIsNull));
+            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能为空", paramsIsNull));
         } else if (notAllNull.length > 0 && allOrNull) {
             logger.debug("请求参数错误");
-            return result.errorResult(MsgConstantEM.REQUEST_PARAMETER_ERROR.getCode(), String.format("请求参数 %s 不能全为空", Arrays.asList(notAllNull)));
+            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能全为空", Arrays.asList(notAllNull)));
         } else {
             logger.debug("参数校验成功");
             return joinPoint.proceed(joinPoint.getArgs());
         }
     }
+
+    private static String backStr(String str, List arr) {
+        String temp = arr.toString();
+        return String.format(str, temp.substring(1, temp.length() - 1));
+    }
+
 }
