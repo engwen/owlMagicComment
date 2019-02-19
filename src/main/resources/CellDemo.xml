@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.owl.dao.OwlUserMapper">
+    <resultMap id="BaseResultMap" type="com.owl.Demo">
+        <!-- 请添加所需要的属性-->
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="is_ban" property="isBan" jdbcType="BIT"/>
+        <result column="status" property="status" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Table_ID_Name">
+        id
+    </sql>
+    <sql id="Table_Name">
+        owl_demo
+    </sql>
+    <sql id="Base_Column_List">
+        <include refid="Table_ID_Name"/> ,
+        is_ban, status, create_time, update_time
+    </sql>
+
+    <sql id="Select_Like">
+        <trim prefix="where" suffixOverrides="and">
+            <if test="null != model">
+                <choose>
+                    <when test="null != model.id">
+                        id = #{model.id}
+                    </when>
+                    <otherwise>
+                        <if test="null != model.name">
+                            (name like CONCAT(CONCAT('%',#{model.name}),'%'))
+                            AND
+                        </if>
+                        <if test="null != model.isBan">
+                            is_ban = #{model.isBan} and
+                        </if>
+                        <if test="null != model.status">
+                            status = true
+                        </if>
+                    </otherwise>
+                </choose>
+            </if>
+        </trim>
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.owl.Demo">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into <include refid="Table_Name"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="status != null">
+                status,
+            </if>
+            <if test="isBan != null">
+                is_ban,
+            </if>
+            create_time,update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="status != null">
+                #{status,jdbcType=BIT},
+            </if>
+            <if test="isBan != null">
+                #{isBan,jdbcType=BIT},
+            </if>
+            null,null
+        </trim>
+    </insert>
+
+    <!-- 请添加所需要的属性-->
+    <insert id="insertList">
+        insert into <include refid="Table_Name"/>
+        (
+
+        is_ban, status, create_time, update_time
+        )
+        values
+        <foreach collection="modelList" item="model" separator=",">
+            (
+
+            #{model.isBan,jdbcType=BIT},#{model.status,jdbcType=BIT} , null , null
+            )
+        </foreach>
+    </insert>
+
+    <update id="deleteBySelective">
+        update <include refid="Table_Name"/>
+        set status=false,update_time = NULL
+        <trim prefix="where" suffixOverrides="and">
+            <choose>
+                <when test="id != null">
+                    <include refid="Table_ID_Name"/> = #{id}
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </trim>
+    </update>
+
+    <update id="deleteByIdList">
+        update <include refid="Table_Name"/>
+        set status=false,update_time = NULL
+        WHERE <include refid="Table_ID_Name"/> IN
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="banOrLeave">
+        UPDATE <include refid="Table_Name"/>
+        SET is_ban = #{isBan},update_time = NULL
+        WHERE <include refid="Table_ID_Name"/> IN
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        and status = true
+    </update>
+
+    <update id="updateBySelective">
+        update <include refid="Table_Name"/>
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            update_time = NULL
+        </set>
+        where <include refid="Table_ID_Name"/> = #{id,jdbcType=BIGINT} and status = true
+    </update>
+
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="Table_Name"/>
+        <include refid="Select_Like"/>
+    </select>
+
+    <select id="countSumByCondition" resultType="java.lang.Integer">
+        select count(<include refid="Table_ID_Name"/>) from
+        <include refid="Table_Name"/>
+        <include refid="Select_Like"/>
+    </select>
+
+    <select id="listByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="Table_Name"/>
+        <include refid="Select_Like"/>
+        ORDER BY CONVERT(name using gbk) ASC
+        limit #{upLimit},#{rows}
+    </select>
+</mapper>

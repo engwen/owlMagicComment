@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.owl.dao.OwlUserMapper">
+    <resultMap id="BaseResultMap" type="com.owl.Demo">
+        <!-- 请添加所需要的属性-->
+        <result column="one_id" property="OneId" jdbcType="BIGINT" />
+        <result column="two_id" property="TwoId" jdbcType="BIGINT" />
+    </resultMap>
+
+    <sql id="Table_Name">
+        owl_demo
+    </sql>
+
+    <!-- 请添加所需要的属性-->
+    <insert id="insertList">
+        insert into <include refid="Table_Name"/>
+        (
+          one_id, two_id
+        )
+        values
+        <foreach collection="modelList" item="model" separator=",">
+          (
+            #{model.oneId,jdbcType=BIGINT},#{model.twoId,jdbcType=BIGINT}
+          )
+        </foreach>
+    </insert>
+
+    <delete id="deleteList">
+        delete from <include refid="Table_Name"/>
+        <trim prefix="where">
+            <foreach collection="modelList" item="model" separator="or">
+                <trim prefix="(" suffix=")" prefixOverrides="(" suffixOverrides=")">
+                    <trim suffixOverrides="and">
+
+                        <if test="model.oneId != null">
+                            one_id= #{model.oneId}
+                            and
+                        </if>
+                        <if test="model.twoId != null">
+                            two_id = #{model.twoId}
+                        </if>
+
+                    </trim>
+                </trim>
+            </foreach>
+        </trim>
+    </delete>
+</mapper>
