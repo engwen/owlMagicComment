@@ -1,8 +1,8 @@
-package com.owl.asImpl;
+package com.owl.comment.asImpl;
 
-import com.owl.annotations.OwlBackToObject;
+import com.owl.comment.annotations.OwlBackToObject;
 import com.owl.magicUtil.util.RegexUtil;
-import com.owl.magicUtil.vo.MsgResultVO;
+import com.owl.mvc.vo.MsgResultVO;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 public class OwlBackToObjectAS {
     private static Logger logger = Logger.getLogger(OwlBackToObjectAS.class.getName());
 
-    @Pointcut("@annotation(com.owl.annotations.OwlBackToObject)")
+    @Pointcut("@annotation(com.owl.comment.annotations.OwlBackToObject)")
     public void changeBackClassCut() {
     }
 
@@ -52,6 +52,7 @@ public class OwlBackToObjectAS {
                 setProValue(resultName, temp.getResult(), result);
             } else {
                 logger.error("本注仅适用于将MsgResultVO类型转化为指定类型");
+                result = obj;
             }
         } catch (Exception e) {
             result = obj;

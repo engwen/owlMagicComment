@@ -1,10 +1,13 @@
-package com.owl.asImpl;
+package com.owl.comment.asImpl;
 
-import com.owl.annotations.OwlBackToMsgResult;
+import com.owl.comment.annotations.OwlBackToMsgResult;
 import com.owl.magicUtil.util.RegexUtil;
-import com.owl.magicUtil.vo.MsgResultVO;
+import com.owl.mvc.model.MsgConstant;
+import com.owl.mvc.vo.MsgResultVO;
 import org.apache.log4j.Logger;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -26,21 +29,31 @@ import java.lang.reflect.Method;
 public class OwlBackToMsgResultAS {
     private static Logger logger = Logger.getLogger(OwlBackToMsgResultAS.class.getName());
 
-    @Pointcut("@annotation(com.owl.annotations.OwlBackToMsgResult)")
+    @Pointcut("@annotation(com.owl.comment.annotations.OwlBackToMsgResult)")
     public void changeBackClassCut() {
+    }
+
+    @AfterThrowing(value = "changeBackClassCut()", throwing = "ex")
+    public Object afterThrowing(JoinPoint joinPoint, Exception ex) {
+        MsgResultVO<String> result = new MsgResultVO<>();
+        result.errorResult(MsgConstant.CONTROLLER_THROWABLE_ERROR);
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        logger.error(methodSignature.getMethod().getName()+"      "+ex);
+        return result;
     }
 
     @Around("changeBackClassCut()")
     public Object changeBackClass(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object obj = joinPoint.proceed();
+        if (obj instanceof MsgResultVO)
+            return obj;
+        MsgResultVO<Object> result = new MsgResultVO<>();
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-
         String codeName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).code();
         String msgName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).msg();
         String dataName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).data();
         String resultName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).result();
 
-        Object obj = joinPoint.proceed();
-        MsgResultVO<Object> result = new MsgResultVO<>();
         try {
             result.setResult((Boolean) getProValue(resultName, obj));
             result.setResultMsg((String) getProValue(msgName, obj));
@@ -49,6 +62,7 @@ public class OwlBackToMsgResultAS {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("转化出错");
+            return obj;
         }
         return result;
     }

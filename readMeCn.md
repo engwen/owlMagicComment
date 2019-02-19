@@ -3,7 +3,7 @@
 #### 
 
 * 包名
-com.owl.annotations
+com.owl.comment.annotations
 * 引用方式为
 ```
 <dependency>
@@ -17,7 +17,7 @@ com.owl.annotations
 
 spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以下配置
 
-     <context:component-scan base-package="com.owl.annotations"/>
+     <context:component-scan base-package="com.owl.comment.annotations"/>
      <aop:aspectj-autoproxy/>
     
  SpringBoot 用户需要在 项目启动类上配置扫描

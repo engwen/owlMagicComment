@@ -1,9 +1,9 @@
-package com.owl.asImpl;
+package com.owl.comment.asImpl;
 
-import com.owl.annotations.OwlSetNullData;
+import com.owl.comment.annotations.OwlSetNullData;
 import com.owl.magicUtil.util.ClassTypeUtil;
 import com.owl.magicUtil.util.RegexUtil;
-import com.owl.magicUtil.vo.MsgResultVO;
+import com.owl.mvc.vo.MsgResultVO;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -31,7 +31,7 @@ import java.util.*;
 public class OwlSetNullDataAS {
     private static Logger logger = Logger.getLogger(OwlSetNullDataAS.class.getName());
 
-    @Pointcut("@annotation(com.owl.annotations.OwlSetNullData)")
+    @Pointcut("@annotation(com.owl.comment.annotations.OwlSetNullData)")
     public void setNullDataCut() {
     }
 

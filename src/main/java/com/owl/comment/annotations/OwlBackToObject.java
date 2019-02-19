@@ -1,4 +1,4 @@
-package com.owl.annotations;
+package com.owl.comment.annotations;
 
 import java.lang.annotation.*;
 
