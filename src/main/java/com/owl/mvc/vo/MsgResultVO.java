@@ -108,7 +108,6 @@ public final class MsgResultVO<T> extends ModelPrototype {
         return this;
     }
 
-
     /**
      * 請求成功
      * @return 結果對象
