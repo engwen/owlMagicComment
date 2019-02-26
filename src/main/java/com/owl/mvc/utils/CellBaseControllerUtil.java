@@ -2,6 +2,7 @@ package com.owl.mvc.utils;
 
 import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
+import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.service.CellBaseServiceAb;
@@ -90,7 +91,23 @@ public abstract class CellBaseControllerUtil {
         }
         return resultVO;
     }
-
+    /*
+     * 批量删除
+     * @param cellBaseServiceAb service对象
+     * @param idList            待删除的id集合
+     * @return 结果
+     */
+    public static <T> MsgResultVO deleteList(CellBaseServiceAb<T> cellBaseServiceAb, DeleteDTO deleteDTO) {
+        MsgResultVO resultVO;
+        try {
+            resultVO = cellBaseServiceAb.deleteList(deleteDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultVO = new MsgResultVO<>();
+            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
+        }
+        return resultVO;
+    }
     /*
      * 批量操作 禁用或啓用
      * @param cellBaseServiceAb service对象

@@ -3,6 +3,7 @@ package com.owl.mvc.utils;
 import com.owl.mvc.dao.CellBaseDao;
 import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
+import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.so.IdListSO;
 import com.owl.mvc.so.ModelListSO;
@@ -138,6 +139,24 @@ public abstract class CellBaseServiceUtil {
         }
         return resultVO;
     }
+
+    /*
+     * 批量刪除 更新前需要查询，因此可能返回对象为父类型
+     * @param deleteDTO ID集合
+     * @return 基礎數據
+     */
+    public static <T> MsgResultVO deleteList(CellBaseDao<T> cellBaseDao, DeleteDTO deleteDTO) {
+        MsgResultVO<T> resultVO = new MsgResultVO<>();
+        try {
+            cellBaseDao.deleteByIdList(IdListSO.getInstance(deleteDTO.getIdList()));
+            resultVO.successResult();
+        } catch (Exception e) {
+            logger.info(String.format("there is a bad thing begin with deleteList,information is %s", e));
+            resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
+        }
+        return resultVO;
+    }
+
 
     /*
      * 批量操作 禁用或啓用

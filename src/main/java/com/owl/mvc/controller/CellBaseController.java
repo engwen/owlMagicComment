@@ -2,6 +2,7 @@ package com.owl.mvc.controller;
 
 import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
+import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
@@ -37,13 +38,15 @@ interface CellBaseController<T> {
      */
     MsgResultVO delete(T model);
 
+
     /**
      * 批量删除
      * @param idList 待删除的id集合
      * @return 结果
      */
     MsgResultVO deleteList(List<Long> idList);
-
+    
+    MsgResultVO deleteList(DeleteDTO deleteDTO);
     /**
      * 批量操作 禁用或啓用
      * @param id     對象ID

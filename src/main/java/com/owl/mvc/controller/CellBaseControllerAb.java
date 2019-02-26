@@ -2,6 +2,7 @@ package com.owl.mvc.controller;
 
 import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
+import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
@@ -65,6 +66,11 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      */
     @Override
     public MsgResultVO deleteList(List<Long> idList) {
+        return defaultBack();
+    }
+
+    @Override
+    public MsgResultVO deleteList(DeleteDTO deleteDTO) {
         return defaultBack();
     }
 

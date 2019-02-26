@@ -2,6 +2,7 @@ package com.owl.mvc.service;
 
 import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
+import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
@@ -43,6 +44,8 @@ interface CellBaseService<T> {
      * @return 基礎數據
      */
     MsgResultVO deleteList(List<Long> idList);
+
+    MsgResultVO deleteList(DeleteDTO deleteDTO);
 
     /**
      * 批量操作 禁用或啓用

@@ -2,6 +2,7 @@ package com.owl.mvc.service;
 
 import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
+import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
@@ -63,6 +64,11 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
     @Override
     public MsgResultVO deleteList(List<Long> idList) {
         loggerInfo();
+        return null;
+    }
+
+    @Override
+    public MsgResultVO deleteList(DeleteDTO deleteDTO) {
         return null;
     }
 
