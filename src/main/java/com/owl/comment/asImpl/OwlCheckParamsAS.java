@@ -1,9 +1,9 @@
 package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlCheckParams;
-import com.owl.mvc.model.MsgConstant;
 import com.owl.magicUtil.util.ClassTypeUtil;
 import com.owl.magicUtil.util.RegexUtil;
+import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
