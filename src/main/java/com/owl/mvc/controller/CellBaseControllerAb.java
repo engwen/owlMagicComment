@@ -44,7 +44,7 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      * @return 结果
      */
     @Override
-    public MsgResultVO createList(List<T> list) {
+    public MsgResultVO<?> createList(List<T> list) {
         return defaultBack();
     }
 
@@ -59,28 +59,9 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
         return defaultBack();
     }
 
-    /**
-     * 批量删除
-     * @param idList 待删除的id集合
-     * @return 结果
-     */
-    @Override
-    public MsgResultVO deleteList(List<Long> idList) {
-        return defaultBack();
-    }
 
     @Override
     public MsgResultVO deleteList(DeleteDTO deleteDTO) {
-        return defaultBack();
-    }
-
-    /**
-     * 批量操作 禁用或啓用
-     * @param id     對象ID
-     * @param status 對象狀態，可以爲空
-     * @return int
-     */
-    public MsgResultVO banOrLeave(Long id, Boolean status) {
         return defaultBack();
     }
 
@@ -89,16 +70,6 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
         return defaultBack();
     }
 
-
-    /**
-     * 批量操作 禁用或啓用
-     * @param idList 對象ID
-     * @param status 對象狀態
-     * @return int
-     */
-    public MsgResultVO banOrLeaveList(List<Long> idList, Boolean status) {
-        return defaultBack();
-    }
 
     @Override
     public MsgResultVO banOrLeaveList(BanListDTO banListDTO) {
@@ -111,7 +82,7 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      * @return 结果
      */
     @Override
-    public MsgResultVO<T> update(T model) {
+    public MsgResultVO<?> update(T model) {
         return defaultBack();
     }
 
@@ -125,17 +96,6 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
         return defaultBack();
     }
 
-    /**
-     * 获取分页集合
-     * @param requestPage 请求页数
-     * @param rows        请求显示条数
-     * @param model       检索对象属性
-     * @return 分页集合
-     */
-    @Override
-    public MsgResultVO<PageVO<T>> list(boolean getAll, Integer requestPage, Integer rows, T model) {
-        return defaultBack();
-    }
 
     @Override
     public MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO) {
@@ -158,7 +118,7 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      * @return Boolean
      */
     @Override
-    public MsgResultVO isExist(T model) {
+    public MsgResultVO<?> isExist(T model) {
         return defaultBack();
     }
 }

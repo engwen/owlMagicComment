@@ -29,7 +29,7 @@ interface CellBaseController<T> {
      * @param list 待创建对象集合
      * @return 结果
      */
-    MsgResultVO createList(List<T> list);
+    MsgResultVO<?> createList(List<T> list);
 
     /**
      * 删除功能
@@ -41,30 +41,23 @@ interface CellBaseController<T> {
 
     /**
      * 批量删除
-     * @param idList 待删除的id集合
+     * @param deleteDTO 删除对象DTO
      * @return 结果
      */
-    MsgResultVO deleteList(List<Long> idList);
-    
     MsgResultVO deleteList(DeleteDTO deleteDTO);
+
     /**
      * 批量操作 禁用或啓用
-     * @param id     對象ID
-     * @param status 對象狀態，可以爲空
+     * @param banDTO 禁用对象
      * @return int
      */
-    MsgResultVO banOrLeave(Long id, Boolean status);
-
     MsgResultVO banOrLeave(BanDTO banDTO);
 
     /**
      * 批量操作 禁用或啓用
-     * @param idList 對象ID
-     * @param status 對象狀態
+     * @param banListDTO 禁用对象集合
      * @return int
      */
-    MsgResultVO banOrLeaveList(List<Long> idList, Boolean status);
-
     MsgResultVO banOrLeaveList(BanListDTO banListDTO);
 
     /**
@@ -72,7 +65,7 @@ interface CellBaseController<T> {
      * @param model 将要被更新的对象
      * @return 结果
      */
-    MsgResultVO<T> update(T model);
+    MsgResultVO<?> update(T model);
 
     /**
      * 获取详情
@@ -84,14 +77,9 @@ interface CellBaseController<T> {
 
     /**
      * 获取分页集合
-     * @param getAll      获取所有
-     * @param requestPage 请求页数
-     * @param rows        请求显示条数
-     * @param model       检索对象属性
+     * @param pageDTO 请求分页对象
      * @return 分页集合
      */
-    MsgResultVO<PageVO<T>> list(boolean getAll, Integer requestPage, Integer rows, T model);
-
     MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO);
 
     /**
@@ -106,5 +94,5 @@ interface CellBaseController<T> {
      * @param model 检索条件
      * @return Boolean
      */
-    MsgResultVO isExist(T model);
+    MsgResultVO<?> isExist(T model);
 }

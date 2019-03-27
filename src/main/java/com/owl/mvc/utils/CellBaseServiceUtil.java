@@ -5,10 +5,9 @@ import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
-import com.owl.mvc.so.IdListSO;
+import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.so.SelectLikeSO;
-import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
 
@@ -39,6 +38,7 @@ public abstract class CellBaseServiceUtil {
             resultVO.successResult(model);
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with create,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -62,6 +62,7 @@ public abstract class CellBaseServiceUtil {
             }
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with create,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -79,6 +80,7 @@ public abstract class CellBaseServiceUtil {
             resultVO.successResult();
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with createList,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -97,6 +99,7 @@ public abstract class CellBaseServiceUtil {
             resultVO.successResult();
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with delete,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -118,6 +121,7 @@ public abstract class CellBaseServiceUtil {
             }
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with delete,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -129,15 +133,7 @@ public abstract class CellBaseServiceUtil {
      * @return 基礎數據
      */
     public static <T> MsgResultVO deleteList(CellBaseDao<T> cellBaseDao, List<Long> idList) {
-        MsgResultVO<T> resultVO = new MsgResultVO<>();
-        try {
-            cellBaseDao.deleteByIdList(IdListSO.getInstance(idList));
-            resultVO.successResult();
-        } catch (Exception e) {
-            logger.info(String.format("there is a bad thing begin with deleteList,information is %s", e));
-            resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
-        }
-        return resultVO;
+        return deleteList(cellBaseDao, DeleteDTO.getInstance(idList));
     }
 
     /*
@@ -148,16 +144,20 @@ public abstract class CellBaseServiceUtil {
     public static <T> MsgResultVO deleteList(CellBaseDao<T> cellBaseDao, DeleteDTO deleteDTO) {
         MsgResultVO<T> resultVO = new MsgResultVO<>();
         try {
-            cellBaseDao.deleteByIdList(IdListSO.getInstance(deleteDTO.getIdList()));
+            cellBaseDao.deleteByIdList(deleteDTO);
             resultVO.successResult();
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with deleteList,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
     }
 
 
+    public static <T> MsgResultVO banOrLeave(CellBaseDao<T> cellBaseDao, BanDTO banDTO) {
+        return banOrLeave(cellBaseDao, banDTO.getId(), banDTO.getIsBan());
+    }
     /*
      * 批量操作 禁用或啓用
      * @param id     對象ID
@@ -170,9 +170,6 @@ public abstract class CellBaseServiceUtil {
         return banOrLeaveList(cellBaseDao, ids, isBan);
     }
 
-    public static <T> MsgResultVO banOrLeave(CellBaseDao<T> cellBaseDao, BanDTO banDTO) {
-        return banOrLeave(cellBaseDao, banDTO.getId(), banDTO.getIsBan());
-    }
 
     /*
      * 批量操作 禁用或啓用
@@ -181,11 +178,7 @@ public abstract class CellBaseServiceUtil {
      * @return 基礎數據
      */
     public static <T> MsgResultVO banOrLeaveList(CellBaseDao<T> cellBaseDao, List<Long> idList, Boolean isBan) {
-        BanListDTO banListDTO = new BanListDTO();
-        banListDTO.setIdList(idList);
-        banListDTO.setIsBan(isBan);
-        cellBaseDao.banOrLeave(banListDTO);
-        return banOrLeaveList(cellBaseDao, banListDTO);
+        return banOrLeaveList(cellBaseDao, BanListDTO.getInstance(idList, isBan));
     }
 
     public static <T> MsgResultVO banOrLeaveList(CellBaseDao<T> cellBaseDao, BanListDTO banListDTO) {
@@ -195,6 +188,7 @@ public abstract class CellBaseServiceUtil {
             resultVO.successResult();
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with banOrLeaveList,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -216,6 +210,7 @@ public abstract class CellBaseServiceUtil {
             }
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with update,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -229,8 +224,10 @@ public abstract class CellBaseServiceUtil {
     public static <T> MsgResultVO<T> details(CellBaseDao<T> cellBaseDao, T model) {
         MsgResultVO<T> resultVO = new MsgResultVO<>();
         try {
-            List<T> temp = cellBaseDao.selectBySelective(SelectLikeSO.getInstance(model));
-            if (null != temp && temp.size() == 1) {
+            List<T> temp = cellBaseDao.selectByExact(SelectLikeSO.getInstance(model));
+            if (null == temp || temp.size() == 0) {
+                resultVO.errorResult(MsgConstant.REQUEST_NOT_EXITS);
+            } else if (temp.size() == 1) {
                 resultVO.successResult(temp.get(0));
             } else {
                 logger.info("there are list with details back, but you just want one");
@@ -238,12 +235,16 @@ public abstract class CellBaseServiceUtil {
             }
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with details,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
     }
 
 
+    public static <T> MsgResultVO<PageVO<T>> list(CellBaseDao<T> cellBaseDao, PageDTO<T> pageDTO) {
+        return list(cellBaseDao, pageDTO.getGetAll(), pageDTO.getRequestPage(), pageDTO.getRows(), pageDTO.getModel());
+    }
     /*
      * 獲取分頁列表，添加 model 提供檢索功能
      * @param getAll      是否獲取所有
@@ -261,14 +262,12 @@ public abstract class CellBaseServiceUtil {
             resultVO.successResult(pageVO);
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with list,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
     }
 
-    public static <T> MsgResultVO<PageVO<T>> list(CellBaseDao<T> cellBaseDao, PageDTO<T> pageDTO) {
-        return list(cellBaseDao, pageDTO.getGetAll(), pageDTO.getRequestPage(), pageDTO.getRows(), pageDTO.getModel());
-    }
 
     /*
      * 獲取所有的對象
@@ -281,6 +280,7 @@ public abstract class CellBaseServiceUtil {
             resultVO.successResult(cellBaseDao.selectBySelective(SelectLikeSO.getInstance(model)));
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with details,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -295,7 +295,7 @@ public abstract class CellBaseServiceUtil {
     public static <T> MsgResultVO isExist(CellBaseDao<T> cellBaseDao, T model) {
         MsgResultVO resultVO = new MsgResultVO();
         try {
-            List<T> list = cellBaseDao.selectBySelective(SelectLikeSO.getInstance(model));
+            List<T> list = cellBaseDao.selectByExact(SelectLikeSO.getInstance(model));
             if (null != list && list.size() > 0) {
                 resultVO.successResult(MsgConstant.REQUEST_IS_EXITS);
             } else {
@@ -303,6 +303,7 @@ public abstract class CellBaseServiceUtil {
             }
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with isExist,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;

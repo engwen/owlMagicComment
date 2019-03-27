@@ -80,23 +80,6 @@ public abstract class CellBaseControllerUtil {
      * @param idList            待删除的id集合
      * @return 结果
      */
-    public static <T> MsgResultVO deleteList(CellBaseServiceAb<T> cellBaseServiceAb, List<Long> idList) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.deleteList(idList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
-    }
-    /*
-     * 批量删除
-     * @param cellBaseServiceAb service对象
-     * @param idList            待删除的id集合
-     * @return 结果
-     */
     public static <T> MsgResultVO deleteList(CellBaseServiceAb<T> cellBaseServiceAb, DeleteDTO deleteDTO) {
         MsgResultVO resultVO;
         try {
@@ -108,6 +91,7 @@ public abstract class CellBaseControllerUtil {
         }
         return resultVO;
     }
+
     /*
      * 批量操作 禁用或啓用
      * @param cellBaseServiceAb service对象
@@ -115,43 +99,10 @@ public abstract class CellBaseControllerUtil {
      * @param status            對象狀態，可以爲空
      * @return int
      */
-    public static <T> MsgResultVO banOrLeave(CellBaseServiceAb<T> cellBaseServiceAb, Long id, Boolean status) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.banOrLeave(id, status);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
-    }
-
-
     public static <T> MsgResultVO banOrLeave(CellBaseServiceAb<T> cellBaseServiceAb, BanDTO banDTO) {
         MsgResultVO resultVO;
         try {
             resultVO = cellBaseServiceAb.banOrLeave(banDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
-    }
-
-
-    /*
-     * 批量操作 禁用或啓用
-     * @param cellBaseServiceAb service对象
-     * @param idList            對象ID
-     * @param status            對象狀態
-     * @return int
-     */
-    public static <T> MsgResultVO banOrLeaveList(CellBaseServiceAb<T> cellBaseServiceAb, List<Long> idList, Boolean status) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.banOrLeaveList(idList, status);
         } catch (Exception e) {
             e.printStackTrace();
             resultVO = new MsgResultVO<>();
@@ -208,11 +159,6 @@ public abstract class CellBaseControllerUtil {
      * @param model             检索对象属性
      * @return 分页集合
      */
-    public static <T> MsgResultVO<PageVO<T>> list(CellBaseServiceAb<T> cellBaseServiceAb, boolean getAll, Integer requestPage, Integer rows, T model) {
-        return cellBaseServiceAb.list(getAll, requestPage, rows, model);
-    }
-
-
     public static <T> MsgResultVO<PageVO<T>> list(CellBaseServiceAb<T> cellBaseServiceAb, PageDTO<T> pageDTO) {
         return cellBaseServiceAb.list(pageDTO);
     }

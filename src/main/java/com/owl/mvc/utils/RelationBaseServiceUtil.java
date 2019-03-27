@@ -32,6 +32,7 @@ public abstract class RelationBaseServiceUtil {
             resultVO.successResult();
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with insertList,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;
@@ -50,6 +51,7 @@ public abstract class RelationBaseServiceUtil {
             resultVO.successResult();
         } catch (Exception e) {
             logger.info(String.format("there is a bad thing begin with deleteList,information is %s", e));
+            e.printStackTrace();
             resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
         }
         return resultVO;

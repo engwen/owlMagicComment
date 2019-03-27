@@ -9,7 +9,27 @@ import java.util.List;
  */
 public class DeleteDTO {
     private Long id;
+    //待删除的id集合
     private List<Long> idList;
+
+    public DeleteDTO() {
+    }
+
+    private DeleteDTO(Long id) {
+        this.id = id;
+    }
+
+    private DeleteDTO(List<Long> idList) {
+        this.idList = idList;
+    }
+
+    public static DeleteDTO getInstance(Long id) {
+        return new DeleteDTO(id);
+    }
+
+    public static DeleteDTO getInstance(List<Long> idList) {
+        return new DeleteDTO(idList);
+    }
 
     public Long getId() {
         return id;

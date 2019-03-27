@@ -25,14 +25,45 @@
         <trim prefix="where" suffixOverrides="and">
             <if test="null != model">
                 <choose>
+
                     <when test="null != model.id">
-                        id = #{model.id}
+                        <include refid="Table_ID_Name"/>  = #{model.id}
                     </when>
+
                     <otherwise>
+
                         <if test="null != model.name">
-                            (name like CONCAT(CONCAT('%',#{model.name}),'%'))
+                            name like CONCAT(CONCAT('%',#{model.name}),'%')
                             AND
                         </if>
+
+                        <if test="null != model.isBan">
+                            is_ban = #{model.isBan} and
+                        </if>
+                        <if test="null != model.status">
+                            status = true
+                        </if>
+                    </otherwise>
+                </choose>
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="Select_Exact">
+        <trim prefix="where" suffixOverrides="and">
+            <if test="null != model">
+                <choose>
+
+                    <when test="null != model.id">
+                        <include refid="Table_ID_Name"/>  = #{model.id}
+                    </when>
+
+                    <otherwise>
+
+                        <if test="null != model.name">
+                            name = #{model.name} and
+                        </if>
+
                         <if test="null != model.isBan">
                             is_ban = #{model.isBan} and
                         </if>
@@ -51,6 +82,7 @@
         </selectKey>
         insert into <include refid="Table_Name"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
+
             <if test="status != null">
                 status,
             </if>
@@ -60,6 +92,7 @@
             create_time,update_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+
             <if test="status != null">
                 #{status,jdbcType=BIT},
             </if>
@@ -85,6 +118,18 @@
             )
         </foreach>
     </insert>
+
+    <update id="updateBySelective">
+        update <include refid="Table_Name"/>
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+
+            update_time = NULL
+        </set>
+        where <include refid="Table_ID_Name"/> = #{id,jdbcType=BIGINT} and status = true
+    </update>
 
     <update id="deleteBySelective">
         update <include refid="Table_Name"/>
@@ -120,22 +165,18 @@
         and status = true
     </update>
 
-    <update id="updateBySelective">
-        update <include refid="Table_Name"/>
-        <set>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            update_time = NULL
-        </set>
-        where <include refid="Table_ID_Name"/> = #{id,jdbcType=BIGINT} and status = true
-    </update>
-
     <select id="selectBySelective" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from <include refid="Table_Name"/>
         <include refid="Select_Like"/>
+    </select>
+
+    <select id="selectByExact" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="Table_Name"/>
+        <include refid="Select_Exact"/>
     </select>
 
     <select id="countSumByCondition" resultType="java.lang.Integer">

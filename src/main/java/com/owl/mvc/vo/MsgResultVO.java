@@ -2,6 +2,7 @@ package com.owl.mvc.vo;
 
 
 import com.owl.magicUtil.model.ModelPrototype;
+import com.owl.magicUtil.util.ObjectUtil;
 import com.owl.mvc.model.MsgConstant;
 
 import java.util.HashMap;
@@ -256,7 +257,7 @@ public final class MsgResultVO<T> extends ModelPrototype {
      * @return 字符串
      */
     public String toJSON() {
-        return "{result:" + this.result + ",resultCode:" + this.resultCode + ",resultMsg:" + this.resultMsg + "}";
+        return "{result:" + this.result + ",resultCode:" + this.resultCode + ",resultMsg:" + this.resultMsg + "resultData:" + ObjectUtil.toJSON(this.resultData) + "}";
     }
 
     public Boolean getResult() {

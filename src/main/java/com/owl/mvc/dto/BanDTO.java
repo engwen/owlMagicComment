@@ -4,6 +4,19 @@ public class BanDTO {
     private Long id;
     private Boolean isBan;
 
+    public BanDTO() {
+
+    }
+
+    private BanDTO(Long id, Boolean isBan) {
+        this.id = id;
+        this.isBan = isBan;
+    }
+
+    public static BanDTO getInstance(Long id, Boolean isBan) {
+        return new BanDTO(id, isBan);
+    }
+
     public Long getId() {
         return id;
     }

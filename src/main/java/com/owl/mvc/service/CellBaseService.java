@@ -29,7 +29,7 @@ interface CellBaseService<T> {
      * @param modelList 汎型對象
      * @return 汎型對象
      */
-    MsgResultVO createList(List<T> modelList);
+    MsgResultVO<?> createList(List<T> modelList);
 
     /**
      * 刪除 更新前需要查询，因此可能返回对象为父类型
@@ -72,7 +72,7 @@ interface CellBaseService<T> {
      * @param model 汎型對象
      * @return 基礎數據
      */
-    MsgResultVO update(T model);
+    MsgResultVO<?> update(T model);
 
     /**
      * 獲取詳情
@@ -105,6 +105,6 @@ interface CellBaseService<T> {
      * @param model 检索条件
      * @return Boolean
      */
-    MsgResultVO isExist(T model);
+    MsgResultVO<?> isExist(T model);
 
 }

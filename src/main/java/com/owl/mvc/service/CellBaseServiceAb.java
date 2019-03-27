@@ -40,7 +40,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      * @return 汎型對象
      */
     @Override
-    public MsgResultVO createList(List<T> modelList) {
+    public MsgResultVO<?> createList(List<T> modelList) {
         loggerInfo();
         return null;
     }
@@ -63,46 +63,46 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO deleteList(List<Long> idList) {
-        loggerInfo();
-        return null;
+        return this.deleteList(DeleteDTO.getInstance(idList));
     }
 
     @Override
     public MsgResultVO deleteList(DeleteDTO deleteDTO) {
+        loggerInfo();
         return null;
     }
 
     /**
      * 批量操作 禁用或啓用
-     * @param id     對象ID
-     * @param status 對象狀態，可以爲空
+     * @param id    對象ID
+     * @param isBan 對象狀態，可以爲空
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO banOrLeave(Long id, Boolean status) {
-        loggerInfo();
-        return null;
+    public MsgResultVO banOrLeave(Long id, Boolean isBan) {
+        return this.banOrLeave(BanDTO.getInstance(id, isBan));
     }
 
     @Override
     public MsgResultVO banOrLeave(BanDTO banDTO) {
+        loggerInfo();
         return null;
     }
 
     /**
      * 批量操作 禁用或啓用
      * @param idList 對象ID
-     * @param status 對象狀態
+     * @param isBan  對象狀態
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO banOrLeaveList(List<Long> idList, Boolean status) {
-        loggerInfo();
-        return null;
+    public MsgResultVO banOrLeaveList(List<Long> idList, Boolean isBan) {
+        return this.banOrLeaveList(BanListDTO.getInstance(idList, isBan));
     }
 
     @Override
     public MsgResultVO banOrLeaveList(BanListDTO banListDTO) {
+        loggerInfo();
         return null;
     }
 
@@ -112,7 +112,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO update(T model) {
+    public MsgResultVO<?> update(T model) {
         loggerInfo();
         return null;
     }
@@ -138,12 +138,12 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<PageVO<T>> list(Boolean getAll, Integer requestPage, Integer rows, T model) {
-        loggerInfo();
-        return null;
+        return this.list(PageDTO.getInstance(getAll, requestPage, rows, model));
     }
 
     @Override
     public MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO) {
+        loggerInfo();
         return null;
     }
 
@@ -163,7 +163,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      * @return Boolean
      */
     @Override
-    public MsgResultVO isExist(T model) {
+    public MsgResultVO<?> isExist(T model) {
         loggerInfo();
         return null;
     }

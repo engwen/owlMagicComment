@@ -1,7 +1,7 @@
 package com.owl.mvc.dao;
 
 import com.owl.mvc.dto.BanListDTO;
-import com.owl.mvc.so.IdListSO;
+import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.so.SelectLikeSO;
 
@@ -31,10 +31,10 @@ public interface CellBaseDao<T> {
 
     /**
      * 批量刪除
-     * @param idListSO 内含id集合
+     * @param deleteDTO 内含id集合
      * @return int
      */
-    int deleteByIdList(IdListSO idListSO);
+    int deleteByIdList(DeleteDTO deleteDTO);
 
     /**
      * 刪除
@@ -60,13 +60,20 @@ public interface CellBaseDao<T> {
     int updateBySelective(T model);
 
     /**
-     * 依據屬性獲取對象集合
+     * 依據屬性獲取對象集合 粗略查询
      * @param selectLikeSO 泛型对象
      * Param("model")
      * @return 泛型对象集合
      */
     List<T> selectBySelective(SelectLikeSO<T> selectLikeSO);
 
+    /**
+     * 依據屬性獲取對象集合 准确查询
+     * @param selectLikeSO 泛型对象
+     * Param("model")
+     * @return 泛型对象集合
+     */
+    List<T> selectByExact(SelectLikeSO<T> selectLikeSO);
 
     /**
      * 依據指定的屬性統計數據條數

@@ -2,6 +2,7 @@ package com.owl.mvc.service;
 
 import com.owl.mvc.vo.MsgResultVO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -24,8 +25,9 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
      */
     @Override
     public MsgResultVO insert(T model) {
-        loggerInfo();
-        return null;
+        List<T> modelList = new ArrayList<>();
+        modelList.add(model);
+        return this.insertList(modelList);
     }
 
     /**
@@ -46,8 +48,9 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
      */
     @Override
     public MsgResultVO delete(T model) {
-        loggerInfo();
-        return null;
+        List<T> modelList = new ArrayList<>();
+        modelList.add(model);
+        return this.deleteList(modelList);
     }
 
     /**

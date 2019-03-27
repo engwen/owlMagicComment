@@ -15,11 +15,6 @@ import java.util.List;
  */
 public abstract class RelationBaseControllerUtil {
 
-    public static <T> MsgResultVO insert(RelationBaseServiceAb<T> relationBaseServiceAb, T model) {
-        List<T> temp = new ArrayList<>();
-        temp.add(model);
-        return insertList(relationBaseServiceAb, temp);
-    }
 
     public static <T> MsgResultVO insertList(RelationBaseServiceAb<T> relationBaseServiceAb, List<T> modelList) {
         MsgResultVO resultVO;
@@ -31,12 +26,6 @@ public abstract class RelationBaseControllerUtil {
             resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
         }
         return resultVO;
-    }
-
-    public static <T> MsgResultVO delete(RelationBaseServiceAb<T> relationBaseServiceAb, T model) {
-        List<T> temp = new ArrayList<>();
-        temp.add(model);
-        return deleteList(relationBaseServiceAb, temp);
     }
 
     public static <T> MsgResultVO deleteList(RelationBaseServiceAb<T> relationBaseServiceAb, List<T> modelList) {
