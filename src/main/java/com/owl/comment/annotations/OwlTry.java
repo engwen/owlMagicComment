@@ -14,3 +14,4 @@ import java.lang.annotation.*;
 public @interface OwlTry {
     String value() default "";
 }
+
