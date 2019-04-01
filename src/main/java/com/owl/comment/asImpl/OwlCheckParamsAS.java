@@ -49,10 +49,15 @@ public class OwlCheckParamsAS {
 //        存放含有空的屬性
         List<String> paramsIsNull = new ArrayList<>();
 
-//        此處從requestHead頭中獲取參數，
+        Object[] args = joinPoint.getArgs();
+        if (args.length > 1) {
+            logger.warn("本注解仅限使用对象或Map接收参数时使用");
+            return joinPoint.proceed(joinPoint.getArgs());
+        }
+
+//        此處從requestHead頭中獲取參數，在请求开始的时候获取
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Map<String, String[]> paramsHeadMap = request.getParameterMap();
-
         if (null != paramsHeadMap && paramsHeadMap.keySet().size() > 0) {
             for (String param : notNull) {
                 if (null == paramsHeadMap.get(param) || paramsHeadMap.get(param).length == 0) {
@@ -67,9 +72,9 @@ public class OwlCheckParamsAS {
                 }
             }
         } else {
-//          requestBody中獲取參數
+//          从接收封装的对象
             Map<String, Object> paramsBodyMap = new HashMap<>();
-            Object paramsVO = joinPoint.getArgs()[0];
+            Object paramsVO = args[0];
             if (ClassTypeUtil.isPackClass(paramsVO) || ClassTypeUtil.isBaseClass(paramsVO)) {
                 logger.debug("本注解仅限使用对象或Map接收参数时使用");
             } else {
@@ -78,7 +83,7 @@ public class OwlCheckParamsAS {
                     paramsBodyMap = (Map<String, Object>) paramsVO;
                 } else {
 //                  使用对象接收参数
-                    Field[] fields = paramsVO.getClass().getDeclaredFields();
+                    Field[] fields = getSupperClassProperties(paramsVO, new Field[0]);
                     for (Field field : fields) {
                         field.setAccessible(true);
                         paramsBodyMap.put(field.getName(), field.get(paramsVO));
@@ -113,6 +118,22 @@ public class OwlCheckParamsAS {
     private static String backStr(String str, List arr) {
         String temp = arr.toString();
         return String.format(str, temp.substring(1, temp.length() - 1));
+    }
+
+    private static Field[] getSupperClassProperties(Object paramsVO, Field[] fields) {
+        for (Class<?> clazz = paramsVO.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
+            try {
+                Field[] fieldsTemp = clazz.getDeclaredFields();
+                fields = Arrays.copyOf(fields, fields.length + fieldsTemp.length);
+                for (int i = 0; i < fieldsTemp.length; i++) {
+                    fields[fields.length - i - 1] = fieldsTemp[i];
+                }
+            } catch (Exception e) {
+                //这里甚么都不要做！并且这里的异常必须这样写，不能抛出去。
+                //如果这里的异常打印或者往外抛，则就不会执行clazz = clazz.getSuperclass(),最后就不会进入到父类中了
+            }
+        }
+        return fields;
     }
 
 }

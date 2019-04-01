@@ -181,3 +181,25 @@ For example:
         
 
 In example, returns value types to the TestVO to MsgResultVO, content to: {"result":null,"resultCode","0000","resultMsg","test","resultData":1545890084447,"params": {}}
+
+
+ 1.1.5  -  1.1.7
+
+-add. 
+ @ OwlTry. 
+> now you can stop writing try catch, and of course, the default return object is still MsgResultVO, which is really a pity if you can't use it. 
+
+MVC abstraction module. 
+> add controller service dao base classes and their utility class implementations, normal classes now you just need to inherit CellBaseControllerAb CellBaseServiceAb. 
+And CellBaseDao can use the corresponding tool class CellBaseControllerUtil CellBaseServiceUtil tool class to complete the basic curd functionality. 
+List object support Pagination. The relational class, which provides RelationBaseControllerAb and RelationBaseServiceAb, as well as the corresponding xml at the bottom of the Util, has also been templated. 
+For consistency, it is recommended that you use the object that receives the data for DTO, to return the object for the VO, database corresponding to model. 
+
+Tool acquisition for Bean. 
+>SpringContextUtil can get bean objects directly from class or injected names, making it more friendly to multithreaded programs. 
+
+-Optimization. 
+> now checks the annotation of the parameter to check the parent class of the object. 
+> to resolve exception checking, all try catch in the MVC schema will be open in version 1.1.7
+ 
+ 

@@ -4,7 +4,6 @@ import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
-import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.service.CellBaseServiceAb;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
@@ -26,15 +25,7 @@ public abstract class CellBaseControllerUtil {
      * @return 创建后的对象返回数据
      */
     public static <T> MsgResultVO<T> create(CellBaseServiceAb<T> cellBaseServiceAb, T model) {
-        MsgResultVO<T> resultVO;
-        try {
-            resultVO = cellBaseServiceAb.create(model);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return  cellBaseServiceAb.create(model);
     }
 
     /*
@@ -44,15 +35,7 @@ public abstract class CellBaseControllerUtil {
      * @return 结果
      */
     public static <T> MsgResultVO createList(CellBaseServiceAb<T> cellBaseServiceAb, List<T> list) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.createList(list);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return cellBaseServiceAb.createList(list);
     }
 
 
@@ -63,15 +46,7 @@ public abstract class CellBaseControllerUtil {
      * @return 结果
      */
     public static <T> MsgResultVO delete(CellBaseServiceAb<T> cellBaseServiceAb, T model) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.delete(model);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return cellBaseServiceAb.delete(model);
     }
 
     /*
@@ -81,15 +56,7 @@ public abstract class CellBaseControllerUtil {
      * @return 结果
      */
     public static <T> MsgResultVO deleteList(CellBaseServiceAb<T> cellBaseServiceAb, DeleteDTO deleteDTO) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.deleteList(deleteDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return cellBaseServiceAb.deleteList(deleteDTO);
     }
 
     /*
@@ -100,27 +67,11 @@ public abstract class CellBaseControllerUtil {
      * @return int
      */
     public static <T> MsgResultVO banOrLeave(CellBaseServiceAb<T> cellBaseServiceAb, BanDTO banDTO) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.banOrLeave(banDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return cellBaseServiceAb.banOrLeave(banDTO);
     }
 
     public static <T> MsgResultVO banOrLeaveList(CellBaseServiceAb<T> cellBaseServiceAb, BanListDTO banListDTO) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.banOrLeaveList(banListDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return cellBaseServiceAb.banOrLeaveList(banListDTO);
     }
 
     /*
@@ -130,15 +81,7 @@ public abstract class CellBaseControllerUtil {
      * @return 结果
      */
     public static <T> MsgResultVO update(CellBaseServiceAb<T> cellBaseServiceAb, T model) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = cellBaseServiceAb.update(model);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return cellBaseServiceAb.update(model);
     }
 
     /*

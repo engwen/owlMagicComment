@@ -1,10 +1,8 @@
 package com.owl.mvc.utils;
 
-import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.service.RelationBaseServiceAb;
 import com.owl.mvc.vo.MsgResultVO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,28 +13,11 @@ import java.util.List;
  */
 public abstract class RelationBaseControllerUtil {
 
-
     public static <T> MsgResultVO insertList(RelationBaseServiceAb<T> relationBaseServiceAb, List<T> modelList) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = relationBaseServiceAb.insertList(modelList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return relationBaseServiceAb.insertList(modelList);
     }
 
     public static <T> MsgResultVO deleteList(RelationBaseServiceAb<T> relationBaseServiceAb, List<T> modelList) {
-        MsgResultVO resultVO;
-        try {
-            resultVO = relationBaseServiceAb.deleteList(modelList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new MsgResultVO<>();
-            resultVO.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
-        }
-        return resultVO;
+        return relationBaseServiceAb.deleteList(modelList);
     }
 }

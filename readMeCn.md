@@ -1,5 +1,10 @@
 # OwlMagicComment
  
+ 使用本人代码请备注来源，谢谢
+  * author engwen
+  * email xiachanzou@outlook.com
+  * time 2018/07/16.
+# 
 #### 
 
 * 包名
@@ -199,5 +204,29 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
         
  上例中，返回值类型将由 TestVO 转为 MsgResultVO ，内容为：{"result":null,"resultCode":"0000","resultMsg":"test","resultData":1545890084447,"params":{}}
  
+ 
+ 1.1.5  -  1.1.7
+ 
+ 
+- 添加
+
+ 注解 @OwlTry
+ >现在你可以不用再写try catch啦，当然，默认的返回对象依然是MsgResultVO，如果你不能使用它那么真的非常遗憾
+
+ MVC抽象模块。
+ 
+ >添加 controller service dao 基本类以及他们的工具类实现，普通类现在你只需要继承 CellBaseControllerAb CellBaseServiceAb
+ 以及CellBaseDao 即可使用对应的工具类 CellBaseControllerUtil CellBaseServiceUtil 工具类完成基本的 curd 功能。list对象支持
+ 分页。关系类这里提供能了 RelationBaseControllerAb 和 RelationBaseServiceAb  以及对应的 Util，底层的 xml 也已经写好了模板
+ 为保持一致，个人推荐使用接收数据的对象为DTO，返回对象为VO，数据库对应为model。
+ 
+ Bean的工具获取。
+ >SpringContextUtil 可以直接通过class或注入的名称获取 bean 对象，对多线程程序更加友好
+ 
+ 
+- 优化
+ >现在检查参数的注解将会检查对象的父类。
+ 
+ >为了解决对异常的检查，在 1.1.7 版本中将会开放 MVC 架构中的所有 try catch
  
  

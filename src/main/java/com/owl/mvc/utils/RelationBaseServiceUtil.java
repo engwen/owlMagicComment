@@ -1,7 +1,6 @@
 package com.owl.mvc.utils;
 
 import com.owl.mvc.dao.RelationBaseDao;
-import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.vo.MsgResultVO;
 
@@ -27,15 +26,8 @@ public abstract class RelationBaseServiceUtil {
 
     public static <T> MsgResultVO insertList(RelationBaseDao<T> relationBaseDao, List<T> modelList) {
         MsgResultVO resultVO = new MsgResultVO();
-        try {
-            relationBaseDao.insertList(ModelListSO.getInstance(modelList));
-            resultVO.successResult();
-        } catch (Exception e) {
-            logger.info(String.format("there is a bad thing begin with insertList,information is %s", e));
-            e.printStackTrace();
-            resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
-        }
-        return resultVO;
+        relationBaseDao.insertList(ModelListSO.getInstance(modelList));
+        return resultVO.successResult();
     }
 
     public static <T> MsgResultVO delete(RelationBaseDao<T> relationBaseDao, T model) {
@@ -46,14 +38,7 @@ public abstract class RelationBaseServiceUtil {
 
     public static <T> MsgResultVO deleteList(RelationBaseDao<T> relationBaseDao, List<T> modelList) {
         MsgResultVO resultVO = new MsgResultVO();
-        try {
-            relationBaseDao.deleteList(ModelListSO.getInstance(modelList));
-            resultVO.successResult();
-        } catch (Exception e) {
-            logger.info(String.format("there is a bad thing begin with deleteList,information is %s", e));
-            e.printStackTrace();
-            resultVO.errorResult(MsgConstant.REQUEST_DB_ERROR);
-        }
-        return resultVO;
+        relationBaseDao.deleteList(ModelListSO.getInstance(modelList));
+        return resultVO.successResult();
     }
 }
