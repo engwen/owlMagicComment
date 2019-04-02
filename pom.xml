@@ -6,7 +6,7 @@
 
     <groupId>com.github.engwen</groupId>
     <artifactId>owlMagicComment</artifactId>
-    <version>1.1.6</version>
+    <version>1.1.7</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,6 +16,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.engwen</groupId>
+            <artifactId>owlMagicUtil</artifactId>
+            <version>2.3.7</version>
+        </dependency>
         <!-- 添加junit4依赖 -->
         <dependency>
             <groupId>junit</groupId>
@@ -24,12 +29,6 @@
             <!-- 指定范围，在测试时才会加载 -->
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.engwen</groupId>
-            <artifactId>owlMagicUtil</artifactId>
-            <version>2.3.6</version>
-        </dependency>
-
         <!--<dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
