@@ -2,6 +2,7 @@ package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlSetNullData;
 import com.owl.magicUtil.util.ClassTypeUtil;
+import com.owl.magicUtil.util.ObjectUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.vo.MsgResultVO;
 import org.apache.log4j.Logger;
@@ -65,7 +66,7 @@ public class OwlSetNullDataAS {
                         }
                     } else {
 //                  使用对象接收参数
-                        Field[] fields = paramsVO.getClass().getDeclaredFields();
+                        Field[] fields = ObjectUtil.getSupperClassProperties(paramsVO, new Field[0]);
                         for (Field field : fields) {
                             for (String param : setNullParams) {
                                 if (field.getName().equals(param)) {
@@ -101,7 +102,7 @@ public class OwlSetNullDataAS {
                         }
                     } else {
                         logger.info("支持 resultData 为 Class 的对象，开始反射置空");
-                        Field[] fields = resultDataObj.getClass().getDeclaredFields();
+                        Field[] fields = ObjectUtil.getSupperClassProperties(resultDataObj, new Field[0]);
                         for (Field field : fields) {
                             for (String param : setNullDatas) {
                                 if (param.equals(field.getName())) {

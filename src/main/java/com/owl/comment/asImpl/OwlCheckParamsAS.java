@@ -2,6 +2,7 @@ package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlCheckParams;
 import com.owl.magicUtil.util.ClassTypeUtil;
+import com.owl.magicUtil.util.ObjectUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
@@ -83,7 +84,7 @@ public class OwlCheckParamsAS {
                     paramsBodyMap = (Map<String, Object>) paramsVO;
                 } else {
 //                  使用对象接收参数
-                    Field[] fields = getSupperClassProperties(paramsVO, new Field[0]);
+                    Field[] fields = ObjectUtil.getSupperClassProperties(paramsVO, new Field[0]);
                     for (Field field : fields) {
                         field.setAccessible(true);
                         paramsBodyMap.put(field.getName(), field.get(paramsVO));
@@ -119,21 +120,4 @@ public class OwlCheckParamsAS {
         String temp = arr.toString();
         return String.format(str, temp.substring(1, temp.length() - 1));
     }
-
-    private static Field[] getSupperClassProperties(Object paramsVO, Field[] fields) {
-        for (Class<?> clazz = paramsVO.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
-            try {
-                Field[] fieldsTemp = clazz.getDeclaredFields();
-                fields = Arrays.copyOf(fields, fields.length + fieldsTemp.length);
-                for (int i = 0; i < fieldsTemp.length; i++) {
-                    fields[fields.length - i - 1] = fieldsTemp[i];
-                }
-            } catch (Exception e) {
-                //这里甚么都不要做！并且这里的异常必须这样写，不能抛出去。
-                //如果这里的异常打印或者往外抛，则就不会执行clazz = clazz.getSuperclass(),最后就不会进入到父类中了
-            }
-        }
-        return fields;
-    }
-
 }

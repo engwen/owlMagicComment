@@ -1,5 +1,7 @@
 package com.owl.mvc.service;
 
+import com.owl.mvc.dao.RelationBaseDao;
+import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.vo.MsgResultVO;
 
 import java.util.ArrayList;
@@ -12,10 +14,10 @@ import java.util.logging.Logger;
  * time 2018/04/22.
  */
 public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T> {
-    private static Logger logger = Logger.getLogger(RelationBaseServiceAb.class.getName());
+    private RelationBaseDao<T> relationBaseDao;
 
-    private static void loggerInfo() {
-        logger.warning("此方法没有被重写实现，默认的原始输出，将不会产生任何影响");
+    public void setRelationBaseDao(RelationBaseDao<T> relationBaseDao) {
+        this.relationBaseDao = relationBaseDao;
     }
 
     /**
@@ -37,8 +39,9 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
      */
     @Override
     public MsgResultVO insertList(List<T> modelList) {
-        loggerInfo();
-        return null;
+        MsgResultVO resultVO = new MsgResultVO();
+        relationBaseDao.insertList(ModelListSO.getInstance(modelList));
+        return resultVO.successResult();
     }
 
     /**
@@ -60,7 +63,8 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
      */
     @Override
     public MsgResultVO deleteList(List<T> modelList) {
-        loggerInfo();
-        return null;
+        MsgResultVO resultVO = new MsgResultVO();
+        relationBaseDao.deleteList(ModelListSO.getInstance(modelList));
+        return resultVO.successResult();
     }
 }

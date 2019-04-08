@@ -1,6 +1,7 @@
 package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlBackToObject;
+import com.owl.magicUtil.util.ObjectUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.vo.MsgResultVO;
 import org.apache.log4j.Logger;
@@ -64,20 +65,20 @@ public class OwlBackToObjectAS {
 
     private static void setProValue(String proName, Object value, Object obj) throws Exception {
         if (!RegexUtil.isEmpty(proName)) {
-            String getMethodStr = "set" + proName.substring(0, 1).toUpperCase() + proName.substring(1);
-            Field[] fields = obj.getClass().getDeclaredFields();
+            String setMethodStr = "set" + proName.substring(0, 1).toUpperCase() + proName.substring(1);
+            Field[] fields = ObjectUtil.getSupperClassProperties(obj, new Field[0]);
             for (Field field : fields) {
                 if (proName.equals(field.getName()) && !RegexUtil.isEmpty(value)) {
                     try {
-                        Method getMethod = obj.getClass().getDeclaredMethod(getMethodStr, value.getClass());
-                        getMethod.invoke(obj, value);
+                        Method setMethod = obj.getClass().getDeclaredMethod(setMethodStr, value.getClass());
+                        setMethod.invoke(obj, value);
                     } catch (NoSuchMethodException e) {
                         logger.debug("没有查询到对应属性方法,尝试进行Object对象插入。此方法同样适用适用泛型对象");
                         try {
-                            Method getMethod = obj.getClass().getDeclaredMethod(getMethodStr, Object.class);
-                            getMethod.invoke(obj, value);
+                            Method setMethod = obj.getClass().getDeclaredMethod(setMethodStr, Object.class);
+                            setMethod.invoke(obj, value);
                         } catch (NoSuchMethodException ex) {
-                            logger.error(String.format("插入%s属性失败，请检查方法%s的返回类型，并确保类型一致", proName, getMethodStr));
+                            logger.error(String.format("插入%s属性失败，请检查方法%s的返回类型，并确保类型一致", proName, setMethodStr));
                             throw ex;
                         }
                     }

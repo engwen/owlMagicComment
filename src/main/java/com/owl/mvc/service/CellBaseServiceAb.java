@@ -1,12 +1,17 @@
 package com.owl.mvc.service;
 
+import com.owl.mvc.dao.CellBaseDao;
 import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
+import com.owl.mvc.model.MsgConstant;
+import com.owl.mvc.so.ModelListSO;
+import com.owl.mvc.so.SelectLikeSO;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,8 +24,10 @@ import java.util.logging.Logger;
 public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
     private static Logger logger = Logger.getLogger(CellBaseServiceAb.class.getName());
 
-    private static void loggerInfo() {
-        logger.warning("此方法没有被重写实现，默认的原始输出，将不会产生任何影响");
+    private CellBaseDao<T> cellBaseDao;
+
+    public void setCellBaseDao(CellBaseDao<T> cellBaseDao) {
+        this.cellBaseDao = cellBaseDao;
     }
 
     /**
@@ -30,8 +37,9 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<T> create(T model) {
-        loggerInfo();
-        return null;
+        MsgResultVO<T> resultVO = new MsgResultVO<>();
+        cellBaseDao.insertSelective(model);
+        return resultVO.successResult(model);
     }
 
     /**
@@ -41,8 +49,9 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<?> createList(List<T> modelList) {
-        loggerInfo();
-        return null;
+        MsgResultVO<T> resultVO = new MsgResultVO<>();
+        cellBaseDao.insertList(ModelListSO.getInstance(modelList));
+        return resultVO.successResult();
     }
 
     /**
@@ -52,8 +61,9 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO delete(T model) {
-        loggerInfo();
-        return null;
+        MsgResultVO<T> resultVO = new MsgResultVO<>();
+        cellBaseDao.deleteBySelective(model);
+        return resultVO.successResult();
     }
 
     /**
@@ -68,26 +78,34 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
 
     @Override
     public MsgResultVO deleteList(DeleteDTO deleteDTO) {
-        loggerInfo();
-        return null;
+        MsgResultVO<T> resultVO = new MsgResultVO<>();
+        cellBaseDao.deleteByIdList(deleteDTO);
+        return resultVO.successResult();
     }
 
     /**
-     * 批量操作 禁用或啓用
+     * 禁用或啓用
+     * @param banDTO 禁用對象
+     * @return 基礎數據
+     */
+    @Override
+    public MsgResultVO banOrLeave(BanDTO banDTO) {
+        return this.banOrLeave(banDTO.getId(), banDTO.getIsBan());
+    }
+
+    /**
+     * 禁用或啓用
      * @param id    對象ID
      * @param isBan 對象狀態，可以爲空
      * @return 基礎數據
      */
     @Override
     public MsgResultVO banOrLeave(Long id, Boolean isBan) {
-        return this.banOrLeave(BanDTO.getInstance(id, isBan));
+        List<Long> ids = new ArrayList<>();
+        ids.add(id);
+        return this.banOrLeaveList(ids, isBan);
     }
 
-    @Override
-    public MsgResultVO banOrLeave(BanDTO banDTO) {
-        loggerInfo();
-        return null;
-    }
 
     /**
      * 批量操作 禁用或啓用
@@ -102,8 +120,9 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
 
     @Override
     public MsgResultVO banOrLeaveList(BanListDTO banListDTO) {
-        loggerInfo();
-        return null;
+        MsgResultVO<T> resultVO = new MsgResultVO<>();
+        cellBaseDao.banOrLeave(banListDTO);
+        return resultVO.successResult();
     }
 
     /**
@@ -113,8 +132,14 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<?> update(T model) {
-        loggerInfo();
-        return null;
+        MsgResultVO<T> resultVO = new MsgResultVO<>();
+        if (isExist(model).getResult()) {
+            cellBaseDao.updateBySelective(model);
+            resultVO.successResult();
+        } else {
+            resultVO.errorResult(MsgConstant.REQUEST_NOT_EXITS);
+        }
+        return resultVO;
     }
 
     /**
@@ -124,8 +149,27 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<T> details(T model) {
-        loggerInfo();
-        return null;
+        MsgResultVO<T> resultVO = new MsgResultVO<>();
+        List<T> temp = cellBaseDao.selectByExact(SelectLikeSO.getInstance(model));
+        if (null == temp || temp.size() == 0) {
+            resultVO.errorResult(MsgConstant.REQUEST_NOT_EXITS);
+        } else if (temp.size() == 1) {
+            resultVO.successResult(temp.get(0));
+        } else {
+            logger.info("there are list with details back, but you just want one");
+            resultVO.errorResult(MsgConstant.REQUEST_BACK_ARE_LIST);
+        }
+        return resultVO;
+    }
+
+    /**
+     * 獲取分頁列表，添加 model 提供檢索功能
+     * @param pageDTO 请求对象
+     * @return 分頁對象
+     */
+    @Override
+    public MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO) {
+        return this.list(pageDTO.getGetAll(), pageDTO.getRequestPage(), pageDTO.getRows(), pageDTO.getModel());
     }
 
     /**
@@ -138,14 +182,13 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<PageVO<T>> list(Boolean getAll, Integer requestPage, Integer rows, T model) {
-        return this.list(PageDTO.getInstance(getAll, requestPage, rows, model));
+        MsgResultVO<PageVO<T>> resultVO = new MsgResultVO<>();
+        PageVO<T> pageVO = new PageVO<>();
+        pageVO.initPageVO(cellBaseDao.countSumByCondition(SelectLikeSO.getInstance(model)), requestPage, rows, getAll);
+        pageVO.setObjectList(cellBaseDao.listByCondition(SelectLikeSO.getInstance(model, pageVO.getUpLimit(), pageVO.getRows())));
+        return resultVO.successResult(pageVO);
     }
 
-    @Override
-    public MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO) {
-        loggerInfo();
-        return null;
-    }
 
     /**
      * 獲取所有的對象
@@ -153,8 +196,8 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<List<T>> listAll(T model) {
-        loggerInfo();
-        return null;
+        MsgResultVO<List<T>> resultVO = new MsgResultVO<>();
+        return resultVO.successResult(cellBaseDao.selectBySelective(SelectLikeSO.getInstance(model)));
     }
 
     /**
@@ -164,7 +207,13 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<?> isExist(T model) {
-        loggerInfo();
-        return null;
+        MsgResultVO resultVO = new MsgResultVO();
+        List<T> list = cellBaseDao.selectByExact(SelectLikeSO.getInstance(model));
+        if (null != list && list.size() > 0) {
+            resultVO.successResult(MsgConstant.REQUEST_IS_EXITS);
+        } else {
+            resultVO.errorResult(MsgConstant.REQUEST_NOT_EXITS);
+        }
+        return resultVO;
     }
 }
