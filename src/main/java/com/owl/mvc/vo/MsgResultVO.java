@@ -43,6 +43,14 @@ public final class MsgResultVO<T> extends ModelPrototype {
         setMsgConstant(MsgConstant.REQUEST_DEFAULT);
     }
 
+    public static <T> MsgResultVO<T> getInstanceSuccess() {
+        return new MsgResultVO<T>().successResult();
+    }
+
+    public static <T> MsgResultVO<T> getInstanceSuccess(T t) {
+        return new MsgResultVO<T>().successResult(t);
+    }
+
     /*----------------------------  构造函数结束  --------------------------------*/
 
     /**

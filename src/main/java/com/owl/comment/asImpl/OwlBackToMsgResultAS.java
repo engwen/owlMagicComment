@@ -1,6 +1,7 @@
 package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlBackToMsgResult;
+import com.owl.magicUtil.util.ObjectUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
@@ -55,29 +56,15 @@ public class OwlBackToMsgResultAS {
         String resultName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).result();
 
         try {
-            result.setResult((Boolean) getProValue(resultName, obj));
-            result.setResultMsg((String) getProValue(msgName, obj));
-            result.setResultCode((String) getProValue(codeName, obj));
-            result.setResultData(getProValue(dataName, obj));
+            result.setResult((Boolean) ObjectUtil.getProValue(resultName, obj));
+            result.setResultMsg((String) ObjectUtil.getProValue(msgName, obj));
+            result.setResultCode((String) ObjectUtil.getProValue(codeName, obj));
+            result.setResultData(ObjectUtil.getProValue(dataName, obj));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("转化出错");
             return obj;
         }
         return result;
-    }
-
-    private static Object getProValue(String proName, Object obj) throws Exception {
-        if (!RegexUtil.isEmpty(proName)) {
-            String getMethodStr = "get" + proName.substring(0, 1).toUpperCase() + proName.substring(1);
-            Field[] fields = obj.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                if (proName.equals(field.getName())) {
-                    Method getMethod = obj.getClass().getDeclaredMethod(getMethodStr);
-                    return getMethod.invoke(obj);
-                }
-            }
-        }
-        return null;
     }
 }

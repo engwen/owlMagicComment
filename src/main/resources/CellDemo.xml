@@ -20,6 +20,9 @@
         <include refid="Table_ID_Name"/> ,
         is_ban, status, create_time, update_time
     </sql>
+    <sql id="Order_Name">
+        name
+    </sql>
 
     <sql id="Select_Like">
         <trim prefix="where" suffixOverrides="and">
@@ -190,7 +193,7 @@
         <include refid="Base_Column_List"/>
         from <include refid="Table_Name"/>
         <include refid="Select_Like"/>
-        ORDER BY CONVERT(name using gbk) ASC
+        ORDER BY CONVERT(<include refid="Order_Name"/> using gbk) ASC
         limit #{upLimit},#{rows}
     </select>
 </mapper>

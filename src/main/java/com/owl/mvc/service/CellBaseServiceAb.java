@@ -8,6 +8,7 @@ import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.so.SelectLikeSO;
+import com.owl.mvc.utils.CellBaseServiceUtil;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
 
@@ -22,8 +23,6 @@ import java.util.logging.Logger;
  * time 2018/04/22.
  */
 public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
-    private static Logger logger = Logger.getLogger(CellBaseServiceAb.class.getName());
-
     private CellBaseDao<T> cellBaseDao;
 
     public void setCellBaseDao(CellBaseDao<T> cellBaseDao) {
@@ -37,9 +36,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<T> create(T model) {
-        MsgResultVO<T> resultVO = new MsgResultVO<>();
-        cellBaseDao.insertSelective(model);
-        return resultVO.successResult(model);
+        return CellBaseServiceUtil.create(cellBaseDao, model);
     }
 
     /**
@@ -49,9 +46,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<?> createList(List<T> modelList) {
-        MsgResultVO<T> resultVO = new MsgResultVO<>();
-        cellBaseDao.insertList(ModelListSO.getInstance(modelList));
-        return resultVO.successResult();
+        return CellBaseServiceUtil.createList(cellBaseDao, modelList);
     }
 
     /**
@@ -61,9 +56,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO delete(T model) {
-        MsgResultVO<T> resultVO = new MsgResultVO<>();
-        cellBaseDao.deleteBySelective(model);
-        return resultVO.successResult();
+        return CellBaseServiceUtil.delete(cellBaseDao, model);
     }
 
     /**
@@ -73,14 +66,12 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO deleteList(List<Long> idList) {
-        return this.deleteList(DeleteDTO.getInstance(idList));
+        return CellBaseServiceUtil.deleteList(cellBaseDao, idList);
     }
 
     @Override
     public MsgResultVO deleteList(DeleteDTO deleteDTO) {
-        MsgResultVO<T> resultVO = new MsgResultVO<>();
-        cellBaseDao.deleteByIdList(deleteDTO);
-        return resultVO.successResult();
+        return CellBaseServiceUtil.deleteList(cellBaseDao, deleteDTO);
     }
 
     /**
@@ -90,7 +81,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO banOrLeave(BanDTO banDTO) {
-        return this.banOrLeave(banDTO.getId(), banDTO.getIsBan());
+        return CellBaseServiceUtil.banOrLeave(cellBaseDao, banDTO);
     }
 
     /**
@@ -101,9 +92,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO banOrLeave(Long id, Boolean isBan) {
-        List<Long> ids = new ArrayList<>();
-        ids.add(id);
-        return this.banOrLeaveList(ids, isBan);
+        return CellBaseServiceUtil.banOrLeave(cellBaseDao, id, isBan);
     }
 
 
@@ -115,14 +104,12 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO banOrLeaveList(List<Long> idList, Boolean isBan) {
-        return this.banOrLeaveList(BanListDTO.getInstance(idList, isBan));
+        return CellBaseServiceUtil.banOrLeaveList(cellBaseDao, idList, isBan);
     }
 
     @Override
     public MsgResultVO banOrLeaveList(BanListDTO banListDTO) {
-        MsgResultVO<T> resultVO = new MsgResultVO<>();
-        cellBaseDao.banOrLeave(banListDTO);
-        return resultVO.successResult();
+        return CellBaseServiceUtil.banOrLeaveList(cellBaseDao, banListDTO);
     }
 
     /**
@@ -132,14 +119,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<?> update(T model) {
-        MsgResultVO<T> resultVO = new MsgResultVO<>();
-        if (isExist(model).getResult()) {
-            cellBaseDao.updateBySelective(model);
-            resultVO.successResult();
-        } else {
-            resultVO.errorResult(MsgConstant.REQUEST_NOT_EXITS);
-        }
-        return resultVO;
+        return CellBaseServiceUtil.update(cellBaseDao, model);
     }
 
     /**
@@ -149,17 +129,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<T> details(T model) {
-        MsgResultVO<T> resultVO = new MsgResultVO<>();
-        List<T> temp = cellBaseDao.selectByExact(SelectLikeSO.getInstance(model));
-        if (null == temp || temp.size() == 0) {
-            resultVO.errorResult(MsgConstant.REQUEST_NOT_EXITS);
-        } else if (temp.size() == 1) {
-            resultVO.successResult(temp.get(0));
-        } else {
-            logger.info("there are list with details back, but you just want one");
-            resultVO.errorResult(MsgConstant.REQUEST_BACK_ARE_LIST);
-        }
-        return resultVO;
+        return CellBaseServiceUtil.details(cellBaseDao, model);
     }
 
     /**
@@ -169,7 +139,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO) {
-        return this.list(pageDTO.getGetAll(), pageDTO.getRequestPage(), pageDTO.getRows(), pageDTO.getModel());
+        return CellBaseServiceUtil.list(cellBaseDao, pageDTO);
     }
 
     /**
@@ -182,11 +152,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<PageVO<T>> list(Boolean getAll, Integer requestPage, Integer rows, T model) {
-        MsgResultVO<PageVO<T>> resultVO = new MsgResultVO<>();
-        PageVO<T> pageVO = new PageVO<>();
-        pageVO.initPageVO(cellBaseDao.countSumByCondition(SelectLikeSO.getInstance(model)), requestPage, rows, getAll);
-        pageVO.setObjectList(cellBaseDao.listByCondition(SelectLikeSO.getInstance(model, pageVO.getUpLimit(), pageVO.getRows())));
-        return resultVO.successResult(pageVO);
+        return CellBaseServiceUtil.list(cellBaseDao, getAll, requestPage, rows, model);
     }
 
 
@@ -196,8 +162,7 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<List<T>> listAll(T model) {
-        MsgResultVO<List<T>> resultVO = new MsgResultVO<>();
-        return resultVO.successResult(cellBaseDao.selectBySelective(SelectLikeSO.getInstance(model)));
+        return CellBaseServiceUtil.listAll(cellBaseDao, model);
     }
 
     /**
@@ -207,13 +172,6 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
      */
     @Override
     public MsgResultVO<?> isExist(T model) {
-        MsgResultVO resultVO = new MsgResultVO();
-        List<T> list = cellBaseDao.selectByExact(SelectLikeSO.getInstance(model));
-        if (null != list && list.size() > 0) {
-            resultVO.successResult(MsgConstant.REQUEST_IS_EXITS);
-        } else {
-            resultVO.errorResult(MsgConstant.REQUEST_NOT_EXITS);
-        }
-        return resultVO;
+        return CellBaseServiceUtil.isExist(cellBaseDao, model);
     }
 }

@@ -1,15 +1,19 @@
 package com.owl.comment.asImpl;
 
 
+import com.owl.comment.annotations.OwlTry;
+import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
-import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.logging.Logger;
 
 @Aspect
 @Component
@@ -27,7 +31,12 @@ public class OwlTryAS {
         try {
             return joinPoint.proceed();
         } catch (Exception e) {
-            result.errorResult(MsgConstant.REQUEST_CDUS_ERROR);
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+            String value = methodSignature.getMethod().getAnnotation(OwlTry.class).value();
+            if (!RegexUtil.isEmpty(value)) {
+                logger.warning(value);
+            }
+            result.errorResult(MsgConstant.CONTROLLER_THROWABLE_ERROR);
             e.printStackTrace();
         }
         return result;

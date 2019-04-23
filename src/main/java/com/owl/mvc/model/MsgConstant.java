@@ -36,7 +36,7 @@ public class MsgConstant {
     public static MsgConstant PARAM_ACCOUNT_ERROR = new MsgConstant("1003", "账户错误");
     public static MsgConstant SINGIN_ERROR = new MsgConstant("1004", "账号或密码错误错误");
 
-    public static MsgConstant CONTROLLER_THROWABLE_ERROR = new MsgConstant("1004", "账号或密码错误错误");
+    public static MsgConstant CONTROLLER_THROWABLE_ERROR = new MsgConstant("1005", "操作失败");
 
     public MsgConstant(String code, String msg) {
         this.code = code;

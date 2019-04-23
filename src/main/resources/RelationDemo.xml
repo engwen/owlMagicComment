@@ -25,6 +25,22 @@
         </foreach>
     </insert>
 
+    <delete id="delete">
+        delete from <include refid="Table_Name"/>
+        <trim prefix="where" suffixOverrides="and">
+
+            <if test="model.oneId != null">
+                one_id= #{model.oneId}
+                and
+            </if>
+            <if test="model.twoId != null">
+                two_id = #{model.twoId}
+            </if>
+
+        </trim>
+    </delete>
+
+
     <delete id="deleteList">
         delete from <include refid="Table_Name"/>
         <trim prefix="where">

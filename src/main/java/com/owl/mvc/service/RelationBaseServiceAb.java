@@ -1,12 +1,10 @@
 package com.owl.mvc.service;
 
 import com.owl.mvc.dao.RelationBaseDao;
-import com.owl.mvc.so.ModelListSO;
+import com.owl.mvc.utils.RelationBaseServiceUtil;
 import com.owl.mvc.vo.MsgResultVO;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * author engwen
@@ -27,9 +25,7 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
      */
     @Override
     public MsgResultVO insert(T model) {
-        List<T> modelList = new ArrayList<>();
-        modelList.add(model);
-        return this.insertList(modelList);
+        return RelationBaseServiceUtil.insert(relationBaseDao, model);
     }
 
     /**
@@ -39,9 +35,7 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
      */
     @Override
     public MsgResultVO insertList(List<T> modelList) {
-        MsgResultVO resultVO = new MsgResultVO();
-        relationBaseDao.insertList(ModelListSO.getInstance(modelList));
-        return resultVO.successResult();
+        return RelationBaseServiceUtil.insertList(relationBaseDao, modelList);
     }
 
     /**
@@ -51,9 +45,7 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
      */
     @Override
     public MsgResultVO delete(T model) {
-        List<T> modelList = new ArrayList<>();
-        modelList.add(model);
-        return this.deleteList(modelList);
+        return RelationBaseServiceUtil.delete(relationBaseDao, model);
     }
 
     /**
@@ -63,8 +55,6 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
      */
     @Override
     public MsgResultVO deleteList(List<T> modelList) {
-        MsgResultVO resultVO = new MsgResultVO();
-        relationBaseDao.deleteList(ModelListSO.getInstance(modelList));
-        return resultVO.successResult();
+        return RelationBaseServiceUtil.deleteList(relationBaseDao, modelList);
     }
 }

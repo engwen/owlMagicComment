@@ -18,9 +18,17 @@ public interface RelationBaseDao<T> {
     int insertList(ModelListSO<T> modelListSO);
 
     /**
+     * 批量刪除或个别删除
+     * @param model 内含汎型對象
+     * @return int
+     */
+    int delete(T model);
+
+    /**
      * 批量刪除
      * @param modelListSO 内含汎型對象
      * @return int
      */
     int deleteList(ModelListSO<T> modelListSO);
+
 }
