@@ -1,9 +1,11 @@
 package com.owl.mvc.service;
 
 import com.owl.mvc.dao.RelationBaseDao;
+import com.owl.mvc.dto.RelationDTO;
 import com.owl.mvc.utils.RelationBaseServiceUtil;
 import com.owl.mvc.vo.MsgResultVO;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -30,6 +32,16 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
 
     /**
      * 批量插入
+     * @param relationDTO id idList
+     * @return 基礎數據
+     */
+    @Override
+    public MsgResultVO insertRelation(RelationDTO relationDTO) {
+        return RelationBaseServiceUtil.insertRelation(relationBaseDao, relationDTO);
+    }
+
+    /**
+     * 批量插入
      * @param modelList 汎型對象
      * @return 基礎數據
      */
@@ -46,6 +58,16 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
     @Override
     public MsgResultVO delete(T model) {
         return RelationBaseServiceUtil.delete(relationBaseDao, model);
+    }
+
+    /**
+     * 批量刪除
+     * @param relationDTO id idList
+     * @return 基礎數據
+     */
+    @Override
+    public MsgResultVO deleteRelation(RelationDTO relationDTO) {
+        return RelationBaseServiceUtil.deleteRelation(relationBaseDao, relationDTO);
     }
 
     /**

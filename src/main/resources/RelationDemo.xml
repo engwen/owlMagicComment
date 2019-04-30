@@ -10,33 +10,65 @@
     <sql id="Table_Name">
         owl_demo
     </sql>
+    <sql id="Table_Own_Id">
+        own_id
+    </sql>
+    <sql id="Table_Oth_Id">
+        oth_id
+    </sql>
+    <sql id="Own_Id">
+        #{model.ownId}
+    </sql>
+    <sql id="Oth_Id">
+       #{model.othId}
+    </sql>
+
+    <!-- 以下不需要改變  -->
+
+    <sql id="Choose_Id">
+        <if test="model.oneId != null">
+            <include refid="Table_Own_Id"/>
+            = <include refid="Own_Id"/>
+            and
+        </if>
+        <if test="model.twoId != null">
+            <include refid="Table_Oth_Id"/>
+             = <include refid="Oth_Id"/>
+        </if>
+    </sql>
 
     <!-- 请添加所需要的属性-->
     <insert id="insertList">
         insert into <include refid="Table_Name"/>
         (
-          one_id, two_id
+        <include refid="Table_Own_Id"/>,   <include refid="Table_Oth_Id"/>
         )
         values
         <foreach collection="modelList" item="model" separator=",">
           (
-            #{model.oneId,jdbcType=BIGINT},#{model.twoId,jdbcType=BIGINT}
+            <include refid="Own_Id"/>, <include refid="Oth_Id"/>
           )
         </foreach>
     </insert>
 
+    <insert id="insertRelation">
+        insert into <include refid="Table_Name"/>
+        (
+        <include refid="Table_Own_Id"/>,   <include refid="Table_Oth_Id"/>
+        )
+        values
+        <foreach collection="idList" item="it" separator=",">
+            (
+            #{id,jdbcType=BIGINT},#{it,jdbcType=BIGINT}
+            )
+        </foreach>
+    </insert>
+
+
     <delete id="delete">
         delete from <include refid="Table_Name"/>
         <trim prefix="where" suffixOverrides="and">
-
-            <if test="model.oneId != null">
-                one_id= #{model.oneId}
-                and
-            </if>
-            <if test="model.twoId != null">
-                two_id = #{model.twoId}
-            </if>
-
+            <include refid="Choose_Id"/>
         </trim>
     </delete>
 
@@ -47,18 +79,22 @@
             <foreach collection="modelList" item="model" separator="or">
                 <trim prefix="(" suffix=")" prefixOverrides="(" suffixOverrides=")">
                     <trim suffixOverrides="and">
-
-                        <if test="model.oneId != null">
-                            one_id= #{model.oneId}
-                            and
-                        </if>
-                        <if test="model.twoId != null">
-                            two_id = #{model.twoId}
-                        </if>
-
+                        <include refid="Choose_Id"/>
                     </trim>
                 </trim>
             </foreach>
         </trim>
     </delete>
+
+    <delete id="deleteRelation">
+        delete from <include refid="Table_Name"/>
+        where <include refid="Table_Own_Id"/> = #{id}
+        and   <include refid="Table_Oth_Id"/>  in
+        <trim prefix="(" suffix=")" prefixOverrides="(" suffixOverrides=")">
+            <foreach collection="idList" item="it" separator=",">
+                 #{it,jdbcType=BIGINT}
+            </foreach>
+        </trim>
+    </delete>
+
 </mapper>

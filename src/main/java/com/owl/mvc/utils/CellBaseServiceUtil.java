@@ -197,13 +197,12 @@ public abstract class CellBaseServiceUtil {
         return MsgResultVO.getInstanceSuccess(pageVO);
     }
 
-
     /*
      * 獲取所有的對象
      * @param model 汎型對象檢索條件
      * @return 對象集合
      */
-    public static <T> MsgResultVO<List<T>> listAll(CellBaseDao<T> cellBaseDao, T model) {
+    public static <T> MsgResultVO<List<T>> getAll(CellBaseDao<T> cellBaseDao, T model) {
         return MsgResultVO.getInstanceSuccess(cellBaseDao.selectBySelective(SelectLikeSO.getInstance(model)));
     }
 

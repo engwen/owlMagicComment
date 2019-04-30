@@ -5,16 +5,11 @@ import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
-import com.owl.mvc.model.MsgConstant;
-import com.owl.mvc.so.ModelListSO;
-import com.owl.mvc.so.SelectLikeSO;
 import com.owl.mvc.utils.CellBaseServiceUtil;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * 不可實例化，繼承者需要自己實現其中的方法，支持自定義以及添加方法
@@ -155,14 +150,13 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
         return CellBaseServiceUtil.list(cellBaseDao, getAll, requestPage, rows, model);
     }
 
-
     /**
      * 獲取所有的對象
      * @return 對象集合
      */
     @Override
-    public MsgResultVO<List<T>> listAll(T model) {
-        return CellBaseServiceUtil.listAll(cellBaseDao, model);
+    public MsgResultVO<List<T>> getAll(T model) {
+        return CellBaseServiceUtil.getAll(cellBaseDao, model);
     }
 
     /**

@@ -113,7 +113,7 @@ public abstract class CellBaseControllerUtil {
      * @return 结果集合
      */
     public static <T> MsgResultVO<List<T>> listAll(CellBaseServiceAb<T> cellBaseServiceAb, T model) {
-        return cellBaseServiceAb.listAll(model);
+        return cellBaseServiceAb.getAll(model);
     }
 
     /*

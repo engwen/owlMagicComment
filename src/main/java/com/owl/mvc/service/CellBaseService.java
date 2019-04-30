@@ -90,7 +90,6 @@ interface CellBaseService<T> {
      * @return 分頁對象
      */
     MsgResultVO<PageVO<T>> list(Boolean getAll, Integer requestPage, Integer rows, T model);
-
     MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO);
 
     /**
@@ -98,7 +97,7 @@ interface CellBaseService<T> {
      * @param model 检索条件
      * @return 對象集合
      */
-    MsgResultVO<List<T>> listAll(T model);
+    MsgResultVO<List<T>> getAll(T model);
 
     /**
      * 檢查数据是否存在

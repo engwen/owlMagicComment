@@ -149,6 +149,9 @@
         </trim>
     </update>
 
+
+    <!-- 以下不需要改變  -->
+
     <update id="deleteByIdList">
         update <include refid="Table_Name"/>
         set status=false,update_time = NULL
@@ -173,6 +176,7 @@
         <include refid="Base_Column_List"/>
         from <include refid="Table_Name"/>
         <include refid="Select_Like"/>
+        ORDER BY CONVERT(<include refid="Order_Name"/> using gbk) ASC
     </select>
 
     <select id="selectByExact" resultMap="BaseResultMap">
@@ -180,6 +184,7 @@
         <include refid="Base_Column_List"/>
         from <include refid="Table_Name"/>
         <include refid="Select_Exact"/>
+        ORDER BY CONVERT(<include refid="Order_Name"/> using gbk) ASC
     </select>
 
     <select id="countSumByCondition" resultType="java.lang.Integer">

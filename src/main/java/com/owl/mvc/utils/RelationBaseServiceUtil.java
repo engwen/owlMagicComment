@@ -1,7 +1,9 @@
 package com.owl.mvc.utils;
 
 import com.owl.mvc.dao.RelationBaseDao;
+import com.owl.mvc.dto.RelationDTO;
 import com.owl.mvc.so.ModelListSO;
+import com.owl.mvc.so.ModelSO;
 import com.owl.mvc.vo.MsgResultVO;
 
 import java.util.ArrayList;
@@ -21,13 +23,23 @@ public abstract class RelationBaseServiceUtil {
         return insertList(relationBaseDao, temp);
     }
 
+    public static <T> MsgResultVO insertRelation(RelationBaseDao<T> relationBaseDao, RelationDTO relationDTO) {
+        relationBaseDao.insertRelation(relationDTO);
+        return MsgResultVO.getInstanceSuccess();
+    }
+
     public static <T> MsgResultVO insertList(RelationBaseDao<T> relationBaseDao, List<T> modelList) {
         relationBaseDao.insertList(ModelListSO.getInstance(modelList));
         return MsgResultVO.getInstanceSuccess();
     }
 
     public static <T> MsgResultVO delete(RelationBaseDao<T> relationBaseDao, T model) {
-        relationBaseDao.delete(model);
+        relationBaseDao.delete(ModelSO.getInstance(model));
+        return MsgResultVO.getInstanceSuccess();
+    }
+
+    public static <T> MsgResultVO deleteRelation(RelationBaseDao<T> relationBaseDao, RelationDTO relationDTO) {
+        relationBaseDao.deleteRelation(relationDTO);
         return MsgResultVO.getInstanceSuccess();
     }
 

@@ -92,5 +92,4 @@ public interface CellBaseDao<T> {
      * @return 泛型对象集合
      */
     List<T> listByCondition(SelectLikeSO<T> selectLikeSO);
-
 }

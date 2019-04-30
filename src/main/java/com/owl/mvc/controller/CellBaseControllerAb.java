@@ -102,13 +102,18 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
         return defaultBack();
     }
 
+    @Override
+    public MsgResultVO<PageVO<T>> listAll(PageDTO<T> pageDTO) {
+        return defaultBack();
+    }
+
     /**
      * 获取所有对象
      * @param model 检索条件
      * @return 结果集合
      */
     @Override
-    public MsgResultVO<List<T>> listAll(T model) {
+    public MsgResultVO<List<T>> getAll(T model) {
         return defaultBack();
     }
 
