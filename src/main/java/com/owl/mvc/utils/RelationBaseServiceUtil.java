@@ -18,9 +18,14 @@ import java.util.List;
 public abstract class RelationBaseServiceUtil {
 
     public static <T> MsgResultVO insert(RelationBaseDao<T> relationBaseDao, T model) {
-        List<T> temp = new ArrayList<>();
-        temp.add(model);
-        return insertList(relationBaseDao, temp);
+        List<T> list = relationBaseDao.selectBySelective(ModelSO.getInstance(model));
+        if (list.size() > 0) {
+            return MsgResultVO.getInstanceSuccess();
+        } else {
+            List<T> temp = new ArrayList<>();
+            temp.add(model);
+            return insertList(relationBaseDao, temp);
+        }
     }
 
     public static <T> MsgResultVO insertRelation(RelationBaseDao<T> relationBaseDao, RelationDTO relationDTO) {
@@ -47,4 +52,9 @@ public abstract class RelationBaseServiceUtil {
         relationBaseDao.deleteList(ModelListSO.getInstance(modelList));
         return MsgResultVO.getInstanceSuccess();
     }
+
+    public static <T> MsgResultVO<List<T>> list(RelationBaseDao<T> relationBaseDao, T model) {
+        return MsgResultVO.getInstanceSuccess(relationBaseDao.selectBySelective(ModelSO.getInstance(model)));
+    }
+
 }

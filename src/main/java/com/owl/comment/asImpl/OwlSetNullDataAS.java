@@ -53,7 +53,7 @@ public class OwlSetNullDataAS {
                     paramsHeadMap.put(param, null);
                 }
             } else {
-//          requestBody中獲取參數
+//          从对象中獲取參數
                 Object paramsVO = joinPoint.getArgs()[0];
                 if (ClassTypeUtil.isPackClass(paramsVO) || ClassTypeUtil.isBaseClass(paramsVO)) {
                     logger.debug("本注解仅限使用对象或Map接收参数时使用");
@@ -73,7 +73,7 @@ public class OwlSetNullDataAS {
                                     field.setAccessible(true);
                                     String methodName = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
                                     Method method = paramsVO.getClass().getDeclaredMethod(methodName, field.getType());
-                                    setNull(method, paramsVO, field.getType());
+                                    setNullByField(method, paramsVO, field.getType());
                                 }
                             }
                         }
@@ -84,45 +84,70 @@ public class OwlSetNullDataAS {
         Object obj = joinPoint.proceed();
         if (setNullDatas.length > 0) {
             logger.debug("设置指定的返回参数为空");
-            if (obj instanceof MsgResultVO) {
-                MsgResultVO resultVO = (MsgResultVO) obj;
-                Object resultDataObj = resultVO.getResultData();
-                if (!RegexUtil.isEmpty(resultDataObj)) {
-                    if (ClassTypeUtil.isBaseClass(resultDataObj) || ClassTypeUtil.isPackClass(resultDataObj) || resultDataObj instanceof Collection) {
-                        logger.error("不支持除 resultData 为基础类型及其包装类或是集合的对象");
-                    } else if (resultDataObj instanceof Map) {
-                        logger.info("支持 resultData 为 Map<String,Pack> 的对象，开始置空");
-                        Map<String, String> temp = (Map<String, String>) resultDataObj;
-                        for (String param : setNullDatas) {
-                            if (ClassTypeUtil.isBaseClass(temp.get(param))) {
-                                logger.error("不支持除 Map的value 为基础类型及其包装类或是集合的对象");
-                            } else {
-                                temp.put(param, null);
-                            }
-                        }
-                    } else {
-                        logger.info("支持 resultData 为 Class 的对象，开始反射置空");
-                        Field[] fields = ObjectUtil.getSupperClassProperties(resultDataObj, new Field[0]);
-                        for (Field field : fields) {
-                            for (String param : setNullDatas) {
-                                if (param.equals(field.getName())) {
-                                    field.setAccessible(true);
-                                    String methodName = "set" + param.substring(0, 1).toUpperCase() + param.substring(1);
-                                    Method method = resultDataObj.getClass().getDeclaredMethod(methodName, field.getType());
-                                    setNull(method, resultDataObj, field.getType());
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                logger.error("不支持除MsgResultVO以外的对象");
-            }
+            setNullByObject(setNullDatas, obj);
         }
         return obj;
     }
 
-    private static void setNull(Method method, Object obj, Class className) throws Exception {
+    private static void setNullByObject(String[] setNullDatas, Object resultDataObj) throws Exception {
+        Field[] fields = ObjectUtil.getSupperClassProperties(resultDataObj, new Field[0]);
+        if (!RegexUtil.isEmpty(resultDataObj)) {
+            if (ClassTypeUtil.isBaseClass(resultDataObj) || ClassTypeUtil.isPackClass(resultDataObj)) {
+                logger.error("不支持除 resultData 为基础类型及其他包装类的对象");
+            } else if (resultDataObj instanceof MsgResultVO) {
+                MsgResultVO resultVO = (MsgResultVO) resultDataObj;
+                Object obj = resultVO.getResultData();
+                setNullByObject(setNullDatas, obj);
+            } else if (resultDataObj instanceof Collection) {
+                logger.info("支持 resultData 为 List 的对象，开始置空");
+                setNullByList(setNullDatas, resultDataObj, fields);
+            } else if (resultDataObj instanceof Map) {
+                logger.info("支持 resultData 为 Map<String,Pack> 的对象，开始置空");
+                setNullByMap(setNullDatas, resultDataObj);
+            } else {
+                logger.info("支持 resultData 为 Class 的对象，开始反射置空");
+                for (Field field : fields) {
+                    for (String param : setNullDatas) {
+                        if (param.equals(field.getName())) {
+                            field.setAccessible(true);
+                            String methodName = "set" + param.substring(0, 1).toUpperCase() + param.substring(1);
+                            Method method = resultDataObj.getClass().getDeclaredMethod(methodName, field.getType());
+                            setNullByField(method, resultDataObj, field.getType());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void setNullByList(String[] setNullDatas, Object resultDataObj, Field[] fields) throws Exception {
+        List temp = (List) resultDataObj;
+        for (Field field : fields) {
+            for (String param : setNullDatas) {
+                if (param.equals(field.getName())) {
+                    field.setAccessible(true);
+                    for (Object objTemp : temp) {
+                        String methodName = "set" + param.substring(0, 1).toUpperCase() + param.substring(1);
+                        Method method = resultDataObj.getClass().getDeclaredMethod(methodName, field.getType());
+                        setNullByField(method, objTemp, field.getType());
+                    }
+                }
+            }
+        }
+    }
+
+    private static void setNullByMap(String[] setNullDatas, Object resultDataObj) {
+        Map<String, Object> temp = (Map<String, Object>) resultDataObj;
+        for (String param : setNullDatas) {
+            if (ClassTypeUtil.isBaseClass(temp.get(param))) {
+                logger.error("不支持除 Map的value 为基础类型及其包装类或是集合的对象");
+            } else {
+                temp.put(param, null);
+            }
+        }
+    }
+
+    private static void setNullByField(Method method, Object obj, Class className) throws Exception {
         if (className.equals(String.class)) {
             method.invoke(obj, (String) null);
         } else if (className.equals(Long.class)) {

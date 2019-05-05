@@ -4,6 +4,8 @@ import com.owl.mvc.dto.RelationDTO;
 import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.so.ModelSO;
 
+import java.util.List;
+
 /**
  * 關係數據類型dao，本接口對外開發
  * author engwen
@@ -46,5 +48,12 @@ public interface RelationBaseDao<T> {
      * @return int
      */
     int deleteRelation(RelationDTO relationDTO);
+
+    /**
+     * 查詢是否存在
+     * @param modelSO 内含汎型對象
+     * @return list
+     */
+    List<T> selectBySelective(ModelSO<T> modelSO);
 
 }

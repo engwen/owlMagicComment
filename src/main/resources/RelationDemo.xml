@@ -38,6 +38,15 @@
     </sql>
 
     <!-- 请添加所需要的属性-->
+    <select id="selectBySelective" resultMap="BaseResultMap">
+        select
+        <include refid="Table_Own_Id"/>,   <include refid="Table_Oth_Id"/>
+        from <include refid="Table_Name"/>
+        <trim prefix="where" suffixOverrides="and">
+            <include refid="Choose_Id"/>
+        </trim>
+    </select>
+
     <insert id="insertList">
         insert into <include refid="Table_Name"/>
         (

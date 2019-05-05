@@ -79,4 +79,14 @@ public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T>
     public MsgResultVO deleteList(List<T> modelList) {
         return RelationBaseServiceUtil.deleteList(relationBaseDao, modelList);
     }
+
+    /**
+     * 查詢
+     * @param model d idList
+     * @return 基礎數據
+     */
+    @Override
+    public MsgResultVO<List<T>> list(T model) {
+        return RelationBaseServiceUtil.list(relationBaseDao, model);
+    }
 }

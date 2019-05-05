@@ -62,4 +62,11 @@ interface RelationBaseService<T> {
      * @return 基礎數據
      */
     MsgResultVO update(RelationDTO relationDTO);
+
+    /**
+     * 查詢
+     * @param model d idList
+     * @return 基礎數據
+     */
+    MsgResultVO<List<T>> list(T model);
 }
