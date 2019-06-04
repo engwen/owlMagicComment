@@ -229,4 +229,41 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
  
  >为了解决对异常的检查，在 1.1.7 版本中将会开放 MVC 架构中的所有 try catch
  
+ 1.1.8
  
+- 优化 
+
+> 在上一版的基础上，去除CellBaseServiceUtil 以及 RelationBaseServiceUtil 工具类中的实现，并将它们的工作移动到抽象类中。
+现在你可以使用 service 类继承 CellBaseServiceAb 和 RelationBaseServiceAb 以便使用它们当中提供好的 CRUD 。我不再推荐你
+使用这两个工具类，但是你仍然可以使用
+
+> 添加 IdListSO 处理ID集合情况的问题
+> 现在你需要在继承CellBaseServiceAb 和 RelationBaseServiceAb 的时候使用 set*Dao 的方法，使得抽象类能明白你将要使用
+的 dao 是哪一个 例如：
+
+    @Resource
+    private OwlMenuDao owlMenuDao;
+    
+    @Autowired
+    public void setCellBaseDao() {
+        super.setCellBaseDao(owlMenuDao);
+    }
+ 
+> @OwlSetNullDataAS 现在可以解决对象包含对象的时候，被包含对象的属性设置问题
+
+> @OwlCheckParamsAS 现在可以解决对象包含对象的时候，被包含对象的属性设置问题
+
+> @OwlBackToObjectAS 现在可以解决对象包含对象的时候，被包含对象的属性设置问题
+
+> 现在 xml 支持按照名称排序
+
+> 现在 MsgResultVO 支持 getInstanceSuccess 获取对象
+
+> 添加 ModelSO 处理接受 model 已解决底层 xml 不能统一的问题 
+
+> RelationBaseDao 添加了删除单个操作
+
+> @OwlTry 现在能提供 value ，便于在使用的时候输出
+
+> 大量的代码结构优化
+

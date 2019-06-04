@@ -1,5 +1,8 @@
 # OwlMagicComment
- 
+ Use my code, please note the source, thank you.            
+ Author engwen            
+ Email xiachanzou@outlook.com            
+ Time 2018/07/16
 #### 
 
 * Package name
@@ -202,4 +205,40 @@ Tool acquisition for Bean.
 > now checks the annotation of the parameter to check the parent class of the object. 
 > to resolve exception checking, all try catch in the MVC schema will be open in version 1.1.7
  
+ 1.1.8
  
+ - Optimization
+ 
+ > On the basis of the previous version, the implementations of CellBaseService Util and RelationBaseService Util tool classes are removed, and their work is moved to abstract classes.
+ Now you can inherit CellBaseServiceAb and RelationBaseServiceAb using the service class to provide good CRUDs among them. I won't recommend you any more.
+ Use these two tool classes, but you can still use them
+ 
+ > Adding IdListSO to handle ID collection problems
+ 
+ > Now you need to use the set * Dao method when inheriting CellBaseService Ab and RelationBaseService Ab to make the abstract class understand what you are going to use
+ Which is the Dao for example:
+ 
+     @Resource
+     Private Owl Menu Dao owl Menu Dao;
+     @Autowired
+     Public void setCellBaseDao (){
+     Sup. setCellBaseDao (owl MenuDao);
+     }
+ 
+ >@ OwlSetNullDataAS can now solve the property setting problem of the contained object when it contains the object.
+ 
+ >@ OwlCheck ParamsAS can now solve the property setting problem of the contained object when it contains the object.
+ 
+ >@ OwlBackToObjectAS can now solve the property setting problem of the contained object when it contains the object.
+ 
+ > Now XML supports sorting by name
+ 
+ > Now MsgResultVO supports getInstance Success to get objects
+ 
+ > Adding ModelSO to handle accepting models has solved the problem that underlying XML cannot be unified
+ 
+ > RelationBaseDao adds delete single operation
+ 
+ >@ OwlTry now provides value for easy output when used
+ 
+ > Lots of code structure optimization

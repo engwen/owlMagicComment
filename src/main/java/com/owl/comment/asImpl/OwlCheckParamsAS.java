@@ -14,10 +14,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -57,53 +54,53 @@ public class OwlCheckParamsAS {
         }
 
 //        此處從requestHead頭中獲取參數，在请求开始的时候获取
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        Map<String, String[]> paramsHeadMap = request.getParameterMap();
-        if (null != paramsHeadMap && paramsHeadMap.keySet().size() > 0) {
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//        Map<String, String[]> paramsHeadMap = request.getParameterMap();
+//        if (null != paramsHeadMap && paramsHeadMap.keySet().size() > 0) {
+//            for (String param : notNull) {
+//                if (null == paramsHeadMap.get(param) || RegexUtil.isEmpty(paramsHeadMap.get(param)) || (paramsHeadMap.get(param).length == 1 && paramsHeadMap.get(param)[0].equals(""))) {
+//                    paramsIsNull.add(param);
+//                    hasNull = true;
+//                }
+//            }
+//            for (String param : notAllNull) {
+//                if (null != paramsHeadMap.get(param) && (!RegexUtil.isEmpty(paramsHeadMap.get(param)) && !(paramsHeadMap.get(param).length == 1 && paramsHeadMap.get(param)[0].equals("")))) {
+//                    allOrNull = false;
+//                    break;
+//                }
+//            }
+//        } else {
+//          从接收封装的对象
+        Map<String, Object> paramsBodyMap = new HashMap<>();
+        Object paramsVO = args[0];
+        if (ClassTypeUtil.isPackClass(paramsVO) || ClassTypeUtil.isBaseClass(paramsVO)) {
+            logger.debug("本注解仅限使用对象或Map接收参数时使用");
+        } else {
+//                使用Map接收参数
+            if (paramsVO instanceof Map) {
+                paramsBodyMap = (Map<String, Object>) paramsVO;
+            } else {
+//                  使用对象接收参数
+                Field[] fields = ObjectUtil.getSupperClassProperties(paramsVO, new Field[0]);
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    paramsBodyMap.put(field.getName(), field.get(paramsVO));
+                }
+            }
             for (String param : notNull) {
-                if (null == paramsHeadMap.get(param) || paramsHeadMap.get(param).length == 0) {
+                if (RegexUtil.isEmpty(paramsBodyMap.get(param))) {
                     paramsIsNull.add(param);
                     hasNull = true;
                 }
             }
             for (String param : notAllNull) {
-                if (null != paramsHeadMap.get(param) && paramsHeadMap.get(param).length > 0) {
+                if (!RegexUtil.isEmpty(paramsBodyMap.get(param))) {
                     allOrNull = false;
                     break;
                 }
             }
-        } else {
-//          从接收封装的对象
-            Map<String, Object> paramsBodyMap = new HashMap<>();
-            Object paramsVO = args[0];
-            if (ClassTypeUtil.isPackClass(paramsVO) || ClassTypeUtil.isBaseClass(paramsVO)) {
-                logger.debug("本注解仅限使用对象或Map接收参数时使用");
-            } else {
-//                使用Map接收参数
-                if (paramsVO instanceof Map) {
-                    paramsBodyMap = (Map<String, Object>) paramsVO;
-                } else {
-//                  使用对象接收参数
-                    Field[] fields = ObjectUtil.getSupperClassProperties(paramsVO, new Field[0]);
-                    for (Field field : fields) {
-                        field.setAccessible(true);
-                        paramsBodyMap.put(field.getName(), field.get(paramsVO));
-                    }
-                }
-                for (String param : notNull) {
-                    if (RegexUtil.isEmpty(paramsBodyMap.get(param))) {
-                        paramsIsNull.add(param);
-                        hasNull = true;
-                    }
-                }
-                for (String param : notAllNull) {
-                    if (!RegexUtil.isEmpty(paramsBodyMap.get(param))) {
-                        allOrNull = false;
-                        break;
-                    }
-                }
-            }
         }
+//        }
         if (hasNull) {
             logger.debug("请求参数错误");
             return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能为空", paramsIsNull));

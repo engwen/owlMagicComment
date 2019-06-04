@@ -2,6 +2,8 @@ package com.owl.mvc.dao;
 
 import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
+import com.owl.mvc.dto.RelationDTO;
+import com.owl.mvc.so.IdListSO;
 import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.so.SelectLikeSO;
 
@@ -92,4 +94,13 @@ public interface CellBaseDao<T> {
      * @return 泛型对象集合
      */
     List<T> listByCondition(SelectLikeSO<T> selectLikeSO);
+
+
+
+    /**
+     * 查詢指定集合
+     * @param idListSO 内含汎型對象
+     * @return list
+     */
+    List<T> selectByIdList(IdListSO idListSO);
 }

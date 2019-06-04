@@ -5,6 +5,7 @@ import com.owl.magicUtil.util.ClassTypeUtil;
 import com.owl.magicUtil.util.ObjectUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.vo.MsgResultVO;
+import com.owl.mvc.vo.PageVO;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -97,7 +98,15 @@ public class OwlSetNullDataAS {
             } else if (resultDataObj instanceof MsgResultVO) {
                 MsgResultVO resultVO = (MsgResultVO) resultDataObj;
                 Object obj = resultVO.getResultData();
-                setNullByObject(setNullDatas, obj);
+                if (!RegexUtil.isEmpty(obj)) {
+                    setNullByObject(setNullDatas, obj);
+                }
+            } else if (resultDataObj instanceof PageVO) {
+                PageVO pageVO = (PageVO) resultDataObj;
+                Object obj = pageVO.getObjectList();
+                if (!RegexUtil.isEmpty(obj)) {
+                    setNullByObject(setNullDatas, obj);
+                }
             } else if (resultDataObj instanceof Collection) {
                 logger.info("支持 resultData 为 List 的对象，开始置空");
                 setNullByList(setNullDatas, resultDataObj, fields);

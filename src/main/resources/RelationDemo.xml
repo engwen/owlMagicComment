@@ -97,8 +97,12 @@
 
     <delete id="deleteRelation">
         delete from <include refid="Table_Name"/>
-        where <include refid="Table_Own_Id"/> = #{id}
-        and   <include refid="Table_Oth_Id"/>  in
+        where
+        <if test="null != id">
+            <include refid="Table_Own_Id"/>= #{id}
+            and
+        </if>
+       <include refid="Table_Oth_Id"/>  in
         <trim prefix="(" suffix=")" prefixOverrides="(" suffixOverrides=")">
             <foreach collection="idList" item="it" separator=",">
                  #{it,jdbcType=BIGINT}

@@ -55,5 +55,4 @@ public interface RelationBaseDao<T> {
      * @return list
      */
     List<T> selectBySelective(ModelSO<T> modelSO);
-
 }
