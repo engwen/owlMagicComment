@@ -16,6 +16,7 @@
 
         <!-- 工具包版本 -->
         <owlMagicUtil.version>2.3.8</owlMagicUtil.version>
+        <junit.version>4.11</junit.version>
         <groovy.version>2.4.11</groovy.version>
         <javax-javaee-api.version>8.0.1</javax-javaee-api.version>
         <aspectj-aspectj.version>1.9.4</aspectj-aspectj.version>
@@ -31,6 +32,16 @@
             <artifactId>owlMagicUtil</artifactId>
             <version>${owlMagicUtil.version}</version>
         </dependency>
+
+        <!-- 添加junit4依赖 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <!-- 指定范围，在测试时才会加载 -->
+            <scope>test</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

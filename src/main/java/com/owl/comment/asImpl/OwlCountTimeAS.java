@@ -24,7 +24,7 @@ import java.util.Date;
 @Order(90)
 public class OwlCountTimeAS {
     private static final Logger logger = Logger.getLogger(OwlCountTimeAS.class);
-    private static final long ONE_MINUTE = 1000;
+    private static final double ONE_MINUTE = 1000;
     private Date startTime;
 
     @Pointcut("@annotation(com.owl.comment.annotations.OwlCountTime)")
@@ -40,7 +40,7 @@ public class OwlCountTimeAS {
     public void logEndTime(JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         OwlCountTime countTime = methodSignature.getMethod().getAnnotation(OwlCountTime.class);
-        Long second = ((new Date()).getTime() - startTime.getTime()) / ONE_MINUTE;
+        Double second = ((new Date()).getTime() - startTime.getTime()) / ONE_MINUTE;
         if (!RegexUtil.isParamsHaveEmpty(countTime.classPath(), countTime.methodName())) {
 
         } else {

@@ -6,19 +6,20 @@ package com.owl.observer;
  * 2019/4/26.
  */
 public class OwlObserverEvent {
-    private int code;
+    private String eventName;
 
-    public OwlObserverEvent(int code) {
-        this.code = code;
+    public OwlObserverEvent(String eventName) {
+        this.eventName = eventName;
     }
 
-    public static OwlObserverEvent DEFAULT_EVENT = new OwlObserverEvent(1);
+    public static OwlObserverEvent DEFAULT_EVENT = new OwlObserverEvent("默认事件");
 
-    public int getCode() {
-        return code;
+
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 }

@@ -4,6 +4,9 @@
   * author engwen
   * email xiachanzou@outlook.com
   * time 2018/07/16.
+  
+  感谢JetBrains Community Support Team对本项目的支持，为本项目提供intellij idea工具，方便我更快速的开发和迭代
+  https://www.jetbrains.com/?from=owlMagicComment 
 # 
 #### 
 
@@ -34,7 +37,7 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
 
 1. @OwlCheckParams
 
-     该注解用于controller层校验请求参数，包含notAllNull（不可全部为空），notNull（不能为空）以及canNull
+     方法注解。该注解可用于controller层校验请求参数，包含notAllNull（不可全部为空），notNull（不能为空）以及canNull
      （可以为空）三个属性，为方便书写接口文档以及后期查询代码，此三个属性合并起来应当为本接口可接收的所
      有参数，notAllNull中的参数不能全部为null，否则该接口将返回 "请求参数 \*\* 不能全为空"，notNull中的
      参数不能为空，否则该接口将返回 "请求参数 \*\* 不能为空"，canNull中的参数可以为空。
@@ -64,13 +67,211 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
         public MsgResultVO signin(User user) {
             return userService.signin(user);
         }
-      返回数据：{"result":false,"resultCode":"0002","resultMsg":"请求参数 \[account,password\] 不能为空","resultData":null,"params":{}}
+      返回数据：{"result":false,"resultCode":"0002","resultMsg":"请求参数 account,password 不能为空","resultData":null,"params":{}}
     
-    节省编写判断代码的时间
-    
+1. @OwlLogInfo
 
+    类、方法注解。在接口开始的时候打印进入接口的信息。"now in %s" 
+    
+    例如：
+    请求  auth/signin
+    
+        @OwlLogInfo
+        @RestController
+        @RequestMapping(value = "auth", method = RequestMethod.POST, consumes = "application/json")
+        public class AuthController {
+       
+            @RequestMapping("signin")
+            @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
+            public MsgResultVO signin(@RequestBody OwlUser user) {
+                return owlAuthService.signin(user);
+            }
+        }
+        
+     将会打印
+        
+        [INFO][2019-06-10 09:24:23][com.owl.shiro.controller.AuthController] - now in signin
+
+1. @OwlCountTime    
+
+    方法注解。用来计算方法开始和结束的时间差
+    
+            @RequestMapping("signin")
+            @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
+            @OwlCountTime
+            public MsgResultVO signin(@RequestBody OwlUser user) {
+                return owlAuthService.signin(user);
+            }
+            
+   打印
+   
+        [INFO][2019-06-10 10:02:53][com.owl.comment.asImpl.OwlCountTimeAS] - 方法 signin 花费 ： 0.068 s
+
+1. @OwlSetNullData    
+
+    方法注解。用来设置请求参数或者返回参数为null
+    
+    例如：
+            
+            @RequestMapping(value = "list")
+            @OwlSetNullData(paramsValue = {"id"}, backValue = {"password"})
+            public MsgResultVO<List<OwlUser>> list(@RequestBody OwlUser user) {
+                 return owlUserService.list(user);
+            }
+    
+1. @OwlTry    
+    
+    方法注解。使用它就相当于在方法的最外层添加了一个try catch方法。他的返回值为MsgResultVO。
+    
+1. @OwlBackToObjectAS    
+    
+    方法注解。当你不想使用MsgResultVO的时候，使用它可以将MsgResultVO改变成其它类型的返回值。
+    你只需要提供 路径 classPath，以及存在的结果值，结果码，结果信息，结果对象等便可以将返回值变为你想要的
+    对象
+    
+            @RequestMapping("signin")
+            @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
+            @OwlBackToObject(classPath = "com.owl.shiro.model.TestVO",msg = "msg",code = "mdg",data = "data")
+            public Object signin(@RequestBody OwlUser user) {
+                return owlAuthService.signin(user);
+            }
+    
+    返回TestVO：
+        
+        {"mdg":"0000","msg":"请求成功","data":{"id":1,"name":"系统管理员","password":null,"account":"admin",
+        "email":"admin@admin.com","mobile":"18812345678","isBan":false,"status":true,"lastSigninTime":1558060991000}
+     
+     而之前的返回值对象为MsgResultVO：
+        
+        {"result":true,"resultCode":"0000","resultMsg":"请求成功","resultData":{"id":1,"name":"系统管理员",
+        "password":null,"account":"admin","email":"admin@admin.com","mobile":"18812345678","isBan":false,
+        "status":true,"lastSigninTime":1558060991000}
+        
+    记得使用本注解时需要修改返回值为object对象
+     
+1. @OwlBackToMsgResultAS    
+    
+    方法注解。当你想使用MsgResultVO作为返回值的时候，使用它可以将其它类型的返回值改变成MsgResultVO。使用方法和 
+     @OwlBackToObjectAS
+    几乎一样。但你不需要指定  classPath
+    
+>观察者模式
+
+使用方法：
+ 
+1. 创建 OwlObserverEvent 事件
+1. 创建被观察者类，并继承 OwlObserved 类
+1. 为观察者添加事件监听，并在自定义方法中编写监听事件后处理的逻辑过程
+1. 在适当的时间抛出 OwlObserverEvent 事件
+
+    例如：
+    
+        public class TestOb extends OwlObserved {
+            //被觀察者需要执行的代碼
+            public static Consumer listenIng() {
+               return  (obj)-> System.out.println("hhhhhhh");
+            }
+        }
+
+    之后
+    
+        @Test
+        public void test() {
+            TestOb testOb = new TestOb();
+            OwlObserverEvent ttt = new OwlObserverEvent("Test_event");
+            testOb.addEventListen(ttt, testOb.listenIng());
+            OwlObserverAB.dispatchEvent(ttt);
+            testOb.removeListen(ttt);
+            OwlObserverAB.dispatchEvent(ttt);
+            testOb.addEventListen(ttt, testOb.listenIng());
+            OwlObserverAB.removeEventListen(ttt,testOb);
+            OwlObserverAB.dispatchEvent(ttt);
+        }
+
+    注意：你可以使用get方法获取 OwlObserverAB 中的 OwlObserved 注册信息 以及 OwlObserved 中的事件信息
            
-本包引入的jar包包括
+>MVC 简写部分（常用的CRUD使用方法）
+
+1. SpringContextUtil
+    
+    我提供这个工具是为了正在多线程中方便你快速的获取指定的bean
+
+1. Dao
+
+   本模板中的 Dao 类接口 需要继承 CellBaseDao<T> 或  RelationBaseDao<T>，你可以在继承后编写自己的方法
+   
+   例如：
+   
+        public interface OwlMenuDao extends CellBaseDao<OwlMenu> {
+            Set<OwlMenu> menuListByRole(IdListSO idListSO);
+        }
+   
+1. xml
+
+    本模板中的 CellDemo.xml 和RelationDemo.xml 打包在jar中，你可以直接复制其中的内容到自己的xml文件中，
+    指定<mapper namespace="com.owl.dao.OwlUserMapper">，修改其中的配置属性，Table_ID_Name 即为当前表的id名称
+    sql Select_Like 表示的模糊查询，Select_Exact 为精确查询
+    注释<!-- 以下不需要改變  -->的下方是不需要修改的代码。但是在此之前你需要修改其中的属性以使它和你的数据库表
+    一一对应
+
+1. Service
+
+    Service层需要继承 CellBaseServiceAb<T> 或者 RelationBaseServiceAb<T>。
+    
+     并通过
+            
+              @Resource
+                private OwlMenuDao owlMenuDao;
+              @Autowired
+                public void setCellBaseDao() {
+                    super.setCellBaseDao(owlMenuDao);
+                }
+                
+    或：
+             
+               @Resource
+               private OwlPageMenuDao owlPageMenuDao;
+           
+               @Autowired
+               public void setRelationBaseDao() {
+                   super.setRelationBaseDao(owlPageMenuDao);
+               }     
+         
+     的方法为模板注入 Dao 类，你可以重写本类中的方法以使它按照你的方式进行业务处理。
+
+1. Controller
+    
+    CellBaseController类定义了基础的增删改查
+    
+            MsgResultVO<T> create(T model);
+
+            MsgResultVO<?> createList(List<T> list);
+
+            MsgResultVO delete(T model);
+
+            MsgResultVO deleteList(DeleteDTO deleteDTO);
+
+            MsgResultVO banOrLeave(BanDTO banDTO);
+
+            MsgResultVO banOrLeaveList(BanListDTO banListDTO);
+
+            MsgResultVO<?> update(T model);
+
+            MsgResultVO<T> details(T model);
+
+            MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO);
+        
+            MsgResultVO<List<T>> getAll(T model);
+        
+            MsgResultVO<?> isExist(T model);
+    
+    继承 CellBaseControllerAb 后，你便可以快速调用接口中定义的各个方法。
+
+     
+           
+###本包引入的jar包包括
+
+ -------
  
 ```
         <dependency>
@@ -106,11 +307,23 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
 ```
 
 
+###历史升级记录
+
+ -------
+
+1.0
+
+- 添加  @OwlCheckParams
+
+     该注解用于controller层校验请求参数，包含notAllNull（不可全部为空），notNull（不能为空）以及canNull
+     （可以为空）三个属性，为方便书写接口文档以及后期查询代码，此三个属性合并起来应当为本接口可接收的所
+      有参数，notAllNull中的参数不能全部为null，否则该接口将返回 "请求参数 \*\* 不能全为空"，notNull中的
+      参数不能为空，否则该接口将返回 "请求参数 \*\* 不能为空"，canNull中的参数可以为空。
+      使用本注解需设置默认返回的对象为MsgResultVO
+
 1.1 
 
-- 添加
-
- @OwlLogInfo
+- 添加  @OwlLogInfo
     
    该注解将会在使用它的地方打印"now in class %s , method %s" ，注意，这并不能给你一些额外的有用信息，只是用
    来输出一些日志帮助你快速定位被调用的接口。
@@ -264,6 +477,8 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
 > RelationBaseDao 添加了删除单个操作
 
 > @OwlTry 现在能提供 value ，便于在使用的时候输出
+
+> 添加观察者模式
 
 > 大量的代码结构优化
 

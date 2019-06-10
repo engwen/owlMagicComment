@@ -35,30 +35,39 @@ public class OwlBackToObjectAS {
     @Around("changeBackClassCut()")
     public Object changeBackClass(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Object obj = joinPoint.proceed();
+        Object result = obj;
         String classPath = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).classPath();
         String codeName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).code();
         String msgName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).msg();
         String dataName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).data();
         String resultName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).result();
-
-        Object obj = joinPoint.proceed();
-        Object result;
-        try {
-            if (obj instanceof MsgResultVO) {
-                MsgResultVO temp = (MsgResultVO) obj;
-                result = Class.forName(classPath).newInstance();
-                ObjectUtil.setProValue(codeName, temp.getResultCode(), result);
-                ObjectUtil.setProValue(msgName, temp.getResultMsg(), result);
-                ObjectUtil.setProValue(dataName, temp.getResultData(), result);
-                ObjectUtil.setProValue(resultName, temp.getResult(), result);
-            } else {
-                logger.error("本注仅适用于将MsgResultVO类型转化为指定类型");
-                result = obj;
+        if (RegexUtil.isEmpty(classPath)) {
+            logger.error("未指定转换对象");
+        } else {
+            try {
+                if (obj instanceof MsgResultVO) {
+                    MsgResultVO temp = (MsgResultVO) obj;
+                    result = Class.forName(classPath).newInstance();
+                    if (!RegexUtil.isEmpty(codeName)) {
+                        ObjectUtil.setProValue(codeName, temp.getResultCode(), result);
+                    }
+                    if (!RegexUtil.isEmpty(msgName)) {
+                        ObjectUtil.setProValue(msgName, temp.getResultMsg(), result);
+                    }
+                    if (!RegexUtil.isEmpty(dataName)) {
+                        ObjectUtil.setProValue(dataName, temp.getResultData(), result);
+                    }
+                    if (!RegexUtil.isEmpty(resultName)) {
+                        ObjectUtil.setProValue(resultName, temp.getResult(), result);
+                    }
+                } else {
+                    logger.error("本注仅适用于将MsgResultVO类型转化为指定类型");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("转化出错");
             }
-        } catch (Exception e) {
-            result = obj;
-            e.printStackTrace();
-            logger.error("转化出错");
         }
         return result;
     }

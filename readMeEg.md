@@ -3,11 +3,20 @@
  Author engwen            
  Email xiachanzou@outlook.com            
  Time 2018/07/16
+ 
+ 
+Thank JetBrains Community Support Team for its support to this project, which provides IntelliJ idea tools 
+for my faster development and iteration.
+
+Https://www.jetbrains.com/?From=owlMagicComment
+ 
+ 
 #### 
 
 * Package name
 com.owl.comment.annotations
 * The way of reference is
+
 ```
 <dependency>
     <groupId>com.github.engwen</groupId>
@@ -15,17 +24,40 @@ com.owl.comment.annotations
     <version>*.*.*</version>
 </dependency>
 ```
+
 This package relies on my other project, the OwlMagicUtil package, and the return object, MsgResultVO, is available at https://github.com/engwen/owlMagicUtil.
 
--------
-> 
+The spring spring spring MVC project needs to add the following configuration in the configuration file of the spring MVC Servlet
+
+<context: component-scan base-package="com.owl.comment.annotations"/>
+<aop: aspectj-autoproxy/>
+
+SpringBook users need to configure scans on project startup classes
+
+@ ComponentScan (base Packages = {"***", "com. owl", "***"})
+
+
+
+-----
+
+> Custom Annotations
+
+
 
 1. @OwlCheckParams
 
-  This annotation is used for the controller layer to check the request parameters, including notAllNull, notNull and canNull attributes. To facilitate writing interface documents and later query code, these three attributes should be combined with all the parameters that this interface can accept, notAllNull The parameters in the interface can not be all null, otherwise the interface will return "request parameters can not be all empty", the parameters in notNull can not be empty, otherwise the interface will return "request parameters can not be empty", the parameters in canNull can be empty.
-     For example:
+Method Notes. This annotation can be used to validate request parameters at the controller layer, including notAllNull (not all empty), notNull (not empty), and canNull.
 
-    Original code:
+(can be empty) three attributes, in order to facilitate the writing of interface documents and post-query code, the three attributes should be combined to be acceptable to the interface.
+
+With parameters, the parameters in notAllNull cannot all be null, otherwise the interface will return "Request parameters** cannot all be null" in notNull.
+
+The parameter cannot be null, otherwise the interface will return "Request parameter** cannot be null" and the parameter in canNull can be null.
+
+Use this annotation to set the default returned object to MsgResultVO
+For example:
+
+   Original code:
             
         @RequestMapping("/signin")
         public MsgResultVO signin(User user) {
@@ -48,10 +80,201 @@ This package relies on my other project, the OwlMagicUtil package, and the retur
             return userService.signin(user);
         }
 
-   it will return {"result":false,"resultCode":"0002","resultMsg":"请求参数 [account,password] 不能为空","resultData":null,"params":{}}
+   it will return {"result":false,"resultCode":"0002","resultMsg":" account,password must not be empty.","resultData":null,"params":{}}
     Save time for writing code.
+
+1. @OwlLogInfo
+
+   Class and method annotations. Print the information entering the interface at the beginning of the interface. "Now in%s"
     
-The jar package introduced in this package includes
+    For example:
+    
+    Request auth/signin
+     
+            @OwlLogInfo
+            @RestController
+            @RequestMapping(value = "auth", method = RequestMethod.POST, consumes = "application/json")
+            public class AuthController {
+           
+                @RequestMapping("signin")
+                @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
+                public MsgResultVO signin(@RequestBody OwlUser user) {
+                    return owlAuthService.signin(user);
+                }
+            }
+            
+    Will print
+
+        [INFO] [2019-06-1009:24:23] [com.owl.shiro.controller.AuthController] - now in signin
+        
+1. @OwlCountTime
+    Method Notes. The time difference used to calculate the start and end
+
+            @RequestMapping("signin")
+            @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
+            @OwlCountTime
+            public MsgResultVO signin(@RequestBody OwlUser user) {
+                return owlAuthService.signin(user);
+            }
+            
+    Printing
+        
+        [INFO] [2019-06-10:10:02:53] [com.owl.comment.asImpl.OwlCountTime AS] - Method signin cost: 0.068 s
+        
+1. @OwlSetNullData
+
+    Method Notes. Used to set request parameters or return parameters to null
+    For example:
+    
+            @RequestMapping(value = "list")
+            @OwlSetNullData(paramsValue = {"id"}, backValue = {"password"})
+            public MsgResultVO<List<OwlUser>> list(@RequestBody OwlUser user) {
+                 return owlUserService.list(user);
+            }
+            
+1. @Owltry
+    Method Notes. Using it is equivalent to adding a try catch method to the outermost layer of the method. His return value is MsgResultVO.
+1. @OwlBackToObjectAS
+    Method Notes. When you don't want to use MsgResultVO, you can use it to change MsgResultVO to other types of return values.
+    You only need to provide the path classPath and the existing result values, result codes, result information, result objects, etc. to change the return value into what you want.
+    object
+    
+                @RequestMapping("signin")
+                @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
+                @OwlBackToObject(classPath = "com.owl.shiro.model.TestVO",msg = "msg",code = "mdg",data = "data")
+                public Object signin(@RequestBody OwlUser user) {
+                    return owlAuthService.signin(user);
+                }
+
+    Return to TestVO:
+
+     {"mdg":"0000","msg":"请求成功","data":{"id":1,"name":"系统管理员","password":null,"account":"admin",
+            "email":"admin@admin.com","mobile":"18812345678","isBan":false,"status":true,"lastSigninTime":1558060991000}
+
+    The previous return value object was MsgResultVO:
+        
+        {"result":true,"resultCode":"0000","resultMsg":"请求成功","resultData":{"id":1,"name":"系统管理员",
+        "password":null,"account":"admin","email":"admin@admin.com","mobile":"18812345678","isBan":false,
+        "status":true,"lastSigninTime":1558060991000}
+        
+   Remember that you need to modify the return value to be an object object object when using this annotation
+
+1. @OwlBackToMsgResultAS
+
+    Method Notes. When you want to use MsgResultVO as a return value, you can use it to change other types of return values to MsgResultVO. Usage and method
+    @ OwlBackToObjectAS
+
+    Almost the same. But you don't need to specify classPath
+    
+> Observer model
+
+Usage method:
+
+1. Create OwlObserver Event events
+
+1. Create the Observed class and inherit the OwlObserved class
+
+1. Adding event listeners to the observer and writing the logical process of listening event post-processing in a custom method
+
+1. Throw the OwlObserver Event event at the appropriate time
+
+    For example:
+    
+        public class TestOb extends OwlObserved {
+            //被觀察者需要执行的代碼
+            public static Consumer listenIng() {
+               return  (obj)-> System.out.println("hhhhhhh");
+            }
+        }
+
+    after
+    
+        @Test
+        public void test() {
+            TestOb testOb = new TestOb();
+            OwlObserverEvent ttt = new OwlObserverEvent("Test_event");
+            testOb.addEventListen(ttt, testOb.listenIng());
+            OwlObserverAB.dispatchEvent(ttt);
+            testOb.removeListen(ttt);
+            OwlObserverAB.dispatchEvent(ttt);
+            testOb.addEventListen(ttt, testOb.listenIng());
+            OwlObserverAB.removeEventListen(ttt,testOb);
+            OwlObserverAB.dispatchEvent(ttt);
+        }
+
+    
+   Note: You can use get method to get OwlObserver registration information in OwlObserver AB and event information in OwlObserver AB
+
+> MVC abbreviation section (common CRUD usage)
+
+1. Spring ContextUtil
+    I provide this tool to facilitate you to quickly get the specified beans in multithreading
+1. Dao
+    The Dao class interface in this template needs to inherit CellBaseDao < T > or RelationBaseDao < T > and you can write your own method after inheritance.
+For example:
+   
+        public interface OwlMenuDao extends CellBaseDao<OwlMenu> {
+            Set<OwlMenu> menuListByRole(IdListSO idListSO);
+        }
+   
+1. XML
+    CellDemo. XML and RelationDemo. XML in this template are packaged in jar. You can directly copy the contents into your own XML file.
+    Specify <mapper namespace="com.owl.dao.OwlUser Mapper"> and modify the configuration properties in it. Table_ID_Name is the ID name of the current table.
+    Fuzzy queries represented by SQL Select_Life, Select_Exact for exact queries
+    Note <! - The following does not need to be changed - > below is the code that does not need to be modified. But before that, you need to modify the attributes to make it and your database tables
+    One-to-one correspondence
+1. Service
+    The Service layer needs to inherit CellBaseService Ab < T > or RelationBaseService Ab < T >.
+    And through
+
+              @Resource
+                private OwlMenuDao owlMenuDao;
+              @Autowired
+                public void setCellBaseDao() {
+                    super.setCellBaseDao(owlMenuDao);
+                }
+    Or:
+                       
+               @Resource
+               private OwlPageMenuDao owlPageMenuDao;
+           
+               @Autowired
+               public void setRelationBaseDao() {
+                   super.setRelationBaseDao(owlPageMenuDao);
+               }    
+                   
+    The method injects the Dao class into the template, and you can rewrite the method in this class so that it can process the business in your way.
+
+1. Controller
+    The CellBaseController class defines basic add-delete checks
+    
+            MsgResultVO<T> create(T model);
+
+            MsgResultVO<?> createList(List<T> list);
+
+            MsgResultVO delete(T model);
+
+            MsgResultVO deleteList(DeleteDTO deleteDTO);
+
+            MsgResultVO banOrLeave(BanDTO banDTO);
+
+            MsgResultVO banOrLeaveList(BanListDTO banListDTO);
+
+            MsgResultVO<?> update(T model);
+
+            MsgResultVO<T> details(T model);
+
+            MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO);
+        
+            MsgResultVO<List<T>> getAll(T model);
+        
+            MsgResultVO<?> isExist(T model);
+            
+    After inheriting CellBaseController Ab, you can quickly invoke the methods defined in the interface.
+    
+ ### The jar packages introduced in this package include
+    
+ -------
  
 ```
         <dependency>
@@ -86,6 +309,10 @@ The jar package introduced in this package includes
               </dependency>
 ```
 
+
+### History Upgrade Record
+
+ -------
 1.1
 
 - add
@@ -240,5 +467,7 @@ Tool acquisition for Bean.
  > RelationBaseDao adds delete single operation
  
  >@ OwlTry now provides value for easy output when used
+ 
+ > Adding Observer Mode
  
  > Lots of code structure optimization

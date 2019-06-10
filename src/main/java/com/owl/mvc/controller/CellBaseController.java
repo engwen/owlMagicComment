@@ -83,13 +83,6 @@ interface CellBaseController<T> {
     MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO);
 
     /**
-     * 获取分页集合
-     * @param pageDTO 请求分页对象
-     * @return 分页集合
-     */
-    MsgResultVO<PageVO<T>> listAll(PageDTO<T> pageDTO);
-
-    /**
      * 获取所有对象
      * @param model 检索条件
      * @return 结果集合
