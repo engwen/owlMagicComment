@@ -166,25 +166,34 @@ For example:
 
     Almost the same. But you don't need to specify classPath
     
-> Observer model
+> observer model    The observer model is inspired by the event monitoring mechanism in Flex AS
 
-Usage method:
+  The goal is to execute the specified listening event code when a specified event is received, and one observer can listen for multiple events.
 
-1. Create OwlObserver Event events
+
+1. Create OwlObserverEvent events
 
 1. Create the Observed class and inherit the OwlObserved class
 
 1. Adding event listeners to the observer and writing the logical process of listening event post-processing in a custom method
 
-1. Throw the OwlObserver Event event at the appropriate time
+1. Throw the OwlObserverEvent event at the appropriate time
+
+    Note!!!! Because the observer described here will execute the code when listening to the specified event, the lamda expression is used.
 
     For example:
     
         public class TestOb extends OwlObserved {
-            //被觀察者需要执行的代碼
-            public static Consumer listenIng() {
-               return  (obj)-> System.out.println("hhhhhhh");
-            }
+                // Code to be executed by the observer
+                public Consumer<OwlObserved> SystemOutYYYYY() {
+                // Do whatever you want to do. Don't forget that SpringContextUtil in this package can help you get beans here.
+                    return  (obj)-> System.out.println("yyyyyyyy");
+                }
+                // Code to be executed by the observer
+                public Consumer<OwlObserved> SystemOutHHHH() {
+                // Do whatever you want to do. Don't forget that SpringContextUtil in this package can help you get beans here.
+                    return  (obj)-> System.out.println("hhhhhhh");
+                }
         }
 
     after
@@ -192,18 +201,19 @@ Usage method:
         @Test
         public void test() {
             TestOb testOb = new TestOb();
-            OwlObserverEvent ttt = new OwlObserverEvent("Test_event");
-            testOb.addEventListen(ttt, testOb.listenIng());
-            OwlObserverAB.dispatchEvent(ttt);
-            testOb.removeListen(ttt);
-            OwlObserverAB.dispatchEvent(ttt);
-            testOb.addEventListen(ttt, testOb.listenIng());
-            OwlObserverAB.removeEventListen(ttt,testOb);
-            OwlObserverAB.dispatchEvent(ttt);
+            OwlObserverEvent yyy = new OwlObserverEvent("SystemOutYYYYY");
+            OwlObserverEvent hhh = new OwlObserverEvent("SystemOutHHHH");
+            testOb.addEventListen(yyy, testOb.SystemOutYYYYY());
+            testOb.addEventListen(hhh, testOb.SystemOutHHHH());
+            OwlObserverAB.dispatchEvent(yyy, testOb.getClass());// For a specified event, the specified class accepts the event
+            OwlObserverAB.dispatchEvent(hhh);// For a specified event, all the classes that listen for that event
+            testOb.dispatchEvent(hhh);// == OwlObserverAB.dispatchEvent(hhh); For a specified event, all the classes that listen for that event
+            testOb.removeListen(yyy);
+            OwlObserverAB.dispatchEvent(yyy);
+            testOb.addEventListen(yyy, testOb.SystemOutYYYYY());
+            OwlObserverAB.removeEventListen(yyy,testOb);
+            OwlObserverAB.dispatchEvent(yyy);
         }
-
-    
-   Note: You can use get method to get OwlObserver registration information in OwlObserver AB and event information in OwlObserver AB
 
 > MVC abbreviation section (common CRUD usage)
 

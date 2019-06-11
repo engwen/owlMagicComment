@@ -18,10 +18,6 @@ public abstract class OwlObserverAB {
     private static Logger logger = Logger.getLogger(OwlObserverAB.class.getName());
     private static Map<String, Set<OwlObserved>> mapList = new HashMap<>();
 
-    public static Map<String, Set<OwlObserved>> getMapList() {
-        return mapList;
-    }
-
     //添加对象监听
     static void addEventListen(OwlObserverEvent owlObserverEvent, OwlObserved model) {
         //監聽對象注冊

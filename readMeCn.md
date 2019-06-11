@@ -155,22 +155,33 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
      @OwlBackToObjectAS
     几乎一样。但你不需要指定  classPath
     
->观察者模式
+>观察者模式  灵感来自 Flex AS 中的事件监听机制
+
+目标是在接收到指定的事件时可以执行指定的监听事件代码，一个被观察者可以监听多个事件
 
 使用方法：
  
 1. 创建 OwlObserverEvent 事件
 1. 创建被观察者类，并继承 OwlObserved 类
-1. 为观察者添加事件监听，并在自定义方法中编写监听事件后处理的逻辑过程
+1. 为被观察者添加事件监听，并在自定义方法中编写监听事件后处理的逻辑过程
 1. 在适当的时间抛出 OwlObserverEvent 事件
+
+    注意 !!!  由于这里描绘的观察者将会在监听到指定事件的时候执行代码，因此使用的是 lamda 表达式，
 
     例如：
     
         public class TestOb extends OwlObserved {
-            //被觀察者需要执行的代碼
-            public static Consumer listenIng() {
-               return  (obj)-> System.out.println("hhhhhhh");
-            }
+                //被觀察者需要执行的代碼
+                public Consumer<OwlObserved> SystemOutYYYYY() {
+                    //做你想做的一切。别忘记本包中的 SpringContextUtil 可以在这里帮你获取 bean 哦
+                    return  (obj)-> System.out.println("yyyyyyyy");
+                }
+            
+                //被觀察者需要执行的代碼
+                public Consumer<OwlObserved> SystemOutHHHH() {
+                    //做你想做的一切。别忘记本包中的 SpringContextUtil 可以在这里帮你获取 bean 哦
+                    return  (obj)-> System.out.println("hhhhhhh");
+                }
         }
 
     之后
@@ -178,17 +189,20 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
         @Test
         public void test() {
             TestOb testOb = new TestOb();
-            OwlObserverEvent ttt = new OwlObserverEvent("Test_event");
-            testOb.addEventListen(ttt, testOb.listenIng());
-            OwlObserverAB.dispatchEvent(ttt);
-            testOb.removeListen(ttt);
-            OwlObserverAB.dispatchEvent(ttt);
-            testOb.addEventListen(ttt, testOb.listenIng());
-            OwlObserverAB.removeEventListen(ttt,testOb);
-            OwlObserverAB.dispatchEvent(ttt);
+            OwlObserverEvent yyy = new OwlObserverEvent("SystemOutYYYYY");
+            OwlObserverEvent hhh = new OwlObserverEvent("SystemOutHHHH");
+            testOb.addEventListen(yyy, testOb.SystemOutYYYYY());
+            testOb.addEventListen(hhh, testOb.SystemOutHHHH());
+            OwlObserverAB.dispatchEvent(yyy, testOb.getClass());//针对指定事件，指定类接受此次事件
+            OwlObserverAB.dispatchEvent(hhh);//针对指定事件，全部监听该事件的类
+            testOb.dispatchEvent(hhh);// == OwlObserverAB.dispatchEvent(hhh);针对指定事件，全部监听该事件的类
+            testOb.removeListen(yyy);
+            OwlObserverAB.dispatchEvent(yyy);
+            testOb.addEventListen(yyy, testOb.SystemOutYYYYY());
+            OwlObserverAB.removeEventListen(yyy,testOb);
+            OwlObserverAB.dispatchEvent(yyy);
         }
 
-    注意：你可以使用get方法获取 OwlObserverAB 中的 OwlObserved 注册信息 以及 OwlObserved 中的事件信息
            
 >MVC 简写部分（常用的CRUD使用方法）
 

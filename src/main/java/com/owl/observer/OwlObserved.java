@@ -14,10 +14,6 @@ public abstract class OwlObserved {
 
     private Map<String, Consumer<OwlObserved>> consumerMap = new HashMap<>();
 
-    public Map<String, Consumer<OwlObserved>> getConsumerMap() {
-        return consumerMap;
-    }
-
     //被觀察者監聽事件
     public void addEventListen(OwlObserverEvent event, Consumer<OwlObserved> consumer) {
         //添加事件处理方法记录
@@ -27,7 +23,6 @@ public abstract class OwlObserved {
     }
 
     public void removeListen(OwlObserverEvent event) {
-        removeListenByEvent(event);
         OwlObserverAB.removeEventListen(event, this);
     }
 
