@@ -8,7 +8,7 @@ for my faster development and iteration.
 
  <url>https://www.jetbrains.com/?From=owlMagicComment
 
-#  To simple principles 
+#  To simple principles   至简原则
 
 ### use the jar,you can get like this
     
@@ -26,7 +26,9 @@ for my faster development and iteration.
         }
    
 ###  and so on
- 
+
+#  En
+
 ##  How To Use?
 
 * Package name
@@ -45,15 +47,15 @@ This package relies on my other project, the OwlMagicUtil package, and the retur
 
 The spring spring spring MVC project needs to add the following configuration in the configuration file of the spring MVC Servlet
 
-<context: component-scan base-package="com.owl.comment.annotations"/>
-<aop: aspectj-autoproxy/>
+    <context: component-scan base-package="com.owl.comment.annotations"/>
+    <aop: aspectj-autoproxy/>
 
 SpringBook users need to configure scans on project startup classes
 
-@ ComponentScan (base Packages = {"***", "com. owl", "***"})
+    @ ComponentScan (base Packages = {"***", "com. owl", "***"})
 
 -----
-------
+#  Cn
 
 ## 如何使用？
 #### 
