@@ -12,12 +12,6 @@ for my faster development and iteration.
 
 ### use the jar,you can get like this
     
-    @OwlCheckParams(notNull={"account","password"})  //{"result":false,"resultCode":"0002","resultMsg":"请求参数 account,password 不能为空","resultData":null,"params":{}}
-   or:  
-        
-    @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
-    
-   
         @RequestMapping("/signin")
         public MsgResultVO signin(User user) {
             MsgResultVO result = new MsgResultVO();
