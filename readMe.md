@@ -8,9 +8,9 @@ for my faster development and iteration.
 
  <url>https://www.jetbrains.com/?From=owlMagicComment
 
-#To simple principles 
+#  To simple principles 
 
-##use the jar,you can get like this
+### use the jar,you can get like this
     
     @OwlCheckParams(notNull={"account","password"})  //{"result":false,"resultCode":"0002","resultMsg":"请求参数 account,password 不能为空","resultData":null,"params":{}}
    or:  
@@ -31,9 +31,9 @@ for my faster development and iteration.
             return result;
         }
    
-##and so on
+###  and so on
  
-#### How To Use?
+##  How To Use?
 
 * Package name
 com.owl.comment.annotations
@@ -61,7 +61,7 @@ SpringBook users need to configure scans on project startup classes
 -----
 ------
 
-#  如何使用？
+## 如何使用？
 #### 
 
 * 包名
@@ -88,6 +88,6 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
 
 
 
-En details ,please click <url>https://github.com/engwen/owlMagicComment/blob/master/readMeEg.md
+En details ,please click <url>https://github.com/engwen/owlMagicComment/blob/master/readMeEn.md
 
 中文详情，请点击 ：<url>https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md
