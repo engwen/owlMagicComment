@@ -52,7 +52,7 @@ The spring spring spring MVC project needs to add the following configuration in
 
 SpringBook users need to configure scans on project startup classes
 
-    @ ComponentScan (base Packages = {"***", "com. owl", "***"})
+    @ComponentScan (base Packages = {"***", "com. owl", "***"})
 
 -----
 #  Cn
