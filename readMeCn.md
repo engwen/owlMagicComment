@@ -1,36 +1,4 @@
 # OwlMagicComment
- 
- 使用本人代码请备注来源，谢谢
-  * author engwen
-  * email xiachanzou@outlook.com
-  * time 2018/07/16.
-  
-  感谢JetBrains Community Support Team对本项目的支持，为本项目提供intellij idea工具，方便我更快速的开发和迭代
-  https://www.jetbrains.com/?from=owlMagicComment 
-# 
-#### 
-
-* 包名
-com.owl.comment.annotations
-* 引用方式为
-```
-<dependency>
-    <groupId>com.github.engwen</groupId>
-    <artifactId>owlMagicComment</artifactId>
-    <version>*.*.*</version>
-</dependency>
-```
-
-本包依赖于我的另一个项目OwlMagicUtil包，返回对象 MsgResultVO 请参考 https://github.com/engwen/owlMagicUtil
-
-spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以下配置
-
-     <context:component-scan base-package="com.owl.comment.annotations"/>
-     <aop:aspectj-autoproxy/>
-    
- SpringBoot 用户需要在 项目启动类上配置扫描
- 
-    @ComponentScan(basePackages = { "***","com.owl" ,"***"})
 
 -------
 > 自定义注解
@@ -155,6 +123,7 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
      @OwlBackToObjectAS
     几乎一样。但你不需要指定  classPath
     
+-------
 >观察者模式  灵感来自 Flex AS 中的事件监听机制
 
 目标是在接收到指定的事件时可以执行指定的监听事件代码，一个被观察者可以监听多个事件
@@ -203,7 +172,7 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
             OwlObserverAB.dispatchEvent(yyy);
         }
 
-           
+------- 
 >MVC 简写部分（常用的CRUD使用方法）
 
 1. SpringContextUtil
@@ -323,7 +292,7 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
 
 ###历史升级记录
 
- -------
+-------
 
 1.0
 
