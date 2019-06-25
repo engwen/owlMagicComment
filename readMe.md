@@ -54,6 +54,8 @@ SpringBook users need to configure scans on project startup classes
 
     @ComponentScan (base Packages = {"***", "com. owl", "***"})
 
+En details ,please click <url>https://github.com/engwen/owlMagicComment/blob/master/readMeEn.md
+
 -----
 #  Cn
 
@@ -84,6 +86,5 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
 
 
 
-En details ,please click <url>https://github.com/engwen/owlMagicComment/blob/master/readMeEn.md
 
 中文详情，请点击 ：<url>https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md
