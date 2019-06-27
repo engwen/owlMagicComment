@@ -82,7 +82,7 @@ For example:
             
     Printing
         
-        [INFO] [2019-06-10:10:02:53] [com.owl.comment.asImpl.OwlCountTime AS] - Method signin cost: 0.068 s
+        [INFO][2019-06-10 10:59:58][com.owl.shiro.controller.AuthController] - 方法 signin 花费 ： 0.028 s
         
 1. @OwlSetNullData
 
@@ -164,18 +164,18 @@ For example:
         @Test
         public void test() {
             TestOb testOb = new TestOb();
-            OwlObserverEvent yyy = new OwlObserverEvent("SystemOutYYYYY");
-            OwlObserverEvent hhh = new OwlObserverEvent("SystemOutHHHH");
-            testOb.addEventListen(yyy, testOb.SystemOutYYYYY());
-            testOb.addEventListen(hhh, testOb.SystemOutHHHH());
-            OwlObserverAB.dispatchEvent(yyy, testOb.getClass());// For a specified event, the specified class accepts the event
-            OwlObserverAB.dispatchEvent(hhh);// For a specified event, all the classes that listen for that event
-            testOb.dispatchEvent(hhh);// == OwlObserverAB.dispatchEvent(hhh); For a specified event, all the classes that listen for that event
-            testOb.removeListen(yyy);
-            OwlObserverAB.dispatchEvent(yyy);
-            testOb.addEventListen(yyy, testOb.SystemOutYYYYY());
-            OwlObserverAB.removeEventListen(yyy,testOb);
-            OwlObserverAB.dispatchEvent(yyy);
+            OwlObserverEvent Y_EVENT = new OwlObserverEvent("SystemOutYYYYY");
+            OwlObserverEvent H_EVENT = new OwlObserverEvent("SystemOutHHHH");
+            testOb.addEventListen(Y_EVENT, testOb.SystemOutYYYYY());
+            testOb.addEventListen(H_EVENT, testOb.SystemOutHHHH());
+            OwlObserverAB.dispatchEvent(Y_EVENT, testOb.getClass());// For a specified event, the specified class accepts the event
+            OwlObserverAB.dispatchEvent(H_EVENT);// For a specified event, all the classes that listen for that event
+            testOb.dispatchEvent(H_EVENT);// == OwlObserverAB.dispatchEvent(H_EVENT); For a specified event, all the classes that listen for that event
+            testOb.removeListen(Y_EVENT);
+            OwlObserverAB.dispatchEvent(Y_EVENT);
+            testOb.addEventListen(Y_EVENT, testOb.SystemOutYYYYY());
+            OwlObserverAB.removeEventListen(Y_EVENT,testOb);
+            OwlObserverAB.dispatchEvent(Y_EVENT);
         }
 
 > MVC abbreviation section (common CRUD usage)

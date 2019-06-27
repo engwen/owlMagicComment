@@ -24,6 +24,52 @@ for my faster development and iteration.
             }
             return result;
         }
+        
+  ### or like this
+   
+    //(build a class extends OwlObserved ,so you can use Listening event like use Flex AS)
+    
+    public class TestOb extends OwlObserved {
+       public Consumer<OwlObserved> SystemOutYYYYY() {
+               return  (obj)-> {
+                   System.out.println("TestOb do you want");
+               };
+       }
+       // and more       
+    }
+    
+    public class TestObj extends OwlObserved {
+       public Consumer<OwlObserved> SystemOutHHHHH() {
+               return  (obj)-> {
+                   System.out.println("TestObj do you want");
+               };
+       }
+       // and more
+    }
+    
+    //in other class you can do this :
+    
+        OwlObserverEvent PRINT_EVENT = new OwlObserverEvent("SystemOutYYYYY");
+        
+        TestOb testOb = new TestOb();
+        TestObj testObj = new TestObj();
+        
+        
+        testOb.addEventListen(PRINT_EVENT, testOb.SystemOutYYYYY());
+        testObj.addEventListen(PRINT_EVENT, testObj.SystemOutHHHHH());
+        
+        OwlObserverAB.dispatchEvent(PRINT_EVENT); //or testOb.dispatchEvent(PRINT_EVENT) || testObj.dispatchEvent(PRINT_EVENT);
+        /** it will print
+         *        TestOb do you want
+         *        TestObj do you want
+        */
+        
+        /**  if you just want TestOb class do the listen event, please use OwlObserverAB.dispatchEvent(PRINT_EVENT,testOb.getClass)
+         *   it will print
+         *        TestOb do you want
+        */        
+        
+
    
 ###  and so on
 

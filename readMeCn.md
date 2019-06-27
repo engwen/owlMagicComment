@@ -158,18 +158,18 @@
         @Test
         public void test() {
             TestOb testOb = new TestOb();
-            OwlObserverEvent yyy = new OwlObserverEvent("SystemOutYYYYY");
-            OwlObserverEvent hhh = new OwlObserverEvent("SystemOutHHHH");
-            testOb.addEventListen(yyy, testOb.SystemOutYYYYY());
-            testOb.addEventListen(hhh, testOb.SystemOutHHHH());
-            OwlObserverAB.dispatchEvent(yyy, testOb.getClass());//针对指定事件，指定类接受此次事件
-            OwlObserverAB.dispatchEvent(hhh);//针对指定事件，全部监听该事件的类
-            testOb.dispatchEvent(hhh);// == OwlObserverAB.dispatchEvent(hhh);针对指定事件，全部监听该事件的类
-            testOb.removeListen(yyy);
-            OwlObserverAB.dispatchEvent(yyy);
-            testOb.addEventListen(yyy, testOb.SystemOutYYYYY());
-            OwlObserverAB.removeEventListen(yyy,testOb);
-            OwlObserverAB.dispatchEvent(yyy);
+            OwlObserverEvent Y_EVENT = new OwlObserverEvent("SystemOutYYYYY");
+            OwlObserverEvent H_EVENT = new OwlObserverEvent("SystemOutHHHH");
+            testOb.addEventListen(Y_EVENT, testOb.SystemOutYYYYY());
+            testOb.addEventListen(H_EVENT, testOb.SystemOutHHHH());
+            OwlObserverAB.dispatchEvent(Y_EVENT, testOb.getClass());// For a specified event, the specified class accepts the event
+            OwlObserverAB.dispatchEvent(H_EVENT);// For a specified event, all the classes that listen for that event
+            testOb.dispatchEvent(H_EVENT);// == OwlObserverAB.dispatchEvent(H_EVENT); For a specified event, all the classes that listen for that event
+            testOb.removeListen(Y_EVENT);
+            OwlObserverAB.dispatchEvent(Y_EVENT);
+            testOb.addEventListen(Y_EVENT, testOb.SystemOutYYYYY());
+            OwlObserverAB.removeEventListen(Y_EVENT,testOb);
+            OwlObserverAB.dispatchEvent(Y_EVENT);
         }
 
 ------- 
@@ -465,3 +465,10 @@
 
 > 大量的代码结构优化
 
+ 1.1.9
+ 
+- 优化 
+
+> 现在观察者模式使用线程安全的 ConcurrentHashMap 存储数据
+
+> 观察者在接收到事件之后会开启新的线程处理所有的观察者的待执行代码
