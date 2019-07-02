@@ -1,12 +1,11 @@
-Use my code, please note the source, thank you.            
+Use my code, please note the source, thank you. 
+           
  Author engwen            
  Email xiachanzou@outlook.com            
  Time 2018/07/16
  
 Thank JetBrains Community Support Team for its support to this project, which provides IntelliJ idea tools 
-for my faster development and iteration.
-
- <url>https://www.jetbrains.com/?From=owlMagicComment
+for my faster development and iteration. <url>https://www.jetbrains.com/?From=owlMagicComment
 
 #  To simple principles   至简原则
 
@@ -35,6 +34,9 @@ for my faster development and iteration.
                    System.out.println("TestOb do you want");
                };
        }
+       public static void SystemOutYYYYY(OwlObserved owlObserved) {
+            System.out.println("----------yyy---------");
+       }
        // and more       
     }
     
@@ -44,27 +46,33 @@ for my faster development and iteration.
                    System.out.println("TestObj do you want");
                };
        }
+       public static void SystemOutHHHHH(OwlObserved owlObserved) {
+            System.out.println("---------hhh----------");
+       }
        // and more
     }
     
     //in other class you can do this :
     
-        OwlObserverEvent PRINT_EVENT = new OwlObserverEvent("SystemOutYYYYY");
+        OwlObserverEvent PRINT_EVENT_LAMDA1 = new OwlObserverEvent("lamda1");
+        OwlObserverEvent PRINT_EVENT_LAMDA2 = new OwlObserverEvent("lamda2");
         
         TestOb testOb = new TestOb();
         TestObj testObj = new TestObj();
         
+        testOb.addEventListen(PRINT_EVENT_LAMDA1, testOb.SystemOutYYYYY());
+        testOb.addEventListen(PRINT_EVENT_LAMDA2, TestOb::SystemOutYYYYY);
+        testObj.addEventListen(PRINT_EVENT_LAMDA1, testObj.SystemOutHHHHH());
+        testObj.addEventListen(PRINT_EVENT_LAMDA2, TestObj::SystemOutHHHHH());
         
-        testOb.addEventListen(PRINT_EVENT, testOb.SystemOutYYYYY());
-        testObj.addEventListen(PRINT_EVENT, testObj.SystemOutHHHHH());
-        
-        OwlObserverAB.dispatchEvent(PRINT_EVENT); //or testOb.dispatchEvent(PRINT_EVENT) || testObj.dispatchEvent(PRINT_EVENT);
+        OwlObserverAB.dispatchEvent(PRINT_EVENT_LAMDA1); //or testOb.dispatchEvent(PRINT_EVENT_LAMDA1) || testObj.dispatchEvent(PRINT_EVENT_LAMDA1);
+        OwlObserverAB.dispatchEvent(PRINT_EVENT_LAMDA2);
         /** it will print
          *        TestOb do you want
          *        TestObj do you want
         */
         
-        /**  if you just want TestOb class do the listen event, please use OwlObserverAB.dispatchEvent(PRINT_EVENT,testOb.getClass)
+        /**  if you just want TestOb class do the listen event, please use OwlObserverAB.dispatchEvent(PRINT_EVENT_LAMDA1,testOb.getClass) or OwlObserverAB.dispatchEvent(PRINT_EVENT_LAMDA2,TestOb.class);
          *   it will print
          *        TestOb do you want
         */        

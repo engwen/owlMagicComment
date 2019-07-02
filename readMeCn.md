@@ -151,6 +151,11 @@
                     //做你想做的一切。别忘记本包中的 SpringContextUtil 可以在这里帮你获取 bean 哦
                     return  (obj)-> System.out.println("hhhhhhh");
                 }
+                //除此之外，你還可以使用
+                public static void SystemOutYYYYY(OwlObserved owlObserved) {
+                  //被觀察者需要执行的代碼，做你想做的一切。
+                    System.out.println("----------yyy---------");
+                }
         }
 
     之后
@@ -160,8 +165,11 @@
             TestOb testOb = new TestOb();
             OwlObserverEvent Y_EVENT = new OwlObserverEvent("SystemOutYYYYY");
             OwlObserverEvent H_EVENT = new OwlObserverEvent("SystemOutHHHH");
+            OwlObserverEvent Y_LAMDA1_EVENT = new OwlObserverEvent("lamda1");
             testOb.addEventListen(Y_EVENT, testOb.SystemOutYYYYY());
             testOb.addEventListen(H_EVENT, testOb.SystemOutHHHH());
+            //---------------------------------------------------
+            testOb.addEventListen(Y_LAMDA_EVENT, TestOb::SystemOutYYYYY);
             OwlObserverAB.dispatchEvent(Y_EVENT, testOb.getClass());// For a specified event, the specified class accepts the event
             OwlObserverAB.dispatchEvent(H_EVENT);// For a specified event, all the classes that listen for that event
             testOb.dispatchEvent(H_EVENT);// == OwlObserverAB.dispatchEvent(H_EVENT); For a specified event, all the classes that listen for that event
@@ -451,7 +459,7 @@
 
 > @OwlBackToObjectAS 现在可以解决对象包含对象的时候，被包含对象的属性设置问题
 
-> 现在 xml 支持按照名称排序
+> 现在基础数据库对应的查询支持按照名称排序
 
 > 现在 MsgResultVO 支持 getInstanceSuccess 获取对象
 
@@ -461,9 +469,11 @@
 
 > @OwlTry 现在能提供 value ，便于在使用的时候输出
 
-> 添加观察者模式
-
 > 大量的代码结构优化
+
+- 新功能 
+
+> 添加观察者模式
 
  1.1.9
  
@@ -472,3 +482,7 @@
 > 现在观察者模式使用线程安全的 ConcurrentHashMap 存储数据
 
 > 观察者在接收到事件之后会开启新的线程处理所有的观察者的待执行代码
+
+> 为了防止各个版本的 logger 的冲突，现在 jar 中的所有的 logger 改成基于 JDK 自带的版本
+
+> 修改观察者的几个方法，现在更加易用

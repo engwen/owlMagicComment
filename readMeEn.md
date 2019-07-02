@@ -125,7 +125,7 @@ For example:
 1. @OwlBackToMsgResultAS
 
     Method Notes. When you want to use MsgResultVO as a return value, you can use it to change other types of return values to MsgResultVO. Usage and method
-    @ OwlBackToObjectAS
+    @OwlBackToObjectAS
 
     Almost the same. But you don't need to specify classPath
     
@@ -157,6 +157,11 @@ For example:
                 // Do whatever you want to do. Don't forget that SpringContextUtil in this package can help you get beans here.
                     return  (obj)-> System.out.println("hhhhhhh");
                 }
+                //also, you can use this
+                public static void SystemOutYYYYY(OwlObserved owlObserved) {
+                  //ode to be executed by the observer，Do whatever you want to do
+                    System.out.println("----------yyy---------");
+                }
         }
 
     after
@@ -166,8 +171,11 @@ For example:
             TestOb testOb = new TestOb();
             OwlObserverEvent Y_EVENT = new OwlObserverEvent("SystemOutYYYYY");
             OwlObserverEvent H_EVENT = new OwlObserverEvent("SystemOutHHHH");
+            OwlObserverEvent Y_LAMDA1_EVENT = new OwlObserverEvent("lamda1");
             testOb.addEventListen(Y_EVENT, testOb.SystemOutYYYYY());
             testOb.addEventListen(H_EVENT, testOb.SystemOutHHHH());
+            //---------------------------------------------------
+            testOb.addEventListen(Y_LAMDA_EVENT, TestOb::SystemOutYYYYY);
             OwlObserverAB.dispatchEvent(Y_EVENT, testOb.getClass());// For a specified event, the specified class accepts the event
             OwlObserverAB.dispatchEvent(H_EVENT);// For a specified event, all the classes that listen for that event
             testOb.dispatchEvent(H_EVENT);// == OwlObserverAB.dispatchEvent(H_EVENT); For a specified event, all the classes that listen for that event
@@ -389,7 +397,7 @@ In example, returns value types to the TestVO to MsgResultVO, content to: {"resu
  1.1.5  -  1.1.7
 
 -add. 
- @ OwlTry. 
+ @OwlTry. 
 > now you can stop writing try catch, and of course, the default return object is still MsgResultVO, which is really a pity if you can't use it. 
 
 MVC abstraction module. 
@@ -410,28 +418,28 @@ Tool acquisition for Bean.
  - Optimization
  
  > On the basis of the previous version, the implementations of CellBaseService Util and RelationBaseService Util tool classes are removed, and their work is moved to abstract classes.
- Now you can inherit CellBaseServiceAb and RelationBaseServiceAb using the service class to provide good CRUDs among them. I won't recommend you any more.
- Use these two tool classes, but you can still use them
+ Now you can inherit CellBaseServiceAb and RelationBaseServiceAb using the service class to provide good CRUDs among them. I won't recommend you
+ Use these two tool classes any more, but you can still use them
  
  > Adding IdListSO to handle ID collection problems
  
  > Now you need to use the set * Dao method when inheriting CellBaseService Ab and RelationBaseService Ab to make the abstract class understand what you are going to use
- Which is the Dao for example:
+ Which is the Dao, for example:
  
      @Resource
-     Private Owl Menu Dao owl Menu Dao;
+     Private OwlMenuDao owlMenuDao;
      @Autowired
      Public void setCellBaseDao (){
-     Sup. setCellBaseDao (owl MenuDao);
+        Super.setCellBaseDao(owlMenuDao);
      }
  
- >@ OwlSetNullDataAS can now solve the property setting problem of the contained object when it contains the object.
+ >@OwlSetNullDataAS can now solve the property setting problem of the contained object when it contains the object.
  
- >@ OwlCheck ParamsAS can now solve the property setting problem of the contained object when it contains the object.
+ >@OwlCheckParamsAS can now solve the property setting problem of the contained object when it contains the object.
  
- >@ OwlBackToObjectAS can now solve the property setting problem of the contained object when it contains the object.
+ >@OwlBackToObjectAS can now solve the property setting problem of the contained object when it contains the object.
  
- > Now XML supports sorting by name
+ > The query corresponding to the underlying database now sorts by name
  
  > Now MsgResultVO supports getInstance Success to get objects
  
@@ -439,8 +447,10 @@ Tool acquisition for Bean.
  
  > RelationBaseDao adds delete single operation
  
- >@ OwlTry now provides value for easy output when used
- 
- > Adding Observer Mode
- 
+ >@OwlTry now provides value for easy output when used
+
  > Lots of code structure optimization
+ 
+- Add
+
+ > Adding Observer Mode
