@@ -99,12 +99,12 @@ com.owl.comment.annotations
 
 This package relies on my other project, the OwlMagicUtil package, and the return object, MsgResultVO, is available at https://github.com/engwen/owlMagicUtil.
 
-The spring spring spring MVC project needs to add the following configuration in the configuration file of the spring MVC Servlet
+Spring MVC project needs to add the following configuration in the configuration file of the spring MVC Servlet
 
     <context: component-scan base-package="com.owl.comment.annotations"/>
     <aop: aspectj-autoproxy/>
 
-SpringBook users need to configure scans on project startup classes
+SpringBoot users need to configure scans on project startup classes
 
     @ComponentScan (base Packages = {"***", "com. owl", "***"})
 
