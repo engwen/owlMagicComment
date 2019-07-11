@@ -1,12 +1,12 @@
 package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlCheckParams;
+import com.owl.comment.utils.AsLogUtil;
 import com.owl.magicUtil.util.ClassTypeUtil;
 import com.owl.magicUtil.util.ObjectUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
-import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,7 +28,6 @@ import java.util.*;
 @Component
 @Order(91)
 public class OwlCheckParamsAS {
-    private static Logger logger = Logger.getLogger(OwlCheckParamsAS.class.getName());
 
     @Pointcut("@annotation(com.owl.comment.annotations.OwlCheckParams)")
     public void checkParamsCut() {
@@ -49,7 +48,7 @@ public class OwlCheckParamsAS {
 
         Object[] args = joinPoint.getArgs();
         if (args.length > 1) {
-            logger.warn("本注解仅限使用对象或Map接收参数时使用");
+            AsLogUtil.error(joinPoint, "本注解仅限使用对象或Map接收参数时使用");
             return joinPoint.proceed(joinPoint.getArgs());
         }
 
@@ -74,7 +73,7 @@ public class OwlCheckParamsAS {
         Map<String, Object> paramsBodyMap = new HashMap<>();
         Object paramsVO = args[0];
         if (ClassTypeUtil.isPackClass(paramsVO) || ClassTypeUtil.isBaseClass(paramsVO)) {
-            logger.debug("本注解仅限使用对象或Map接收参数时使用");
+            AsLogUtil.error(joinPoint, "本注解仅限使用对象或Map接收参数时使用");
         } else {
 //                使用Map接收参数
             if (paramsVO instanceof Map) {
@@ -102,13 +101,13 @@ public class OwlCheckParamsAS {
         }
 //        }
         if (hasNull) {
-            logger.debug("请求参数错误");
+            AsLogUtil.error(joinPoint, "请求参数错误");
             return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能为空", paramsIsNull));
         } else if (notAllNull.length > 0 && allOrNull) {
-            logger.debug("请求参数错误");
+            AsLogUtil.error(joinPoint, "请求参数错误");
             return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能全为空", Arrays.asList(notAllNull)));
         } else {
-            logger.debug("参数校验成功");
+            AsLogUtil.info(joinPoint, "参数校验成功");
             return joinPoint.proceed(joinPoint.getArgs());
         }
     }

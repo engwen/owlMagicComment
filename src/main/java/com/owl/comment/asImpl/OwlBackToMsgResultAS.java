@@ -1,11 +1,10 @@
 package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlBackToMsgResult;
+import com.owl.comment.utils.AsLogUtil;
 import com.owl.magicUtil.util.ObjectUtil;
-import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
-import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -16,9 +15,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 /**
  * @author engwen
  * email xiachanzou@outlook.com
@@ -28,7 +24,7 @@ import java.lang.reflect.Method;
 @Component
 @Order(94)
 public class OwlBackToMsgResultAS {
-    private static Logger logger = Logger.getLogger(OwlBackToMsgResultAS.class.getName());
+
 
     @Pointcut("@annotation(com.owl.comment.annotations.OwlBackToMsgResult)")
     public void changeBackClassCut() {
@@ -39,7 +35,7 @@ public class OwlBackToMsgResultAS {
         MsgResultVO<String> result = new MsgResultVO<>();
         result.errorResult(MsgConstant.CONTROLLER_THROWABLE_ERROR);
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        logger.error(methodSignature.getMethod().getName()+"      "+ex);
+        AsLogUtil.error(joinPoint, methodSignature.getMethod().getName() + "      " + ex);
         return result;
     }
 
@@ -62,7 +58,7 @@ public class OwlBackToMsgResultAS {
             result.setResultData(ObjectUtil.getProValue(dataName, obj));
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("转化出错");
+            AsLogUtil.error(joinPoint, "转化出错");
             return obj;
         }
         return result;

@@ -1,4 +1,4 @@
-package com.owl.memento;
+package com.owl.pattern.memento;
 
 import com.owl.magicUtil.util.ObjectUtil;
 
@@ -19,7 +19,7 @@ public abstract class OwlMemento {
     /**
      * 事件轉移。儅對象重新new或賦值時，可以使用本方法將之前的記錄移動到新的對象中
      * @param newOwlMemento 新對象
-     * @param <T> 汎型
+     * @param <T>           汎型
      * @return 汎型對象
      */
     public final <T extends OwlMemento> T transferMemento(T newOwlMemento) {
@@ -37,7 +37,7 @@ public abstract class OwlMemento {
             OwlMemento memento = ObjectUtil.setThisObjToAnotherObj(this, this.getClass().newInstance());
             mementoList.add(memento);
         } catch (Exception e) {
-            //TODO 输出错误日志
+            e.printStackTrace();
         }
     }
 

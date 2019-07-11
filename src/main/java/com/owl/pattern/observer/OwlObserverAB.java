@@ -1,12 +1,11 @@
-package com.owl.observer;
+package com.owl.pattern.observer;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
+import com.owl.factory.OwlThreadPool;
+import com.owl.pattern.observer.simplify.OwlObserverUtil;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 
 /**
  * 观察者抽象
@@ -15,46 +14,50 @@ import java.util.logging.Logger;
  * 2019/4/26.
  */
 public abstract class OwlObserverAB {
-    private static Logger logger = Logger.getLogger(OwlObserverAB.class.getName());
-    private static Map<String, Set<OwlObserved>> mapList = new HashMap<>();
+    /**
+     * 保證綫程安全
+     */
+    private static Map<String, Set<OwlObserved>> mapList = new ConcurrentHashMap<>();
 
-    //添加对象监听
+    /**
+     * 添加对象监听
+     */
     static void addEventListen(OwlObserverEvent owlObserverEvent, OwlObserved model) {
         //監聽對象注冊
-        if (!mapList.keySet().contains(owlObserverEvent.getEventName())) {
-            mapList.put(owlObserverEvent.getEventName(), new HashSet<>());
-        }
+        mapList.putIfAbsent(owlObserverEvent.getEventName(), new HashSet<>());
         mapList.get(owlObserverEvent.getEventName()).add(model);
     }
 
-    //移除監聽
-    public static void removeEventListen(OwlObserverEvent owlObserverEvent, OwlObserved model) {
+    /**
+     * 移除監聽
+     */
+    static void removeEventListen(OwlObserverEvent owlObserverEvent, OwlObserved model) {
         removeEventList(owlObserverEvent, obj -> model == obj);
     }
 
-    //移除監聽
+    /**
+     * 移除監聽
+     */
     public static void removeEventListen(OwlObserverEvent owlObserverEvent, Class classModel) {
         removeEventList(owlObserverEvent, obj -> classModel.equals(obj.getClass()));
     }
 
     private static void removeEventList(OwlObserverEvent owlObserverEvent, Predicate<OwlObserved> predicate) {
-        logger.info("移除事件监听：" + owlObserverEvent.getEventName());
         if (!mapList.keySet().contains(owlObserverEvent.getEventName())) {
             return;
         }
-        AtomicReference<OwlObserved> temp = new AtomicReference<>();
         mapList.get(owlObserverEvent.getEventName()).forEach(it -> {
             if (predicate.test(it)) {
                 it.removeListenByEvent(owlObserverEvent);
-                temp.set(it);
+                mapList.get(owlObserverEvent.getEventName()).remove(it);
             }
         });
-        mapList.get(owlObserverEvent.getEventName()).remove(temp.get());
     }
 
-    //移除監聽
+    /**
+     * 移除監聽
+     */
     public static void removeEventListen(OwlObserverEvent owlObserverEvent) {
-        logger.info("移除指定事件的全部监听：" + owlObserverEvent.getEventName());
         if (!mapList.keySet().contains(owlObserverEvent.getEventName())) {
             return;
         }
@@ -62,37 +65,62 @@ public abstract class OwlObserverAB {
         mapList.remove(owlObserverEvent.getEventName());
     }
 
-    //移除監聽
-    public static void removeAllEventListen(OwlObserved model) {
-        logger.info(String.format("移除%s的全部事件监听", model.getClass().getName()));
+    /**
+     * 移除監聽
+     */
+    public static void removeAllEventListen() {
+        mapList.values().forEach((Set<OwlObserved> it) -> it.forEach(OwlObserved::removeAllListen));
+        mapList = null;
+        mapList = new ConcurrentHashMap<>();
+    }
+
+    /**
+     * 移除監聽
+     */
+    public static void removeAllEventListenByObserved(OwlObserved... models) {
+        List<OwlObserved> modelList = Arrays.asList(models);
         mapList.keySet().forEach(key ->
                 mapList.get(key).forEach(owlObserved -> {
-                    if (owlObserved == model) {
+                    if (modelList.contains(owlObserved)) {
                         mapList.get(key).remove(owlObserved);
                     }
                 })
         );
-        model.removeAllListen();
+        modelList.forEach(OwlObserved::removeAllListen);
     }
 
-    //抛出
+    /**
+     * 抛出
+     */
     public static void dispatchEvent(OwlObserverEvent owlObserverEvent) {
         dispatchEvent(owlObserverEvent, obj -> true);
+        OwlObserverUtil.dispatchEvent(owlObserverEvent, (obj) -> true);
     }
 
-    //抛出
+    /**
+     * 抛出
+     */
     public static void dispatchEvent(OwlObserverEvent owlObserverEvent, Class classModel) {
         dispatchEvent(owlObserverEvent, obj -> obj.getClass().equals(classModel));
+        OwlObserverUtil.dispatchEvent(owlObserverEvent, obj -> obj.getClass().equals(classModel));
     }
 
     private static void dispatchEvent(OwlObserverEvent owlObserverEvent, Predicate<OwlObserved> predicate) {
-        logger.info("抛出事件监听：" + owlObserverEvent.getEventName());
-        if (null != mapList.get(owlObserverEvent.getEventName())) {
-            mapList.get(owlObserverEvent.getEventName()).forEach(it -> {
+        Set<OwlObserved> observedSet = null == mapList.get(owlObserverEvent.getEventName()) ? null : new HashSet<>(mapList.get(owlObserverEvent.getEventName()));
+
+        if (null != observedSet) {
+            observedSet.forEach(it -> {
                 if (predicate.test(it)) {
-                    it.startDoing(owlObserverEvent);
+                    OwlThreadPool.getThreadPool().execute(() -> it.startDoing(owlObserverEvent));
                 }
             });
+//            new Thread(() ->
+//                    observedSet.forEach(it -> {
+//                        if (predicate.test(it)) {
+//                            it.startDoing(owlObserverEvent);
+//                        }
+//                    })
+//            ).start();
         }
     }
 }

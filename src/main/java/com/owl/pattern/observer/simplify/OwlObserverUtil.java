@@ -1,6 +1,8 @@
-package com.owl.mediator;
+package com.owl.pattern.observer.simplify;
 
-import com.owl.observer.OwlObserverEvent;
+import com.owl.factory.OwlThreadPool;
+import com.owl.pattern.observer.OwlObserverAB;
+import com.owl.pattern.observer.OwlObserverEvent;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,7 +15,7 @@ import java.util.function.Predicate;
  * email xiachanzou@outlook.com
  * 2019/7/11.
  */
-public abstract class OwlObserver {
+public abstract class OwlObserverUtil {
     private static Map<String, Map<Object, Consumer<Object>>> observer = new ConcurrentHashMap<>();
 
     //被觀察者監聽事件
@@ -41,19 +43,19 @@ public abstract class OwlObserver {
     }
 
     public static void dispatchEvent(OwlObserverEvent event) {
-        dispatchEvent(event, (obj) -> true);
+        OwlObserverAB.dispatchEvent(event);
     }
 
     public static void dispatchEvent(OwlObserverEvent event, Class classModel) {
-        dispatchEvent(event, (obj) -> obj.getClass().equals(classModel));
+        OwlObserverAB.dispatchEvent(event, classModel);
     }
 
-    private static void dispatchEvent(OwlObserverEvent event, Predicate<Object> predicate) {
+    public static void dispatchEvent(OwlObserverEvent event, Predicate<Object> predicate) {
         Map<Object, Consumer<Object>> tempMap = observer.get(event.getEventName());
         if (null != tempMap) {
             tempMap.keySet().forEach(key -> {
                         if (predicate.test(key)) {
-                            tempMap.get(key).accept(tempMap.get(key));
+                            OwlThreadPool.getThreadPool().execute(() -> tempMap.get(key).accept(tempMap.get(key)));
                         }
                     }
             );

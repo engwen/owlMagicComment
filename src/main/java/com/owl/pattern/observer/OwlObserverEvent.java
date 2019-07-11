@@ -1,4 +1,4 @@
-package com.owl.observer;
+package com.owl.pattern.observer;
 
 /**
  * @author engwen
@@ -11,9 +11,6 @@ public class OwlObserverEvent {
     public OwlObserverEvent(String eventName) {
         this.eventName = eventName;
     }
-
-    public static OwlObserverEvent DEFAULT_EVENT = new OwlObserverEvent("默认事件");
-
 
     public String getEventName() {
         return eventName;

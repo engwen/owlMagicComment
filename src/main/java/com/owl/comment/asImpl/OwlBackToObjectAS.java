@@ -1,10 +1,10 @@
 package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlBackToObject;
+import com.owl.comment.utils.AsLogUtil;
 import com.owl.magicUtil.util.ObjectUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.vo.MsgResultVO;
-import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,8 +13,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * @author engwen
@@ -26,7 +24,6 @@ import java.lang.reflect.Method;
 @Component
 @Order(97)
 public class OwlBackToObjectAS {
-    private static Logger logger = Logger.getLogger(OwlBackToObjectAS.class.getName());
 
     @Pointcut("@annotation(com.owl.comment.annotations.OwlBackToObject)")
     public void changeBackClassCut() {
@@ -43,7 +40,7 @@ public class OwlBackToObjectAS {
         String dataName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).data();
         String resultName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).result();
         if (RegexUtil.isEmpty(classPath)) {
-            logger.error("未指定转换对象");
+            AsLogUtil.error(joinPoint, "未指定转换对象");
         } else {
             try {
                 if (obj instanceof MsgResultVO) {
@@ -62,11 +59,11 @@ public class OwlBackToObjectAS {
                         ObjectUtil.setProValue(resultName, temp.getResult(), result);
                     }
                 } else {
-                    logger.error("本注仅适用于将MsgResultVO类型转化为指定类型");
+                    AsLogUtil.error(joinPoint, "本注仅适用于将MsgResultVO类型转化为指定类型");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                logger.error("转化出错");
+                AsLogUtil.error(joinPoint, "转化出错");
             }
         }
         return result;

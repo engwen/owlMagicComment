@@ -2,6 +2,7 @@ package com.owl.comment.asImpl;
 
 
 import com.owl.comment.annotations.OwlTry;
+import com.owl.comment.utils.AsLogUtil;
 import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
@@ -13,13 +14,11 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.util.logging.Logger;
 
 @Aspect
 @Component
 @Order(190)
 public class OwlTryAS {
-    private static Logger logger = Logger.getLogger(OwlTryAS.class.getName());
 
     @Pointcut("@annotation(com.owl.comment.annotations.OwlTry)")
     public void setTryCut() {
@@ -34,9 +33,9 @@ public class OwlTryAS {
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
             String value = methodSignature.getMethod().getAnnotation(OwlTry.class).value();
             if (!RegexUtil.isEmpty(value)) {
-                logger.warning(value);
+                AsLogUtil.error(joinPoint, value);
             }
-            result.errorResult(MsgConstant.CONTROLLER_THROWABLE_ERROR);
+            result.errorResult(MsgConstant.TRY_CATCH_THROWABLE_ERROR);
             e.printStackTrace();
         }
         return result;

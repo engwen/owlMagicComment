@@ -1,5 +1,7 @@
 package com.owl.mvc.model;
 
+import java.util.Locale;
+
 /**
  * @author engwen
  * email xiachanzou@outlook.com
@@ -37,6 +39,7 @@ public class MsgConstant {
     public static MsgConstant SINGIN_ERROR = new MsgConstant("1004", "账号或密码错误错误");
 
     public static MsgConstant CONTROLLER_THROWABLE_ERROR = new MsgConstant("1005", "操作失败");
+    public static MsgConstant TRY_CATCH_THROWABLE_ERROR = new MsgConstant("1006", "网站好像出了点小问题");
 
     public MsgConstant(String code, String msg) {
         this.code = code;

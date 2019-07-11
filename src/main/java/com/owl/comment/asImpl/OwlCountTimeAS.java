@@ -1,8 +1,8 @@
 package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlCountTime;
+import com.owl.comment.utils.AsLogUtil;
 import com.owl.magicUtil.util.RegexUtil;
-import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,7 +23,6 @@ import java.util.Date;
 @Component
 @Order(90)
 public class OwlCountTimeAS {
-    private static final Logger logger = Logger.getLogger(OwlCountTimeAS.class);
     private static final double ONE_MINUTE = 1000;
     private Date startTime;
 
@@ -44,7 +43,7 @@ public class OwlCountTimeAS {
         if (!RegexUtil.isParamsHaveEmpty(countTime.classPath(), countTime.methodName())) {
 
         } else {
-            logger.info(String.format("方法 %s 花费 ： %s s", joinPoint.getSignature().getName(), second));
+            AsLogUtil.info(joinPoint, String.format("方法 %s 花费 ： %s s", joinPoint.getSignature().getName(), second));
         }
     }
 }
