@@ -1,7 +1,6 @@
 package com.owl.pattern.observer;
 
 import com.owl.factory.OwlThreadPool;
-import com.owl.pattern.observer.simplify.OwlObserverUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,17 +60,28 @@ public abstract class OwlObserverAB {
         if (!mapList.keySet().contains(owlObserverEvent.getEventName())) {
             return;
         }
+        //移除相關類中的監聽數據
         mapList.get(owlObserverEvent.getEventName()).forEach(it -> it.removeListenByEvent(owlObserverEvent));
+        //移除本類中的監聽數據
         mapList.remove(owlObserverEvent.getEventName());
+        //移除使用OwlObserverUtil中的監聽數據
+        if (null != OwlObserverUtil.observer.get(owlObserverEvent.getEventName())) {
+            OwlObserverUtil.observer.remove(owlObserverEvent.getEventName());
+        }
     }
 
     /**
      * 移除監聽
      */
     public static void removeAllEventListen() {
+        //清除繼承類中的監聽數據
         mapList.values().forEach((Set<OwlObserved> it) -> it.forEach(OwlObserved::removeAllListen));
+        //移除本類中的監聽數據
         mapList = null;
         mapList = new ConcurrentHashMap<>();
+        //移除工具類中的監聽數據
+        OwlObserverUtil.observer = null;
+        OwlObserverUtil.observer = new ConcurrentHashMap<>();
     }
 
     /**

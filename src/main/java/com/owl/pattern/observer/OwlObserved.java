@@ -1,8 +1,9 @@
 package com.owl.pattern.observer;
 
+import com.owl.pattern.function.OwlListenCode;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 /**
  * 被观察者抽象
@@ -14,14 +15,14 @@ public abstract class OwlObserved {
     /**
      * 保證綫程安全
      */
-    private Map<String, Consumer<OwlObserved>> consumerMap = new ConcurrentHashMap<>();
+    private Map<String, OwlListenCode> consumerMap = new ConcurrentHashMap<>();
 
     /**
      * 被觀察者監聽事件
      */
-    public void addEventListen(OwlObserverEvent event, Consumer<OwlObserved> consumer) {
+    public void addEventListen(OwlObserverEvent event, OwlListenCode listenCode) {
         //添加事件处理方法记录
-        consumerMap.put(event.getEventName(), consumer);
+        consumerMap.put(event.getEventName(), listenCode);
         //注冊驅動
         OwlObserverAB.addEventListen(event, this);
     }
@@ -71,10 +72,10 @@ public abstract class OwlObserved {
      * 被觀察者需要执行的代碼
      */
     void startDoing(OwlObserverEvent event) {
-        Consumer<OwlObserved> consumer = consumerMap.get(event.getEventName());
+        OwlListenCode consumer = consumerMap.get(event.getEventName());
         if (null != consumer) {
             //執行
-            consumer.accept(this);
+            consumer.startDoing();
         }
     }
 }

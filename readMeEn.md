@@ -186,6 +186,15 @@ For example:
             OwlObserverAB.dispatchEvent(Y_EVENT);
         }
 
+
+
+1. You can also use OwlObserver Util directly. The listening events he declares will also be triggered by the above methods, but please note that
+
+    It's just trying to prevent you from listening to and throwing events when classes are no longer inheritable.
+
+    My advice to you is that inheritance is the best way to achieve this, which is more efficient (you don't need to traverse the data), but you can use OwlObserver Util's throw event function
+
+
 > MVC abbreviation section (common CRUD usage)
 
 1. Spring ContextUtil
@@ -454,3 +463,38 @@ Tool acquisition for Bean.
 - Add
 
  > Adding Observer Mode
+ 
+ 
+ 
+1.1.9
+
+- Add
+
+> Memorandum mode OwlMemento
+
+Inheriting OwlMemento's classes will give you the memo function, which will restore class attribute data to the time when the memo function is used after executing the code
+At the same time, it provides a collection of historical data that you can restore to any time you use the memo function. Provide a clear method to facilitate
+You clear the cached data after using the memo
+
+- Add
+
+> Simplified version of event mechanism tool class OwlObserver Util
+
+Although it provides almost the same functionality as inheritance classes and responds to each other, I recommend that you implement it through inheritance methods.
+It's just a variant of how the target class can still listen without using extension again.
+
+- Optimizing
+
+> Now the Observer mode uses thread-safe Concurrent HashMap to store data
+
+> After the observer receives the event, it opens a new thread to process all the observer's code to be executed.
+
+> To prevent conflicts between different versions of loggers, now all loggers in jar are in a format similar to log4j based on System. out
+
+> Several ways to modify the observer are now easier to use
+
+> Modify code delivery to custom lambda delivery
+
+> Added a cache thread pool
+
+> Now even with array objects, toJSON still outputs the results correctly

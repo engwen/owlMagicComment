@@ -25,59 +25,55 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
         }
         
   ### or like this
+  
+   (build a class extends OwlMemento ,so you can restore the class to the specified state)
    
-    //(build a class extends OwlObserved ,so you can use Listening event like use Flex AS)
-    
-    public class TestOb extends OwlObserved {
-       public Consumer<OwlObserved> SystemOutYYYYY() {
-               return  (obj)-> {
-                   System.out.println("TestOb do you want");
-               };
-       }
-       public static void SystemOutYYYYY(OwlObserved owlObserved) {
-            System.out.println("----------yyy---------");
-       }
-       // and more       
-    }
-    
-    public class TestObj extends OwlObserved {
-       public Consumer<OwlObserved> SystemOutHHHHH() {
-               return  (obj)-> {
-                   System.out.println("TestObj do you want");
-               };
-       }
-       public static void SystemOutHHHHH(OwlObserved owlObserved) {
-            System.out.println("---------hhh----------");
-       }
-       // and more
-    }
-    
+     public class UserTest extends OwlMemento {
+         private String name;
+         private Integer age;
+         public String getName() {
+             return name;
+         }
+         public void setName(String name) {
+             this.name = name;
+         }
+         public Integer getAge() {
+             return age;
+         }
+         public void setAge(Integer age) {
+             this.age = age;
+         }
+     }
+ 
     //in other class you can do this :
-    
-        OwlObserverEvent PRINT_EVENT_LAMDA1 = new OwlObserverEvent("lamda1");
-        OwlObserverEvent PRINT_EVENT_LAMDA2 = new OwlObserverEvent("lamda2");
+  
+          UserTest lili = new UserTest();
+          lili.setName("lili");
+          lili.setAge(12);
+             //save state to OwlMemento
+          lili.saveToMemento();
+          lili.setAge(13);
+            //save state to OwlMemento
+          lili.saveToMemento();
+            //get first
+          System.out.println(ObjectUtil.toJSON(lili.getMementoFirst()));
+            //get last
+          System.out.println(ObjectUtil.toJSON(lili.getMementoLast()));
+            //get history
+          System.out.println(ObjectUtil.toJSON(lili.getMementoHistory()));
+          
+  
+  
+  
+   ### or like this
+   //(use Listening event like use Flex AS)
+   
+        UserTest lili = new UserTest();
+        OwlObserverEvent HH= new OwlObserverEvent("HH");
+        OwlObserverUtil.addEventListen(HH,lili,(k)-> System.out.println("hh"));
+        OwlObserverUtil.dispatchEvent(HH);
+        OwlObserverUtil.removeEventListen(HH);
         
-        TestOb testOb = new TestOb();
-        TestObj testObj = new TestObj();
-        
-        testOb.addEventListen(PRINT_EVENT_LAMDA1, testOb.SystemOutYYYYY());
-        testOb.addEventListen(PRINT_EVENT_LAMDA2, TestOb::SystemOutYYYYY);
-        testObj.addEventListen(PRINT_EVENT_LAMDA1, testObj.SystemOutHHHHH());
-        testObj.addEventListen(PRINT_EVENT_LAMDA2, TestObj::SystemOutHHHHH());
-        
-        OwlObserverAB.dispatchEvent(PRINT_EVENT_LAMDA1); //or testOb.dispatchEvent(PRINT_EVENT_LAMDA1) || testObj.dispatchEvent(PRINT_EVENT_LAMDA1);
-        OwlObserverAB.dispatchEvent(PRINT_EVENT_LAMDA2);
-        /** it will print
-         *        TestOb do you want
-         *        TestObj do you want
-        */
-        
-        /**  if you just want TestOb class do the listen event, please use OwlObserverAB.dispatchEvent(PRINT_EVENT_LAMDA1,testOb.getClass) or OwlObserverAB.dispatchEvent(PRINT_EVENT_LAMDA2,TestOb.class);
-         *   it will print
-         *        TestOb do you want
-        */        
-        
-
    
 ###  and so on
 
