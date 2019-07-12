@@ -43,11 +43,10 @@ public abstract class OwlObserverUtil {
         Map<Object, OwlListenCode> tempMap = observer.get(event.getEventName());
         if (null != tempMap) {
             tempMap.keySet().forEach(key -> {
-                        if (predicate.test(key)) {
-                            OwlThreadPool.getThreadPool().execute(() -> tempMap.get(key).startDoing());
-                        }
-                    }
-            );
+                if (predicate.test(key)) {
+                    OwlThreadPool.getThreadPool().execute(() -> tempMap.get(key).startDoing());
+                }
+            });
         }
     }
 }
