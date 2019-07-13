@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 /**
- * 觀察者
+ * 觀察者工具
  * @author engwen
  * email xiachanzou@outlook.com
  * 2019/7/11.
@@ -20,6 +20,12 @@ public abstract class OwlObserverUtil {
     public static void addEventListen(OwlObserverEvent event, Object obj, OwlListenCode listenCode) {
         Map<Object, OwlListenCode> objectConsumerMap = observer.computeIfAbsent(event.getEventName(), k -> new ConcurrentHashMap<>());
         objectConsumerMap.put(obj, listenCode);
+    }
+
+    //被觀察者監聽事件
+    public static void addEventListen(OwlObserverEvent event, OwlObserved obj, OwlListenCode listenCode) {
+        //注冊驅動
+        OwlObserverAB.addEventListen(event, obj, listenCode);
     }
 
     public static void removeEventListen(OwlObserverEvent event) {

@@ -17,14 +17,20 @@ public abstract class OwlObserved {
      */
     private Map<String, OwlListenCode> consumerMap = new ConcurrentHashMap<>();
 
+    Map<String, OwlListenCode> getConsumerMap() {
+        return consumerMap;
+    }
+
+    void setConsumerMap(Map<String, OwlListenCode> consumerMap) {
+        this.consumerMap = consumerMap;
+    }
+
     /**
      * 被觀察者監聽事件
      */
     public void addEventListen(OwlObserverEvent event, OwlListenCode listenCode) {
-        //添加事件处理方法记录
-        consumerMap.put(event.getEventName(), listenCode);
         //注冊驅動
-        OwlObserverAB.addEventListen(event, this);
+        OwlObserverAB.addEventListen(event, this, listenCode);
     }
 
     public void removeEventListen(OwlObserverEvent event) {

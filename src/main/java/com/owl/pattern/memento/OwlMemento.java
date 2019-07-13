@@ -55,7 +55,7 @@ public abstract class OwlMemento {
      * @return 快照
      */
     public final OwlMemento getMemento(int index) {
-        if (null != stateMap.get(this) && index >= 0 && stateMap.get(this).size() >= index) {
+        if (null != stateMap.get(this) && index >= 0 && stateMap.get(this).size() > index) {
             return stateMap.get(this).get(index);
         }
         return null;
@@ -74,7 +74,7 @@ public abstract class OwlMemento {
      * @return 快照
      */
     public final OwlMemento getMementoLast() {
-        if (null != stateMap.get(this)) {
+        if (null != stateMap.get(this) && stateMap.get(this).size() > 0) {
             return stateMap.get(this).get(stateMap.get(this).size() - 1);
         }
         return null;

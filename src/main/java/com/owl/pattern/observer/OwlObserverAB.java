@@ -1,13 +1,14 @@
 package com.owl.pattern.observer;
 
 import com.owl.factory.OwlThreadPool;
+import com.owl.pattern.function.OwlListenCode;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 /**
- * 观察者抽象
+ * 观察者抽象方法
  * @author engwen
  * email xiachanzou@outlook.com
  * 2019/4/26.
@@ -21,7 +22,9 @@ public abstract class OwlObserverAB {
     /**
      * 添加对象监听
      */
-    static void addEventListen(OwlObserverEvent owlObserverEvent, OwlObserved model) {
+    static void addEventListen(OwlObserverEvent owlObserverEvent, OwlObserved model, OwlListenCode listenCode) {
+        //添加事件处理方法记录
+        model.getConsumerMap().put(owlObserverEvent.getEventName(), listenCode);
         //監聽對象注冊
         mapList.putIfAbsent(owlObserverEvent.getEventName(), new HashSet<>());
         mapList.get(owlObserverEvent.getEventName()).add(model);
@@ -124,13 +127,6 @@ public abstract class OwlObserverAB {
                     OwlThreadPool.getThreadPool().execute(() -> it.startDoing(owlObserverEvent));
                 }
             });
-//            new Thread(() ->
-//                    observedSet.forEach(it -> {
-//                        if (predicate.test(it)) {
-//                            it.startDoing(owlObserverEvent);
-//                        }
-//                    })
-//            ).start();
         }
     }
 }

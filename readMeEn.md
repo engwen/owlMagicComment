@@ -480,8 +480,8 @@ You clear the cached data after using the memo
 
 > Simplified version of event mechanism tool class OwlObserver Util
 
-Although it provides almost the same functionality as inheritance classes and responds to each other, I recommend that you implement it through inheritance methods.
-It's just a variant of how the target class can still listen without using extension again.
+Although it provides almost the same functionality as inheritance classes, and has been basically connected with the functionality of the reason - and the inheritance classes can respond to each other, I recommend that you implement it through inheritance methods.
+It's just a variant of how the target class can still listen if it can't use extension again.
 
 - Optimizing
 
