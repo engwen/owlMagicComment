@@ -4,8 +4,6 @@ import com.owl.magicUtil.util.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 備忘錄模式 抽象
@@ -14,7 +12,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * 2019/7/11.
  */
 public abstract class OwlMemento {
-    private static Map<OwlMemento, List<OwlMemento>> stateMap = new ConcurrentHashMap<>();
+    private List<OwlMemento> mementoList = new ArrayList<>();
+
+    public List<OwlMemento> getMementoList() {
+        return mementoList;
+    }
+
+    public void setMementoList(List<OwlMemento> mementoList) {
+        this.mementoList = mementoList;
+    }
 
     /**
      * 事件轉移。儅對象重新new或賦值時，可以使用本方法將之前的記錄移動到新的對象中
@@ -23,8 +29,8 @@ public abstract class OwlMemento {
      * @return 汎型對象
      */
     public final <T extends OwlMemento> T transferMemento(T newOwlMemento) {
-        stateMap.put(newOwlMemento, stateMap.get(this));
-        stateMap.remove(this);
+        newOwlMemento.getMementoList().addAll(mementoList);
+        clearMementoHistory();
         return newOwlMemento;
     }
 
@@ -33,9 +39,8 @@ public abstract class OwlMemento {
      */
     public final void saveToMemento() {
         try {
-            List<OwlMemento> mementoList = stateMap.computeIfAbsent(this, k -> new ArrayList<>());
-            OwlMemento memento = ObjectUtil.setThisObjToAnotherObj(this, this.getClass().newInstance());
-            mementoList.add(memento);
+            OwlMemento owlMemento = ObjectUtil.setThisObjToAnotherObj(this, this.getClass().newInstance());
+            mementoList.add(owlMemento);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,7 +51,7 @@ public abstract class OwlMemento {
      * @return 歷史快照集合
      */
     public final List<OwlMemento> getMementoHistory() {
-        return stateMap.get(this);
+        return mementoList;
     }
 
     /**
@@ -55,8 +60,8 @@ public abstract class OwlMemento {
      * @return 快照
      */
     public final OwlMemento getMemento(int index) {
-        if (null != stateMap.get(this) && index >= 0 && stateMap.get(this).size() > index) {
-            return stateMap.get(this).get(index);
+        if (index >= 0 && mementoList.size() > index) {
+            return mementoList.get(index);
         }
         return null;
     }
@@ -74,8 +79,8 @@ public abstract class OwlMemento {
      * @return 快照
      */
     public final OwlMemento getMementoLast() {
-        if (null != stateMap.get(this) && stateMap.get(this).size() > 0) {
-            return stateMap.get(this).get(stateMap.get(this).size() - 1);
+        if (mementoList.size() > 0) {
+            return mementoList.get(mementoList.size() - 1);
         }
         return null;
     }
@@ -84,6 +89,7 @@ public abstract class OwlMemento {
      * 清除歷史快照
      */
     public final void clearMementoHistory() {
-        stateMap.remove(this);
+        mementoList = null;
+        mementoList = new ArrayList<>();
     }
 }
