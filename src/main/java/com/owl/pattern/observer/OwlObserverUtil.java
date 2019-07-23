@@ -6,6 +6,7 @@ import com.owl.pattern.function.OwlListenCode;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 觀察者工具
@@ -48,11 +49,9 @@ public abstract class OwlObserverUtil {
     static void dispatchEvent(OwlObserverEvent event, Predicate<Object> predicate) {
         Map<Object, OwlListenCode> tempMap = observer.get(event.getEventName());
         if (null != tempMap) {
-            tempMap.keySet().forEach(key -> {
-                if (predicate.test(key)) {
-                    OwlThreadPool.getThreadPool().execute(() -> tempMap.get(key).startDoing());
-                }
-            });
+            tempMap.keySet().stream().filter(predicate).collect(Collectors.toList()).forEach(key ->
+                    OwlThreadPool.getThreadPool().execute(() -> tempMap.get(key).startDoing())
+            );
         }
     }
 }

@@ -6,6 +6,7 @@ import com.owl.pattern.function.OwlListenCode;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 观察者抽象方法
@@ -48,12 +49,18 @@ public abstract class OwlObserverAB {
         if (!mapList.keySet().contains(owlObserverEvent.getEventName())) {
             return;
         }
-        mapList.get(owlObserverEvent.getEventName()).forEach(it -> {
-            if (predicate.test(it)) {
-                it.removeListenByEvent(owlObserverEvent);
-                mapList.get(owlObserverEvent.getEventName()).remove(it);
-            }
+
+        mapList.get(owlObserverEvent.getEventName()).parallelStream().filter(predicate).collect(Collectors.toList()).forEach(it -> {
+            it.removeListenByEvent(owlObserverEvent);
+            mapList.get(owlObserverEvent.getEventName()).remove(it);
         });
+//  升级后使用上方方法进行数据处理——多任务多线程流式处理
+//        mapList.get(owlObserverEvent.getEventName()).forEach(it -> {
+//            if (predicate.test(it)) {
+//                it.removeListenByEvent(owlObserverEvent);
+//                mapList.get(owlObserverEvent.getEventName()).remove(it);
+//            }
+//        });
     }
 
     /**
@@ -93,11 +100,10 @@ public abstract class OwlObserverAB {
     public static void removeAllEventListenByObserved(OwlObserved... models) {
         List<OwlObserved> modelList = Arrays.asList(models);
         mapList.keySet().forEach(key ->
-                mapList.get(key).forEach(owlObserved -> {
-                    if (modelList.contains(owlObserved)) {
-                        mapList.get(key).remove(owlObserved);
-                    }
-                })
+//                        mapList.get(key).stream().filter(modelList::contains).map((owlObserved)-> mapList.get(key).remove(owlObserved)).collect(Collectors.toList())
+                mapList.get(key).stream().filter(modelList::contains).collect(Collectors.toList()).forEach(owlObserved ->
+                        mapList.get(key).remove(owlObserved)
+                )
         );
         modelList.forEach(OwlObserved::removeAllListen);
     }
@@ -120,13 +126,10 @@ public abstract class OwlObserverAB {
 
     private static void dispatchEvent(OwlObserverEvent owlObserverEvent, Predicate<OwlObserved> predicate) {
         Set<OwlObserved> observedSet = null == mapList.get(owlObserverEvent.getEventName()) ? null : new HashSet<>(mapList.get(owlObserverEvent.getEventName()));
-
         if (null != observedSet) {
-            observedSet.forEach(it -> {
-                if (predicate.test(it)) {
-                    OwlThreadPool.getThreadPool().execute(() -> it.startDoing(owlObserverEvent));
-                }
-            });
+            observedSet.stream().filter(predicate).collect(Collectors.toList()).forEach(it ->
+                    OwlThreadPool.getThreadPool().execute(() -> it.startDoing(owlObserverEvent))
+            );
         }
     }
 }

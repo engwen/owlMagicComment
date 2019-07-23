@@ -51,6 +51,10 @@ public final class MsgResultVO<T> extends ModelPrototype {
         return new MsgResultVO<T>().successResult(t);
     }
 
+    public static <T> MsgResultVO<T> getInstanceError(MsgConstant msgConstant) {
+        return new MsgResultVO<T>().errorResult(msgConstant);
+    }
+
     /*----------------------------  构造函数结束  --------------------------------*/
 
     /**

@@ -11,6 +11,18 @@ public class RelationDTO {
     private Long id;
     private List<Long> idList;
 
+    public RelationDTO() {
+    }
+
+    public RelationDTO(Long id, List<Long> idList) {
+        this.id = id;
+        this.idList = idList;
+    }
+
+    public static RelationDTO getInstance(Long id, List<Long> idList) {
+        return new RelationDTO(id, idList);
+    }
+
     public Long getId() {
         return id;
     }
