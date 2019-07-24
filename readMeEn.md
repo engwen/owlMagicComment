@@ -21,29 +21,31 @@ Use this annotation to set the default returned object to MsgResultVO
 For example:
 
    Original code:
-            
-        @RequestMapping("/signin")
-        public MsgResultVO signin(User user) {
-            MsgResultVO result = new MsgResultVO();
-            if(null==user.getPassword || "" == user.getPassword ){
-                result.errorMsg("The password must not be empty.");
-            } else if(null==user.getAccount || ""==user.getAccount ){
-                result.errorMsg("Account can not be empty.");
-            } else {
-                result = userService.signin(user);
-            }
-            return result;
+    
+    @RequestMapping("signin")        
+    public MsgResultVO signin(OwlUser user) {
+        MsgResultVO result = new MsgResultVO();
+        if(null == user.getAccount() && null == user.getEmail() && user.getMobile() == null){
+            return result.errorResult("account、email、mobile not be all null");
         }
-
+        if(null== user.getPassword()){
+            return result.errorResult("password not be all null");
+        }
+        return owlAuthService.signin(user);
+    }
+    
    Using annotation Code:
 
-        @RequestMapping("/signin")
-        @OwlCheckParams(notNull={"account","password"})
-        public MsgResultVO signin(User user) {
-            return userService.signin(user);
-        }
+    @RequestMapping("signin")
+    @OwlCountTime
+    @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
+    public Object signin(@RequestBody OwlUser user) {
+        return owlAuthService.signin(user);
+    }
 
-   it will return {"result":false,"resultCode":"0002","resultMsg":" account,password must not be empty.","resultData":null,"params":{}}
+   it will return {"result":false,"resultCode":"0002","resultMsg":"request params account,email,mobile cannot be all null.","resultData":null,"params":{}}
+  or {"result":false,"resultCode":"0002","resultMsg":"request params password can`t be null.","resultData":null,"params":{}}
+  or {"result":true,"resultCode":"0000","resultMsg":"request success.","resultData":null,"params":{}}
     Save time for writing code.
 
 1. @OwlLogInfo
@@ -82,7 +84,7 @@ For example:
             
     Printing
         
-        [INFO][2019-06-10 10:59:58][com.owl.shiro.controller.AuthController] - 方法 signin 花费 ： 0.028 s
+        [INFO][2019-06-10 10:59:58][com.owl.shiro.controller.AuthController] - method name: signin cost: 0.21 seconds
         
 1. @OwlSetNullData
 

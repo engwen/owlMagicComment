@@ -57,7 +57,7 @@ public class OwlSetNullDataAS {
 //          从对象中獲取參數
                 Object paramsVO = joinPoint.getArgs()[0];
                 if (ClassTypeUtil.isPackClass(paramsVO) || ClassTypeUtil.isBaseClass(paramsVO)) {
-                    AsLogUtil.error(joinPoint, "本注解仅限使用对象或Map接收参数时使用");
+                    AsLogUtil.error(joinPoint, "This annotation is limited to objects or Maps that receive parameters");
                 } else {
 //                使用Map接收参数
                     if (paramsVO instanceof Map) {
@@ -93,7 +93,7 @@ public class OwlSetNullDataAS {
         Field[] fields = ObjectUtil.getSupperClassProperties(resultDataObj, new Field[0]);
         if (!RegexUtil.isEmpty(resultDataObj)) {
             if (ClassTypeUtil.isBaseClass(resultDataObj) || ClassTypeUtil.isPackClass(resultDataObj)) {
-                logger.warning("不支持除 resultData 为基础类型及其他包装类的对象");
+                logger.warning("Objects of base type and other wrapper classes other than resultData are not supported");
             } else if (resultDataObj instanceof MsgResultVO) {
                 MsgResultVO resultVO = (MsgResultVO) resultDataObj;
                 Object obj = resultVO.getResultData();
@@ -145,7 +145,7 @@ public class OwlSetNullDataAS {
         Map<String, Object> temp = (Map<String, Object>) resultDataObj;
         for (String param : setNullDatas) {
             if (ClassTypeUtil.isBaseClass(temp.get(param))) {
-                logger.warning("不支持除 Map的value 为基础类型及其包装类或是集合的对象");
+                logger.warning("Objects that do not support base types other than Map value and their wrapper classes or collections");
             } else {
                 temp.put(param, null);
             }
@@ -168,7 +168,7 @@ public class OwlSetNullDataAS {
         } else if (className.equals(Date.class)) {
             method.invoke(obj, (Date) null);
         } else {
-            logger.warning(className + "类型不予支持");
+            logger.warning(className + "Type not supported");
         }
     }
 }

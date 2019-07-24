@@ -10,15 +10,15 @@ public class MsgConstant {
     private String msg;
 
     public static MsgConstant REQUEST_SUCCESS = new MsgConstant("0000", "request success");
-    public static MsgConstant REQUEST_DEFAULT = new MsgConstant("0001", "默认返回数据");
-    public static MsgConstant REQUEST_PARAMETER_ERROR = new MsgConstant("0002", "请求参数错误");
-    public static MsgConstant REQUEST_NO_KNOW_ERROR = new MsgConstant("0003", "未知错误");
-    public static MsgConstant REQUEST_NOT_EXITS = new MsgConstant("0008", "没有符合要求的数据");
-    public static MsgConstant REQUEST_IS_EXITS = new MsgConstant("0009", "该数据已存在");
-    public static MsgConstant REQUEST_METHOD_NOT_EXITS = new MsgConstant("0011", "该方法（接口）不存在，请检查代码");
-    public static MsgConstant REQUEST_BACK_ARE_LIST = new MsgConstant("0013", "符合条件的数据不唯一");
-    public static MsgConstant CONTROLLER_THROWABLE_ERROR = new MsgConstant("1005", "操作失败");
-    public static MsgConstant TRY_CATCH_THROWABLE_ERROR = new MsgConstant("1006", "网站好像出了点小问题");
+    public static MsgConstant REQUEST_DEFAULT = new MsgConstant("0001", "default return data");
+    public static MsgConstant REQUEST_PARAMETER_ERROR = new MsgConstant("0002", "request parameter error");
+    public static MsgConstant REQUEST_NO_KNOW_ERROR = new MsgConstant("0003", "unknown error");
+    public static MsgConstant REQUEST_NOT_EXITS = new MsgConstant("0008", "No required data");
+    public static MsgConstant REQUEST_IS_EXITS = new MsgConstant("0009", "This data already exists");
+    public static MsgConstant REQUEST_METHOD_NOT_EXITS = new MsgConstant("0011", "This method (interface) does not exist. Please check the code.");
+    public static MsgConstant REQUEST_BACK_ARE_LIST = new MsgConstant("0013", "Qualified data are not unique");
+    public static MsgConstant CONTROLLER_THROWABLE_ERROR = new MsgConstant("1005", "operation failed");
+    public static MsgConstant TRY_CATCH_THROWABLE_ERROR = new MsgConstant("1006", "There seems to be something wrong with the website.");
 
     public static MsgConstant REQUEST_CANT_UPDATE_ADMIN = new MsgConstant("0010", "管理员状态不可修改");
     public static MsgConstant REQUEST_DB_ERROR = new MsgConstant("0012", "底层sql错误,请检查代码");

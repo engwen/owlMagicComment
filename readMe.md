@@ -55,14 +55,15 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
           lili.setAge(13);
             //save state to OwlMemento
           lili.saveToMemento();
-            //get first
-          System.out.println(ObjectUtil.toJSON(lili.getMementoFirst()));
+            //get first 
+          System.out.println(ObjectUtil.toJSON(lili.getMementoFirst()));//{"name":"lili","age":"10"}
             //get last
-          System.out.println(ObjectUtil.toJSON(lili.getMementoLast()));
+          System.out.println(ObjectUtil.toJSON(lili.getMementoLast()));//{"name":"lili","age":"13"}
             //get history
-          System.out.println(ObjectUtil.toJSON(lili.getMementoHistory()));
-          
-  
+          System.out.println(ObjectUtil.toJSON(lili.getMementoHistory()));//[{"name":"lili","age":"10"},{"name":"lili","age":"13"}]
+          UserTest wade = lili.transferMemento(new UserTest());
+            //transfer history
+          System.out.println(ObjectUtil.toJSON(zhangsan.getMementoHistory(0)));//[{"name":"lili","age":"10"},{"name":"lili","age":"13"}]
   
   
    ### or like this
@@ -71,7 +72,10 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
         UserTest lili = new UserTest();
         OwlObserverEvent HH= new OwlObserverEvent("HH");
         OwlObserverUtil.addEventListen(HH,lili,(k)-> System.out.println("hh"));
-        OwlObserverUtil.dispatchEvent(HH);
+        
+     //in other class you can do this :
+     
+        OwlObserverUtil.dispatchEvent(HH);//ListenCode in listening will be executed .it will print "hh"
         OwlObserverUtil.removeEventListen(HH);
         
    
@@ -93,11 +97,11 @@ com.owl.comment.annotations
 </dependency>
 ```
 
-This package relies on my other project, the OwlMagicUtil package, and the return object, MsgResultVO, is available at https://github.com/engwen/owlMagicUtil.
+This package relies on my other project, the OwlMagicUtil package, is available at https://github.com/engwen/owlMagicUtil.
 
-Spring MVC project needs to add the following configuration in the configuration file of the spring MVC Servlet
 
-    <context: component-scan base-package="com.owl.comment.annotations"/>
+    <context: component-scan base-package="com.owl.comment.annotations"/>Spring MVC project needs to add the following configuration in the configuration file of the spring MVC Servlet
+
     <aop: aspectj-autoproxy/>
 
 SpringBoot users need to configure scans on project startup classes
@@ -123,7 +127,7 @@ com.owl.comment.annotations
 </dependency>
 ```
 
-本包依赖于我的另一个项目OwlMagicUtil包，返回对象 MsgResultVO 请参考 https://github.com/engwen/owlMagicUtil
+本包依赖于我的另一个项目OwlMagicUtil包， 请参考 https://github.com/engwen/owlMagicUtil
 
 spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以下配置
 

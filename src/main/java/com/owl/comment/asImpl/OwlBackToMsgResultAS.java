@@ -58,7 +58,7 @@ public class OwlBackToMsgResultAS {
             result.setResultData(ObjectUtil.getProValue(dataName, obj));
         } catch (Exception e) {
             e.printStackTrace();
-            AsLogUtil.error(joinPoint, "转化出错");
+            AsLogUtil.error(joinPoint, "Conversion error");
             return obj;
         }
         return result;

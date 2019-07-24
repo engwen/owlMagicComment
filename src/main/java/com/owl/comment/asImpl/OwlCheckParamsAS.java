@@ -48,7 +48,7 @@ public class OwlCheckParamsAS {
 
         Object[] args = joinPoint.getArgs();
         if (args.length > 1) {
-            AsLogUtil.error(joinPoint, "本注解仅限使用对象或Map接收参数时使用");
+            AsLogUtil.error(joinPoint, "This annotation is limited to objects or Maps that receive parameters");
             return joinPoint.proceed(joinPoint.getArgs());
         }
 
@@ -73,7 +73,7 @@ public class OwlCheckParamsAS {
         Map<String, Object> paramsBodyMap = new HashMap<>();
         Object paramsVO = args[0];
         if (ClassTypeUtil.isPackClass(paramsVO) || ClassTypeUtil.isBaseClass(paramsVO)) {
-            AsLogUtil.error(joinPoint, "本注解仅限使用对象或Map接收参数时使用");
+            AsLogUtil.error(joinPoint, "This annotation is limited to objects or Maps that receive parameters");
         } else {
 //                使用Map接收参数
             if (paramsVO instanceof Map) {
@@ -101,13 +101,13 @@ public class OwlCheckParamsAS {
         }
 //        }
         if (hasNull) {
-            AsLogUtil.error(joinPoint, "请求参数错误");
-            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能为空", paramsIsNull));
+            AsLogUtil.error(joinPoint, "Request Params Error");
+            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("request params %s can`t be null", paramsIsNull));
         } else if (notAllNull.length > 0 && allOrNull) {
-            AsLogUtil.error(joinPoint, "请求参数错误");
-            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("请求参数 %s 不能全为空", Arrays.asList(notAllNull)));
+            AsLogUtil.error(joinPoint, "Request Params Error");
+            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("request params %s can`t all be null", Arrays.asList(notAllNull)));
         } else {
-            AsLogUtil.info(joinPoint, "参数校验成功");
+            AsLogUtil.info(joinPoint, "Successful Params Check");
             return joinPoint.proceed(joinPoint.getArgs());
         }
     }

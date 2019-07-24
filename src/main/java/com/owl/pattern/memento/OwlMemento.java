@@ -1,5 +1,6 @@
 package com.owl.pattern.memento;
 
+import com.owl.magicUtil.model.ModelPrototype;
 import com.owl.magicUtil.util.ObjectUtil;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * 2019/7/11.
  */
-public abstract class OwlMemento {
+public abstract class OwlMemento extends ModelPrototype {
     private List<OwlMemento> mementoList = new ArrayList<>();
 
     public List<OwlMemento> getMementoList() {

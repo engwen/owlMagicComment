@@ -43,7 +43,7 @@ public class OwlCountTimeAS {
         if (!RegexUtil.isParamsHaveEmpty(countTime.classPath(), countTime.methodName())) {
 
         } else {
-            AsLogUtil.info(joinPoint, String.format("方法 %s 花费 ： %s s", joinPoint.getSignature().getName(), second));
+            AsLogUtil.info(joinPoint, String.format("method name: %s cost: %s seconds", joinPoint.getSignature().getName(), second));
         }
     }
 }

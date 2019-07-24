@@ -40,7 +40,7 @@ public class OwlBackToObjectAS {
         String dataName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).data();
         String resultName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).result();
         if (RegexUtil.isEmpty(classPath)) {
-            AsLogUtil.error(joinPoint, "未指定转换对象");
+            AsLogUtil.error(joinPoint, "no conversion object is specified");
         } else {
             try {
                 if (obj instanceof MsgResultVO) {
@@ -59,11 +59,11 @@ public class OwlBackToObjectAS {
                         ObjectUtil.setProValue(resultName, temp.getResult(), result);
                     }
                 } else {
-                    AsLogUtil.error(joinPoint, "本注仅适用于将MsgResultVO类型转化为指定类型");
+                    AsLogUtil.error(joinPoint, "This note applies only to the conversion of MsgResultVO types to specified types");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                AsLogUtil.error(joinPoint, "转化出错");
+                AsLogUtil.error(joinPoint, "Conversion error");
             }
         }
         return result;
