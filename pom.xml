@@ -23,6 +23,7 @@
         <aspectj-aspectjweaver.version>1.9.4</aspectj-aspectjweaver.version>
         <spring-web.version>4.2.5.RELEASE</spring-web.version>
         <groovy.version>2.5.7</groovy.version>
+        <jackson-databind.version>2.9.5</jackson-databind.version>
     </properties>
     <build>
         <plugins>
@@ -96,6 +97,11 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj-aspectjweaver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
         </dependency>
     </dependencies>
 
