@@ -1,8 +1,8 @@
 package com.owl.mvc.vo;
 
 
-import com.owl.magicUtil.model.ModelPrototype;
-import com.owl.magicUtil.util.RegexUtil;
+import com.owl.model.ModelPrototype;
+import com.owl.util.RegexUtil;
 
 import java.util.ArrayList;
 import java.util.List;

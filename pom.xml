@@ -6,7 +6,7 @@
 
     <groupId>com.github.engwen</groupId>
     <artifactId>owlMagicComment</artifactId>
-    <version>1.1.9</version>
+    <version>1.2.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +15,7 @@
         <maven.test.skip>true</maven.test.skip>
 
         <!-- 工具包版本 -->
-        <owlMagicUtil.version>2.3.9</owlMagicUtil.version>
+        <owlMagicUtil.version>2.4.0</owlMagicUtil.version>
         <junit.version>4.11</junit.version>
         <groovy.version>2.5.7</groovy.version>
         <javax-javaee-api.version>8.0.1</javax-javaee-api.version>

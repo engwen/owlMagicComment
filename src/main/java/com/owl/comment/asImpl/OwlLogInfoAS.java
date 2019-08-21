@@ -2,7 +2,7 @@ package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlLogInfo;
 import com.owl.comment.utils.AsLogUtil;
-import com.owl.magicUtil.util.RegexUtil;
+import com.owl.util.RegexUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

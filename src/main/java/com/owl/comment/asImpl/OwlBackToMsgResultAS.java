@@ -2,7 +2,7 @@ package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlBackToMsgResult;
 import com.owl.comment.utils.AsLogUtil;
-import com.owl.magicUtil.util.ObjectUtil;
+import com.owl.util.ObjectUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
 import org.aspectj.lang.JoinPoint;

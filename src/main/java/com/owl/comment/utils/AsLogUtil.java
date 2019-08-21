@@ -1,6 +1,6 @@
 package com.owl.comment.utils;
 
-import com.owl.magicUtil.util.DateCountUtil;
+import com.owl.util.DateCountUtil;
 import org.aspectj.lang.JoinPoint;
 
 import java.util.Date;

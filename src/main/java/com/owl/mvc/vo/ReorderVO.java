@@ -1,6 +1,6 @@
 package com.owl.mvc.vo;
 
-import com.owl.magicUtil.model.ModelPrototype;
+import com.owl.model.ModelPrototype;
 
 /**
  * 排序基类
