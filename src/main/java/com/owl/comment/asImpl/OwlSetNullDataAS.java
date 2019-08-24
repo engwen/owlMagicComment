@@ -2,9 +2,9 @@ package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlSetNullData;
 import com.owl.comment.utils.AsLogUtil;
-import com.owl.magicUtil.util.ClassTypeUtil;
-import com.owl.magicUtil.util.ObjectUtil;
-import com.owl.magicUtil.util.RegexUtil;
+import com.owl.util.ClassTypeUtil;
+import com.owl.util.ObjectUtil;
+import com.owl.util.RegexUtil;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
 import org.aspectj.lang.ProceedingJoinPoint;

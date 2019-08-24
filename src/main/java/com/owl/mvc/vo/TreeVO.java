@@ -1,6 +1,6 @@
 package com.owl.mvc.vo;
 
-import com.owl.magicUtil.model.ModelPrototype;
+import com.owl.model.ModelPrototype;
 
 import java.util.ArrayList;
 import java.util.List;

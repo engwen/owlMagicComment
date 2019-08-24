@@ -15,7 +15,7 @@
         <maven.test.skip>true</maven.test.skip>
 
         <!-- 工具包版本 -->
-        <owlMagicUtil.version>2.3.9</owlMagicUtil.version>
+        <owlMagicUtil.version>2.4.0</owlMagicUtil.version>
         <junit.version>4.11</junit.version>
         <groovy.version>2.5.7</groovy.version>
         <javax-javaee-api.version>8.0.1</javax-javaee-api.version>

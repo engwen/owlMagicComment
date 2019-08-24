@@ -1,8 +1,8 @@
 package com.owl.mvc.vo;
 
 
-import com.owl.magicUtil.model.ModelPrototype;
-import com.owl.magicUtil.util.ObjectUtil;
+import com.owl.model.ModelPrototype;
+import com.owl.util.ObjectUtil;
 import com.owl.mvc.model.MsgConstant;
 
 import java.util.HashMap;
