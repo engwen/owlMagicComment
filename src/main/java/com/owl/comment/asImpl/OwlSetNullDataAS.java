@@ -141,6 +141,7 @@ public class OwlSetNullDataAS {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static void setNullByMap(String[] setNullDatas, Object resultDataObj) {
         Map<String, Object> temp = (Map<String, Object>) resultDataObj;
         for (String param : setNullDatas) {

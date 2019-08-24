@@ -12,8 +12,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface OwlCountTime {
-
-    String classPath() default "";
-
-    String methodName() default "";
 }

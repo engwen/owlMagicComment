@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +23,10 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-@Order(97)
+@Order(94)
 public class OwlBackToObjectAS {
 
-    @Pointcut("@annotation(com.owl.comment.annotations.OwlBackToObject)")
+    @Pointcut("@within(com.owl.comment.annotations.OwlBackToObject)")
     public void changeBackClassCut() {
     }
 
@@ -34,16 +35,24 @@ public class OwlBackToObjectAS {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Object obj = joinPoint.proceed();
         Object result = obj;
-        String classPath = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).classPath();
-        String codeName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).code();
-        String msgName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).msg();
-        String dataName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).data();
-        String resultName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).result();
+        OwlBackToObject annotation = methodSignature.getMethod().getAnnotation(OwlBackToObject.class);
+        if (null == annotation) {
+            annotation = AnnotationUtils.findAnnotation(methodSignature.getMethod().getDeclaringClass(), OwlBackToObject.class);
+        }
+        if (null == annotation) {
+            AsLogUtil.error(joinPoint, "@OwlBackToObject can`t all params are null");
+            return obj;
+        }
+        String classPath = annotation.classPath();
+        String codeName = annotation.code();
+        String msgName = annotation.msg();
+        String dataName = annotation.data();
+        String resultName = annotation.result();
 
-        String oldCodeName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).oldCode();
-        String oldMsgName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).oldMsg();
-        String oldDataName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).oldData();
-        String oldResultName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).oldResult();
+        String oldCodeName = annotation.oldCode();
+        String oldMsgName = annotation.oldMsg();
+        String oldDataName = annotation.oldData();
+        String oldResultName = annotation.oldResult();
         if (RegexUtil.isEmpty(classPath)) {
             AsLogUtil.error(joinPoint, "no conversion object is specified");
         } else {

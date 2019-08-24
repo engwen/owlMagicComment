@@ -53,16 +53,7 @@
             <version>${owlMagicUtil.version}</version>
         </dependency>
 
-        <!-- 添加junit4依赖 -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <!-- 指定范围，在测试时才会加载 -->
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
+<!--        <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-ant</artifactId>
             <version>${groovy.version}</version>
@@ -72,7 +63,16 @@
             <artifactId>groovy-all</artifactId>
             <version>${groovy.version}</version>
             <type>pom</type>
+        </dependency>-->
+        <!-- 添加junit4依赖 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <!-- 指定范围，在测试时才会加载 -->
+            <scope>test</scope>
         </dependency>
+
 
         <!--aop 依赖-->
         <dependency>

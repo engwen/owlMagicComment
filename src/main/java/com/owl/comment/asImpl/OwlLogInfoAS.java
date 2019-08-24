@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,10 @@ public class OwlLogInfoAS {
     public void logInfo(JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         OwlLogInfo owlLogInfo = methodSignature.getMethod().getAnnotation(OwlLogInfo.class);
+
+        if (null == owlLogInfo) {
+            owlLogInfo = AnnotationUtils.findAnnotation(methodSignature.getMethod().getDeclaringClass(), OwlLogInfo.class);
+        }
         //方法注解
         if (null != owlLogInfo && !RegexUtil.isEmpty(owlLogInfo.value())) {
             AsLogUtil.info(joinPoint, owlLogInfo.value());

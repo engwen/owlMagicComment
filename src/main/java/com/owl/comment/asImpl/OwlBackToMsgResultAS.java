@@ -5,6 +5,7 @@ import com.owl.comment.utils.AsLogUtil;
 import com.owl.util.ObjectUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
+import com.owl.util.RegexUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -12,6 +13,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -22,11 +24,11 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-@Order(94)
+@Order(97)
 public class OwlBackToMsgResultAS {
 
 
-    @Pointcut("@annotation(com.owl.comment.annotations.OwlBackToMsgResult)")
+    @Pointcut("@within(com.owl.comment.annotations.OwlBackToMsgResult)")
     public void changeBackClassCut() {
     }
 
@@ -46,11 +48,20 @@ public class OwlBackToMsgResultAS {
             return obj;
         MsgResultVO<Object> result = new MsgResultVO<>();
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        String codeName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).code();
-        String msgName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).msg();
-        String dataName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).data();
-        String resultName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).result();
-
+        //方法上存在注释
+        OwlBackToMsgResult annotation = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class);
+        if (null == annotation) {
+            //尋找類上的注釋
+            annotation = AnnotationUtils.findAnnotation(methodSignature.getMethod().getDeclaringClass(), OwlBackToMsgResult.class);
+        }
+        if (null == annotation) {
+            AsLogUtil.error(joinPoint, "@OwlbackToMsgResult can`t all params are null");
+            return obj;
+        }
+        String codeName = annotation.code();
+        String msgName = annotation.msg();
+        String dataName = annotation.data();
+        String resultName = annotation.result();
         try {
             if (!RegexUtil.isEmpty(codeName)) {
                 result.setResultCode((String) ObjectUtil.getProValue(codeName, obj));
