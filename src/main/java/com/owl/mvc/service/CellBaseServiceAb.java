@@ -5,9 +5,11 @@ import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
+import com.owl.mvc.so.IdListSO;
 import com.owl.mvc.utils.CellBaseServiceUtil;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -17,12 +19,10 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/04/22.
  */
-public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
-    private CellBaseDao<T> cellBaseDao;
+public abstract class CellBaseServiceAb<M extends CellBaseDao<T>, T> implements CellBaseService<T> {
 
-    public void setCellBaseDao(CellBaseDao<T> cellBaseDao) {
-        this.cellBaseDao = cellBaseDao;
-    }
+    @Autowired
+    private M cellBaseDao;
 
     /**
      * 創建
@@ -148,6 +148,16 @@ public abstract class CellBaseServiceAb<T> implements CellBaseService<T> {
     @Override
     public MsgResultVO<PageVO<T>> list(Boolean getAll, Integer requestPage, Integer rows, T model) {
         return CellBaseServiceUtil.list(cellBaseDao, getAll, requestPage, rows, model);
+    }
+
+    /**
+     * 查詢指定集合
+     * @param idListSO 内含汎型對象
+     * @return list
+     */
+    @Override
+    public MsgResultVO<List<T>> selectByIdList(IdListSO idListSO){
+        return CellBaseServiceUtil.selectByIdList(cellBaseDao, idListSO);
     }
 
     /**

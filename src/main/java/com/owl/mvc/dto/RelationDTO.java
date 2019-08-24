@@ -3,12 +3,19 @@ package com.owl.mvc.dto;
 import java.util.List;
 
 /**
+ * 关系接收类
  * @author engwen
  * email xiachanzou@outlook.com
  * 2019/4/29.
  */
 public class RelationDTO {
+    /*
+    * 主id
+    * */
     private Long id;
+    /*
+    * 副id集合
+    * */
     private List<Long> idList;
 
     public RelationDTO() {

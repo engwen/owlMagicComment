@@ -4,8 +4,8 @@ import com.owl.mvc.dao.RelationBaseDao;
 import com.owl.mvc.dto.RelationDTO;
 import com.owl.mvc.utils.RelationBaseServiceUtil;
 import com.owl.mvc.vo.MsgResultVO;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -13,12 +13,9 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/04/22.
  */
-public abstract class RelationBaseServiceAb<T> implements RelationBaseService<T> {
-    private RelationBaseDao<T> relationBaseDao;
-
-    public void setRelationBaseDao(RelationBaseDao<T> relationBaseDao) {
-        this.relationBaseDao = relationBaseDao;
-    }
+public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T>, T> implements RelationBaseService<T> {
+    @Autowired
+    private M relationBaseDao;
 
     /**
      * 插入關係數據

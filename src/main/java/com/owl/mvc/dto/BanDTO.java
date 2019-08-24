@@ -1,7 +1,19 @@
 package com.owl.mvc.dto;
 
+/**
+ * 禁用传递对象接收类
+ * @author engwen
+ * email xiachanzou@outlook.com
+ * 2019/2/26.
+ */
 public class BanDTO {
+    /*
+    * 对象id
+    * */
     private Long id;
+    /*
+    * 是否禁用
+    * */
     private Boolean isBan;
 
     public BanDTO() {

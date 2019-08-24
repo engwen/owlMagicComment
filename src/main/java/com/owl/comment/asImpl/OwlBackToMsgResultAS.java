@@ -3,6 +3,7 @@ package com.owl.comment.asImpl;
 import com.owl.comment.annotations.OwlBackToMsgResult;
 import com.owl.comment.utils.AsLogUtil;
 import com.owl.magicUtil.util.ObjectUtil;
+import com.owl.magicUtil.util.RegexUtil;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.mvc.vo.MsgResultVO;
 import org.aspectj.lang.JoinPoint;
@@ -52,10 +53,18 @@ public class OwlBackToMsgResultAS {
         String resultName = methodSignature.getMethod().getAnnotation(OwlBackToMsgResult.class).result();
 
         try {
-            result.setResult((Boolean) ObjectUtil.getProValue(resultName, obj));
-            result.setResultMsg((String) ObjectUtil.getProValue(msgName, obj));
-            result.setResultCode((String) ObjectUtil.getProValue(codeName, obj));
-            result.setResultData(ObjectUtil.getProValue(dataName, obj));
+            if (!RegexUtil.isEmpty(codeName)) {
+                result.setResultCode((String) ObjectUtil.getProValue(codeName, obj));
+            }
+            if (!RegexUtil.isEmpty(msgName)) {
+                result.setResultMsg((String) ObjectUtil.getProValue(msgName, obj));
+            }
+            if (!RegexUtil.isEmpty(dataName)) {
+                result.setResultData(ObjectUtil.getProValue(dataName, obj));
+            }
+            if (!RegexUtil.isEmpty(resultName)) {
+                result.setResult((Boolean) ObjectUtil.getProValue(resultName, obj));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             AsLogUtil.error(joinPoint, "Conversion error");

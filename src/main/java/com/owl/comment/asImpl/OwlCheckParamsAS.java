@@ -51,24 +51,6 @@ public class OwlCheckParamsAS {
             AsLogUtil.error(joinPoint, "This annotation is limited to objects or Maps that receive parameters");
             return joinPoint.proceed(joinPoint.getArgs());
         }
-
-//        此處從requestHead頭中獲取參數，在请求开始的时候获取
-//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//        Map<String, String[]> paramsHeadMap = request.getParameterMap();
-//        if (null != paramsHeadMap && paramsHeadMap.keySet().size() > 0) {
-//            for (String param : notNull) {
-//                if (null == paramsHeadMap.get(param) || RegexUtil.isEmpty(paramsHeadMap.get(param)) || (paramsHeadMap.get(param).length == 1 && paramsHeadMap.get(param)[0].equals(""))) {
-//                    paramsIsNull.add(param);
-//                    hasNull = true;
-//                }
-//            }
-//            for (String param : notAllNull) {
-//                if (null != paramsHeadMap.get(param) && (!RegexUtil.isEmpty(paramsHeadMap.get(param)) && !(paramsHeadMap.get(param).length == 1 && paramsHeadMap.get(param)[0].equals("")))) {
-//                    allOrNull = false;
-//                    break;
-//                }
-//            }
-//        } else {
 //          从接收封装的对象
         Map<String, Object> paramsBodyMap = new HashMap<>();
         Object paramsVO = args[0];
@@ -86,6 +68,7 @@ public class OwlCheckParamsAS {
                     paramsBodyMap.put(field.getName(), field.get(paramsVO));
                 }
             }
+
             for (String param : notNull) {
                 if (RegexUtil.isEmpty(paramsBodyMap.get(param))) {
                     paramsIsNull.add(param);
@@ -99,7 +82,6 @@ public class OwlCheckParamsAS {
                 }
             }
         }
-//        }
         if (hasNull) {
             AsLogUtil.error(joinPoint, "Request Params Error");
             return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("request params %s can`t be null", paramsIsNull));

@@ -3,13 +3,19 @@ package com.owl.mvc.dto;
 import java.util.List;
 
 /**
+ * 删除接收类
  * @author engwen
  * email xiachanzou@outlook.com
  * 2019/2/26.
  */
 public class DeleteDTO {
+    /*
+    * 主id
+    * */
     private Long id;
-    //待删除的id集合
+    /*
+    * id集合
+    * */
     private List<Long> idList;
 
     public DeleteDTO() {

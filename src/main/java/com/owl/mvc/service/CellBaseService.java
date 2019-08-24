@@ -4,6 +4,7 @@ import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
+import com.owl.mvc.so.IdListSO;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
 
@@ -90,7 +91,15 @@ interface CellBaseService<T> {
      * @return 分頁對象
      */
     MsgResultVO<PageVO<T>> list(Boolean getAll, Integer requestPage, Integer rows, T model);
+
     MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO);
+
+    /**
+     * 查詢指定集合
+     * @param idListSO 内含汎型對象
+     * @return list
+     */
+    MsgResultVO<List<T>> selectByIdList(IdListSO idListSO);
 
     /**
      * 獲取所有的對象，添加 model 提供檢索功能

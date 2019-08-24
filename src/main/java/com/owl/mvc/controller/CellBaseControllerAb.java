@@ -1,16 +1,18 @@
 package com.owl.mvc.controller;
 
+import com.owl.comment.utils.AsLogUtil;
 import com.owl.mvc.dto.BanDTO;
 import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
-import com.owl.mvc.model.MsgConstant;
+import com.owl.mvc.service.CellBaseServiceAb;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * 本类可用于Controller的集成，定义了常用的部分功能，继承本类后实现即可
@@ -18,14 +20,15 @@ import java.util.logging.Logger;
  * email xiachanzou@outlook.com
  * time 2018/07/16.
  */
-@Controller
-public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
-    private static Logger logger = Logger.getLogger(CellBaseControllerAb.class.getName());
+@RestController
+@SuppressWarnings("unchecked")
+public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T> implements CellBaseController<T> {
 
-    private MsgResultVO defaultBack() {
-        logger.info("默认的原始输出，将不会产生任何影响");
-        MsgResultVO result = new MsgResultVO();
-        return result.errorResult(MsgConstant.REQUEST_METHOD_NOT_EXITS);
+    @Autowired
+    private M cellBaseServiceAb;
+
+    private static void defaultBack() {
+        AsLogUtil.info("The default raw output will just do we default want, if you want do other ,please override");
     }
 
     /**
@@ -35,7 +38,8 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      */
     @Override
     public MsgResultVO<T> create(T model) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.create(model);
     }
 
     /**
@@ -45,7 +49,8 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      */
     @Override
     public MsgResultVO<?> createList(List<T> list) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.createList(list);
     }
 
 
@@ -56,24 +61,41 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      */
     @Override
     public MsgResultVO delete(T model) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.delete(model);
     }
 
-
+    /**
+     * 批量删除
+     * @param deleteDTO 删除对象DTO
+     * @return 结果
+     */
     @Override
     public MsgResultVO deleteList(DeleteDTO deleteDTO) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.deleteList(deleteDTO);
     }
 
+    /**
+     * 批量操作 禁用或啓用
+     * @param banDTO 禁用对象
+     * @return int
+     */
     @Override
     public MsgResultVO banOrLeave(BanDTO banDTO) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.banOrLeave(banDTO);
     }
 
-
+    /**
+     * 批量操作 禁用或啓用
+     * @param banListDTO 禁用对象集合
+     * @return int
+     */
     @Override
     public MsgResultVO banOrLeaveList(BanListDTO banListDTO) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.banOrLeaveList(banListDTO);
     }
 
     /**
@@ -83,7 +105,8 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      */
     @Override
     public MsgResultVO<?> update(T model) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.update(model);
     }
 
     /**
@@ -93,13 +116,19 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      */
     @Override
     public MsgResultVO<T> details(T model) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.details(model);
     }
 
-
+    /**
+     * 获取分页集合
+     * @param pageDTO 请求分页对象
+     * @return 分页集合
+     */
     @Override
     public MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.list(pageDTO);
     }
 
     /**
@@ -109,7 +138,8 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      */
     @Override
     public MsgResultVO<List<T>> getAll(T model) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.getAll(model);
     }
 
     /**
@@ -119,6 +149,7 @@ public abstract class CellBaseControllerAb<T> implements CellBaseController<T> {
      */
     @Override
     public MsgResultVO<?> isExist(T model) {
-        return defaultBack();
+        defaultBack();
+        return cellBaseServiceAb.isExist(model);
     }
 }

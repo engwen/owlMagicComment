@@ -6,6 +6,7 @@ import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.model.MsgConstant;
+import com.owl.mvc.so.IdListSO;
 import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.so.SelectLikeSO;
 import com.owl.mvc.vo.MsgResultVO;
@@ -198,6 +199,15 @@ public abstract class CellBaseServiceUtil {
     }
 
     /*
+     * 查詢指定集合
+     * @param idListSO 内含汎型對象
+     * @return list
+     */
+    public static <T> MsgResultVO<List<T>> selectByIdList(CellBaseDao<T> cellBaseDao, IdListSO idListSO) {
+        return MsgResultVO.getInstanceSuccess(cellBaseDao.selectByIdList(idListSO));
+    }
+
+    /*
      * 獲取所有的對象
      * @param model 汎型對象檢索條件
      * @return 對象集合
@@ -211,7 +221,6 @@ public abstract class CellBaseServiceUtil {
      * @param model 检索条件
      * @return Boolean
      */
-
     public static <T> MsgResultVO isExist(CellBaseDao<T> cellBaseDao, T model) {
         MsgResultVO resultVO = new MsgResultVO();
         List<T> list = cellBaseDao.selectByExact(SelectLikeSO.getInstance(model));

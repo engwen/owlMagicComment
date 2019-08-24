@@ -2,8 +2,20 @@ package com.owl.mvc.dto;
 
 import java.util.List;
 
+/**
+ * 禁用集合类接收类
+ * @author engwen
+ * email xiachanzou@outlook.com
+ * 2019/2/26.
+ */
 public class BanListDTO {
+    /*
+    * id集合
+    * */
     private List<Long> idList;
+    /*
+    * 是否禁用
+    * */
     private Boolean isBan;
 
     public BanListDTO() {

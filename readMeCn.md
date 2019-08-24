@@ -513,3 +513,18 @@
 > 添加了一个缓存线程池
 
 > 现在即便是数组对象，toJSON依旧能够正确的输出结果
+
+
+
+ 1.2.0
+ 
+ - 优化 
+
+> MVC 模塊 去除 CellBaseControllerUtil 和 RelationBaseControllerUtil 这两个不常用的部分
+
+> MVC 模块 现在 继承controller和service基础类的时候你可以传递对应的 service 和 dao 而不再使用笨拙的set方法
+
+> MVC 模块 现在 CellBaseControllerAb 提供默认写好的增删改查，你只需要继承然后重写这些方法（可以不做修改，默认的 super 
+    调用父类的方法就可以了 ），设置好 @RequestMapping, 如你所见，项目的这个功能已经被实现
+    
+> 注解 OwlBackToMsgResult 和 OwlBackToObject 现在准许对类使用，。你可以使用它们快速的将类所有方法的返回值变成你想要的样子

@@ -95,8 +95,6 @@ public interface CellBaseDao<T> {
      */
     List<T> listByCondition(SelectLikeSO<T> selectLikeSO);
 
-
-
     /**
      * 查詢指定集合
      * @param idListSO 内含汎型對象

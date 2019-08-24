@@ -39,13 +39,18 @@ public class OwlBackToObjectAS {
         String msgName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).msg();
         String dataName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).data();
         String resultName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).result();
+
+        String oldCodeName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).oldCode();
+        String oldMsgName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).oldMsg();
+        String oldDataName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).oldData();
+        String oldResultName = methodSignature.getMethod().getAnnotation(OwlBackToObject.class).oldResult();
         if (RegexUtil.isEmpty(classPath)) {
             AsLogUtil.error(joinPoint, "no conversion object is specified");
         } else {
             try {
+                result = Class.forName(classPath).newInstance();
                 if (obj instanceof MsgResultVO) {
                     MsgResultVO temp = (MsgResultVO) obj;
-                    result = Class.forName(classPath).newInstance();
                     if (!RegexUtil.isEmpty(codeName)) {
                         ObjectUtil.setProValue(codeName, temp.getResultCode(), result);
                     }
@@ -58,8 +63,21 @@ public class OwlBackToObjectAS {
                     if (!RegexUtil.isEmpty(resultName)) {
                         ObjectUtil.setProValue(resultName, temp.getResult(), result);
                     }
+                } else if (!RegexUtil.isParamsAllEmpty(oldCodeName, oldMsgName, oldDataName, oldResultName)) {
+                    if (!RegexUtil.isEmpty(codeName)) {
+                        ObjectUtil.setProValue(codeName, ObjectUtil.getProValue(oldCodeName, obj), result);
+                    }
+                    if (!RegexUtil.isEmpty(msgName)) {
+                        ObjectUtil.setProValue(msgName, ObjectUtil.getProValue(oldMsgName, obj), result);
+                    }
+                    if (!RegexUtil.isEmpty(dataName)) {
+                        ObjectUtil.setProValue(dataName, ObjectUtil.getProValue(oldDataName, obj), result);
+                    }
+                    if (!RegexUtil.isEmpty(resultName)) {
+                        ObjectUtil.setProValue(resultName, ObjectUtil.getProValue(oldResultName, obj), result);
+                    }
                 } else {
-                    AsLogUtil.error(joinPoint, "This note applies only to the conversion of MsgResultVO types to specified types");
+                    AsLogUtil.error(joinPoint, "This note applies only to the conversion of MsgResultVO types to specified types,or when you set old key names");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

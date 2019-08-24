@@ -1,6 +1,11 @@
 package com.owl.mvc.dto;
 
-
+/**
+ * 界面接收类
+ * @author engwen
+ * email xiachanzou@outlook.com
+ * 2019/2/26.
+ */
 public class PageDTO<T> {
     /*
      *  @param getAll      获取所有
