@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Order(90)
 public class OwlLogInfoAS {
 
-    @Pointcut("@within(com.owl.comment.annotations.OwlLogInfo)")
+    @Pointcut("@within(com.owl.comment.annotations.OwlLogInfo) || @annotation(com.owl.comment.annotations.OwlLogInfo)")
     public void logCut() {
     }
 

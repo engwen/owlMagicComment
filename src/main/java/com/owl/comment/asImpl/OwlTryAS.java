@@ -17,10 +17,10 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-@Order(190)
+@Order(91)
 public class OwlTryAS {
 
-    @Pointcut("@within(com.owl.comment.annotations.OwlTry)")
+    @Pointcut("@within(com.owl.comment.annotations.OwlTry) || @annotation(com.owl.comment.annotations.OwlTry)")
     public void setTryCut() {
     }
 

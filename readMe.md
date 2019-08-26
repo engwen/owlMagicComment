@@ -10,6 +10,8 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
 #  To simple principles   至简原则
 
 ### use the jar,you can get like this
+ 
+   ##### check params   (@OwlCheckParams  notNull,notAllNull,canNull)
     
         @RequestMapping("/signin")
         public MsgResultVO signin(User user) {
@@ -24,6 +26,47 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
             return result;
         }
         
+   ##### change result type to your want (@OwlBackToObject  PS: you can use @OwlBackToMsgResult change result type to MsgResultVO)
+   
+    @RequestMapping("test")
+    @OwlBackToObject(classPath = "com.owl.shiro.vo.TestVO",msg = "msg",code = "code",data = "data")
+    public Object test() {
+        MsgResultVO<String> msgResultVO = MsgResultVO.getInstanceSuccess("aaaa");
+        TestVO testVO = new TestVO();                                                \ \    @RequestMapping("test")
+        testVO.setCode(msgResultVO.getResultCode());                        --------- \ \   @OwlBackToObject(classPath = "com.owl.shiro.vo.TestVO",msg = "msg",code = "code",data = "data")
+        testVO.setMsg(msgResultVO.getResultMsg());                          --------- / /   public Object test() {
+        testVO.setData(msgResultVO.getResultData());                                 / /        return MsgResultVO.getInstanceSuccess("aaaa");
+        return testVO;                                                                      }
+    }
+
+   ##### count the method use time (@OwlCountTime)
+   ##### set params are null or set return data some value are null (@OwlSetNullData)
+        @RequestMapping("/signin")
+        @OwlSetNullData(backValue = {"password"},paramsValue = {"id"})
+        @OwlCheckParams(notNull={"account","password"})
+        public MsgResultVO signin(User user) {
+             return userService.signin(user);
+        }
+        
+        
+        
+           
+  
+   ### or like this
+   (use Listening event like use Flex AS)
+        
+        // build event     
+        OwlObserverEvent HH= new OwlObserverEvent("HH");
+        
+        //add event listen
+        UserTest lili = new UserTest();
+        OwlObserverUtil.addEventListen(HH,lili,(k)-> System.out.println("hh"));
+        
+        //in other class you can do this :
+        OwlObserverUtil.dispatchEvent(HH);//ListenCode in listening will be executed .it will print "hh"
+        OwlObserverUtil.removeEventListen(HH);
+        
+   
   ### or like this
   
    (build a class extends OwlMemento ,so you can restore the class to the specified state)
@@ -65,20 +108,7 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
             //transfer history
           System.out.println(ObjectUtil.toJSON(zhangsan.getMementoHistory(0)));//[{"name":"lili","age":"10"},{"name":"lili","age":"13"}]
   
-  
-   ### or like this
-   //(use Listening event like use Flex AS)
-   
-        UserTest lili = new UserTest();
-        OwlObserverEvent HH= new OwlObserverEvent("HH");
-        OwlObserverUtil.addEventListen(HH,lili,(k)-> System.out.println("hh"));
-        
-     //in other class you can do this :
-     
-        OwlObserverUtil.dispatchEvent(HH);//ListenCode in listening will be executed .it will print "hh"
-        OwlObserverUtil.removeEventListen(HH);
-        
-   
+
 ###  and so on
 
 #  En

@@ -26,7 +26,7 @@ public class OwlCountTimeAS {
     private static final double ONE_MINUTE = 1000;
     private Date startTime;
 
-    @Pointcut("@within(com.owl.comment.annotations.OwlCountTime)")
+    @Pointcut("@within(com.owl.comment.annotations.OwlCountTime) || @annotation(com.owl.comment.annotations.OwlCountTime)")
     public void countTimeCut() {
     }
 

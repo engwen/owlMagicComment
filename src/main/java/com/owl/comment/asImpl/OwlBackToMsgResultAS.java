@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 public class OwlBackToMsgResultAS {
 
 
-    @Pointcut("@within(com.owl.comment.annotations.OwlBackToMsgResult)")
+    @Pointcut("@within(com.owl.comment.annotations.OwlBackToMsgResult) || @annotation(com.owl.comment.annotations.OwlBackToMsgResult)")
     public void changeBackClassCut() {
     }
 

@@ -23,10 +23,10 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-@Order(94)
+@Order(96)
 public class OwlBackToObjectAS {
 
-    @Pointcut("@within(com.owl.comment.annotations.OwlBackToObject)")
+    @Pointcut("@within(com.owl.comment.annotations.OwlBackToObject) || @annotation(com.owl.comment.annotations.OwlBackToObject)")
     public void changeBackClassCut() {
     }
 
