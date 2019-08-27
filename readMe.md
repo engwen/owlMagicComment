@@ -29,7 +29,6 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
    ##### change result type to your want (@OwlBackToObject  PS: you can use @OwlBackToMsgResult change result type to MsgResultVO)
    
     @RequestMapping("test")
-    @OwlBackToObject(classPath = "com.owl.shiro.vo.TestVO",msg = "msg",code = "code",data = "data")
     public Object test() {
         MsgResultVO<String> msgResultVO = MsgResultVO.getInstanceSuccess("aaaa");
         TestVO testVO = new TestVO();                                                \ \    @RequestMapping("test")
@@ -40,13 +39,27 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
     }
 
    ##### count the method use time (@OwlCountTime)
+    @RequestMapping("/signin")
+    @OwlCheckParams(notNull={"account","password"})                               \ \       @RequestMapping("/signin")   
+    public MsgResultVO signin(OwlUser user) {                           -----------\ \      @OwlCountTime
+        Date startTime = new Date();                                    -----------/ /      @OwlCheckParams(notNull={"account","password"})     
+        MsgResultVO<OwlUser> result = owlAuthService.signin(user);                / /       public MsgResultVO signin(OwlUser user) {
+        Double second = (double)((new Date()).getTime() - startTime.getTime()) / 1000.0D;       return owlAuthService.signin(user);
+        logger.info("cost time is " + second);                                              }
+        return result;
+    }
+   
+   
+   
    ##### set params are null or set return data some value are null (@OwlSetNullData)
-        @RequestMapping("/signin")
-        @OwlSetNullData(backValue = {"password"},paramsValue = {"id"})
-        @OwlCheckParams(notNull={"account","password"})
-        public MsgResultVO signin(User user) {
-             return userService.signin(user);
-        }
+    @RequestMapping("/signin")
+    @OwlCheckParams(notNull={"account","password"})
+    public MsgResultVO signin(OwlUser user) {                                      \ \      @RequestMapping("/signin")
+        user.setId(null);                                                -----------\ \     @OwlSetNullData(backValue = {"password"},paramsValue = {"id"})
+        MsgResultVO<OwlUser> result = owlAuthService.signin(user);       -----------/ /     @OwlCheckParams(notNull={"account","password"})
+        result.getResultData().setPassword(null);                                  / /      public MsgResultVO signin(OwlUser user) {
+        return result;                                                                          return owlAuthService.signin(user);
+    }                                                                                       }
         
         
         
@@ -65,7 +78,18 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
         //in other class you can do this :
         OwlObserverUtil.dispatchEvent(HH);//ListenCode in listening will be executed .it will print "hh"
         OwlObserverUtil.removeEventListen(HH);
-        
+    
+    //all most,I suggest you implement this method by extend OwlObserved using the newly created class.like this
+        //build class
+        public UserTest extend OwlObserved{}
+        // build event     
+        OwlObserverEvent HH= new OwlObserverEvent("HH");   
+        //add event listen 
+        UserTest lili = new UserTest();
+        lili.addEventListen(HH,()->{System.out.println("33333");});
+        lili.dispatchEvent(HH);//or OwlObserverAB.dispatchEvent(HH);        
+        //remove
+        lili.removeEventListen(HH);
    
   ### or like this
   
@@ -106,7 +130,7 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
           System.out.println(ObjectUtil.toJSON(lili.getMementoHistory()));//[{"name":"lili","age":"10"},{"name":"lili","age":"13"}]
           UserTest wade = lili.transferMemento(new UserTest());
             //transfer history
-          System.out.println(ObjectUtil.toJSON(zhangsan.getMementoHistory(0)));//[{"name":"lili","age":"10"},{"name":"lili","age":"13"}]
+          System.out.println(ObjectUtil.toJSON(wade.getMementoHistory(0)));//[{"name":"lili","age":"10"},{"name":"lili","age":"13"}]
   
 
 ###  and so on
@@ -161,7 +185,7 @@ com.owl.comment.annotations
 
 spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以下配置
 
-     <context:component-scan base-package="com.owl.comment.annotations"/>
+     <context:component-scan base-package="com.owl"/>
      <aop:aspectj-autoproxy/>
     
  SpringBoot 用户需要在 项目启动类上配置扫描
