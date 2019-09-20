@@ -20,6 +20,10 @@ public class SpringContextUtil implements ApplicationContextAware {
         SpringContextUtil.applicationContext = applicationContext;
     }
 
+    public static ApplicationContext getApplicationContext() {
+        return SpringContextUtil.applicationContext;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> T getBeans(T t) {
         return (T) applicationContext.getBean(t.getClass());
