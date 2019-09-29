@@ -51,6 +51,10 @@ public class OwlCheckParamsAS {
             AsLogUtil.error(joinPoint, "This annotation is limited to objects or Maps that receive parameters");
             return joinPoint.proceed(joinPoint.getArgs());
         }
+        if (args.length == 0 && (notAllNull.length > 0 || notNull.length > 0)) {
+            AsLogUtil.error(joinPoint, "parameters can`t be null");
+            return MsgResultVO.getInstanceError(MsgConstant.REQUEST_PARAMETER_ERROR);
+        }
 //          从接收封装的对象
         Map<String, Object> paramsBodyMap = new HashMap<>();
         Object paramsVO = args[0];
@@ -68,7 +72,6 @@ public class OwlCheckParamsAS {
                     paramsBodyMap.put(field.getName(), field.get(paramsVO));
                 }
             }
-
             for (String param : notNull) {
                 if (RegexUtil.isEmpty(paramsBodyMap.get(param))) {
                     paramsIsNull.add(param);
