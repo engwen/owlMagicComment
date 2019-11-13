@@ -133,7 +133,7 @@ public abstract class CellBaseServiceAb<M extends CellBaseDao<T>, T> implements 
      * @return 分頁對象
      */
     @Override
-    public MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO) {
+    public PageVO<T> list(PageDTO<T> pageDTO) {
         return CellBaseServiceUtil.list(cellBaseDao, pageDTO);
     }
 
@@ -146,7 +146,7 @@ public abstract class CellBaseServiceAb<M extends CellBaseDao<T>, T> implements 
      * @return 分頁對象
      */
     @Override
-    public MsgResultVO<PageVO<T>> list(Boolean getAll, Integer requestPage, Integer rows, T model) {
+    public PageVO<T> list(Boolean getAll, Integer requestPage, Integer rows, T model) {
         return CellBaseServiceUtil.list(cellBaseDao, getAll, requestPage, rows, model);
     }
 
@@ -156,7 +156,7 @@ public abstract class CellBaseServiceAb<M extends CellBaseDao<T>, T> implements 
      * @return list
      */
     @Override
-    public MsgResultVO<List<T>> selectByIdList(IdListSO idListSO){
+    public MsgResultVO<List<T>> selectByIdList(IdListSO idListSO) {
         return CellBaseServiceUtil.selectByIdList(cellBaseDao, idListSO);
     }
 

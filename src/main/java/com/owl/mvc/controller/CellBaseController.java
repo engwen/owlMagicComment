@@ -80,7 +80,7 @@ interface CellBaseController<T> {
      * @param pageDTO 请求分页对象
      * @return 分页集合
      */
-    MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO);
+    PageVO<T> list(PageDTO<T> pageDTO);
 
     /**
      * 获取所有对象

@@ -309,6 +309,25 @@
 
 -------
 
+ 1.2.2
+ 
+ -- 添加
+ 
+ 1.
+ 
+ 
+ - 移动
+ 
+ 1. 为了更好的解耦，MsgResultVO 等相关代码移动至 owlMagicUtil 工具包中
+ 
+ - BUG 优化
+ 
+ 1. 现在 OwlObserved 支持在派发事件时传递一个或者多个参数，建议在使用的时候，不要传递Long，String，int之类的基本数据类型，可能会引发莫名其妙的问题。推荐使用Map，Object，以及自定义类
+ 2. 现在 OwlObserved 支持直接使用 String 的方法名作为添加监听的依据，如 mimi.addEventListen(outName, "toString"); 注意，toString方法必须出现在对象 mimi 的类中，不然将会找不到这个方法
+ 3. 现在 OwlObserved 支持使用多个参数的 lambda 表达式，但是派发的事件参数个数一定要和 lambda 中的参数一致
+ 4. PageVO 类整改，现在 PageVO 对象加入 MsgResultVO 中的部分方法
+ 
+
  1.2.0
  
  -- 添加

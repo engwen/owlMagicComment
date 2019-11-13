@@ -126,7 +126,7 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T> imple
      * @return 分页集合
      */
     @Override
-    public MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO) {
+    public PageVO<T> list(PageDTO<T> pageDTO) {
         defaultBack();
         return cellBaseServiceAb.list(pageDTO);
     }

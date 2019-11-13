@@ -14,7 +14,6 @@ import com.owl.mvc.vo.PageVO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * 本類適用于常見的方法，提供基礎解決方案，繼承service類之後，可在注入dao后使用本工具類快速完成基礎功能代碼
@@ -179,7 +178,7 @@ public abstract class CellBaseServiceUtil {
     }
 
 
-    public static <T> MsgResultVO<PageVO<T>> list(CellBaseDao<T> cellBaseDao, PageDTO<T> pageDTO) {
+    public static <T> PageVO<T> list(CellBaseDao<T> cellBaseDao, PageDTO<T> pageDTO) {
         return list(cellBaseDao, pageDTO.getGetAll(), pageDTO.getRequestPage(), pageDTO.getRows(), pageDTO.getModel());
     }
 
@@ -191,11 +190,11 @@ public abstract class CellBaseServiceUtil {
      * @param model       檢索條件
      * @return 分頁對象
      */
-    public static <T> MsgResultVO<PageVO<T>> list(CellBaseDao<T> cellBaseDao, Boolean getAll, Integer requestPage, Integer rows, T model) {
+    public static <T> PageVO<T> list(CellBaseDao<T> cellBaseDao, Boolean getAll, Integer requestPage, Integer rows, T model) {
         PageVO<T> pageVO = new PageVO<>();
         pageVO.initPageVO(cellBaseDao.countSumByCondition(SelectLikeSO.getInstance(model)), requestPage, rows, getAll);
         pageVO.setObjectList(cellBaseDao.listByCondition(SelectLikeSO.getInstance(model, pageVO.getUpLimit(), pageVO.getRows())));
-        return MsgResultVO.getInstanceSuccess(pageVO);
+        return pageVO.successResult(MsgConstant.REQUEST_SUCCESS);
     }
 
     /*

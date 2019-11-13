@@ -1,7 +1,8 @@
 package com.owl.mvc.vo;
 
 
-import com.owl.model.ModelPrototype;
+import com.owl.mvc.dto.PageDTO;
+import com.owl.mvc.model.MsgConstant;
 import com.owl.util.RegexUtil;
 
 import java.util.ArrayList;
@@ -13,9 +14,12 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * 2017/9/4.
  */
-public final class PageVO<T> extends ModelPrototype {
+public final class PageVO<T> extends MsgResultVO<List<T>> {
+
+
     //對象集合
-    private List<T> objectList = new ArrayList<>();
+    private List<T> objectList;
+
     //縂頁數
     private Integer sumPage = 1;
     //縂條數
@@ -47,6 +51,17 @@ public final class PageVO<T> extends ModelPrototype {
         this.downLimit = this.sum;
         this.pageList = new int[1];
         this.pageList[0] = 1;
+    }
+
+    /*
+     * 塞入總數，請求頁數，每頁數量,是否获取所有
+     */
+    public void initPageVO(Integer sum, PageDTO model) {
+        if (model.getGetAll()) {
+            initPageVO(sum);
+        } else {
+            this.initPageVO(sum, model.getRequestPage(), model.getRows());
+        }
     }
 
     /*
@@ -148,6 +163,18 @@ public final class PageVO<T> extends ModelPrototype {
             newPage.setGetAll(this.getAll);
         }
         return newPage;
+    }
+
+    @Override
+    public PageVO<T> successResult(MsgConstant msgConstant) {
+        super.successResult(msgConstant);
+        return this;
+    }
+
+    @Override
+    public PageVO<T> errorResult(MsgConstant msgConstant) {
+        super.errorResult(msgConstant);
+        return this;
     }
 
 

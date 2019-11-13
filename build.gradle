@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.github.engwen'
-version '1.2.1'
+version '1.2.2'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -26,15 +26,13 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.engwen:owlMagicUtil:2.4.1'
-    compile 'org.codehaus.groovy:groovy-ant:2.5.7'
-    compile 'org.codehaus.groovy:groovy-all:2.5.7'
-    compile 'javax:javaee-api:8.0.1'
-    compile 'org.springframework:spring-web:4.2.5.RELEASE'
-    compile 'org.aspectj:aspectjrt:1.9.4'
-    compile 'org.aspectj:aspectjweaver:1.9.4'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
-    testCompile 'junit:junit:4.11'
+    implementation 'com.github.engwen:owlMagicUtil:2.4.2'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.7'
+    implementation 'javax:javaee-api:8.0.1'
+    implementation 'org.springframework:spring-web:4.2.5.RELEASE'
+    implementation 'org.aspectj:aspectjrt:1.9.4'
+    implementation 'org.aspectj:aspectjweaver:1.9.4'
+    testImplementation 'junit:junit:4.11'
 }
 
 javadoc {
@@ -42,6 +40,12 @@ javadoc {
     // <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     // 防止本地打开中文乱码
     options.addStringOption("charset", "UTF-8")
+}
+
+task copyJars(type: Copy) {
+    def localMavenRepo = new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+    from "build/libs"
+    into localMavenRepo + File.separator + this.project.group.toString().replace(".", File.separator) + File.separator + this.project.name + File.separator + this.project.version
 }
 
 afterEvaluate { project ->

@@ -2,11 +2,11 @@ package com.owl.comment.asImpl;
 
 import com.owl.comment.annotations.OwlCheckParams;
 import com.owl.comment.utils.AsLogUtil;
+import com.owl.mvc.model.MsgConstant;
+import com.owl.mvc.vo.MsgResultVO;
 import com.owl.util.ClassTypeUtil;
 import com.owl.util.ObjectUtil;
 import com.owl.util.RegexUtil;
-import com.owl.mvc.model.MsgConstant;
-import com.owl.mvc.vo.MsgResultVO;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -86,11 +86,13 @@ public class OwlCheckParamsAS {
             }
         }
         if (hasNull) {
-            AsLogUtil.error(joinPoint, "Request Params Error");
-            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("request params %s can`t be null", paramsIsNull));
+            result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("request params %s can`t be null", paramsIsNull));
+            AsLogUtil.error(joinPoint, result.getResultMsg());
+            return result;
         } else if (notAllNull.length > 0 && allOrNull) {
-            AsLogUtil.error(joinPoint, "Request Params Error");
-            return result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("request params %s can`t all be null", Arrays.asList(notAllNull)));
+            result.errorResult(MsgConstant.REQUEST_PARAMETER_ERROR.getCode(), backStr("request params %s can`t all be null", Arrays.asList(notAllNull)));
+            AsLogUtil.error(joinPoint, result.getResultMsg());
+            return result;
         } else {
             AsLogUtil.info(joinPoint, "Successful Params Check");
             return joinPoint.proceed(joinPoint.getArgs());

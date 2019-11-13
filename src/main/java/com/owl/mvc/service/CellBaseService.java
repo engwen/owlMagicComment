@@ -90,9 +90,9 @@ interface CellBaseService<T> {
      * @param model       檢索條件
      * @return 分頁對象
      */
-    MsgResultVO<PageVO<T>> list(Boolean getAll, Integer requestPage, Integer rows, T model);
+    PageVO<T> list(Boolean getAll, Integer requestPage, Integer rows, T model);
 
-    MsgResultVO<PageVO<T>> list(PageDTO<T> pageDTO);
+    PageVO<T> list(PageDTO<T> pageDTO);
 
     /**
      * 查詢指定集合

@@ -67,29 +67,22 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
   
    ### or like this
    (use Listening event like use Flex AS)
-        
-        // build event     
-        OwlObserverEvent HH= new OwlObserverEvent("HH");
-        
-        //add event listen
-        UserTest lili = new UserTest();
-        OwlObserverUtil.addEventListen(HH,lili,(k)-> System.out.println("hh"));
-        
-        //in other class you can do this :
-        OwlObserverUtil.dispatchEvent(HH);//ListenCode in listening will be executed .it will print "hh"
-        OwlObserverUtil.removeEventListen(HH);
-    
-    //all most,I suggest you implement this method by extend OwlObserved using the newly created class.like this
+
         //build class
-        public UserTest extend OwlObserved{}
+        public UserTest extend OwlObserved{
+            public void name(){
+                print("test")
+            }
+        }
         // build event     
         OwlObserverEvent HH= new OwlObserverEvent("HH");   
         //add event listen 
         UserTest lili = new UserTest();
-        lili.addEventListen(HH,()->{System.out.println("33333");});
+        lili.addEventListen(HH,()->{System.out.println("test");});//or  lili.addEventListen(HH,"name")
         lili.dispatchEvent(HH);//or OwlObserverAB.dispatchEvent(HH);        
         //remove
         lili.removeEventListen(HH);
+        
    
   ### or like this
   
