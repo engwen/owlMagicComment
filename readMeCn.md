@@ -212,28 +212,9 @@
 
 1. Service
 
-    Service层需要继承 CellBaseServiceAb<T> 或者 RelationBaseServiceAb<T>。
-    
-     并通过
-            
-              @Resource
-                private OwlMenuDao owlMenuDao;
-              @Autowired
-                public void setCellBaseDao() {
-                    super.setCellBaseDao(owlMenuDao);
-                }
-                
-    或：
-             
-               @Resource
-               private OwlPageMenuDao owlPageMenuDao;
-           
-               @Autowired
-               public void setRelationBaseDao() {
-                   super.setRelationBaseDao(owlPageMenuDao);
-               }     
-         
-     的方法为模板注入 Dao 类，你可以重写本类中的方法以使它按照你的方式进行业务处理。
+    Service层需要继承 CellBaseServiceAb<M extends CellBaseDao<T>, T> 或者 RelationBaseServiceAb<M extends RelationBaseDao<T>, T> 。
+
+    我们将为你自动注入 Dao 类，你可以重写本类中的方法以使它按照你的方式进行业务处理。
 
 1. Controller
     
