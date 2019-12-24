@@ -1,9 +1,8 @@
 package com.owl.mvc.dao;
 
 import com.owl.mvc.dto.BanListDTO;
-import com.owl.mvc.dto.DeleteDTO;
-import com.owl.mvc.dto.RelationDTO;
 import com.owl.mvc.so.IdListSO;
+import com.owl.mvc.so.IdSO;
 import com.owl.mvc.so.ModelListSO;
 import com.owl.mvc.so.SelectLikeSO;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/08/22.
  */
-public interface CellBaseDao<T> {
+public interface CellBaseDao<T, ID> {
 
     /**
      * 直接插入
@@ -33,10 +32,10 @@ public interface CellBaseDao<T> {
 
     /**
      * 批量刪除
-     * @param deleteDTO 内含id集合
+     * @param idListSO 内含id集合
      * @return int
      */
-    int deleteByIdList(DeleteDTO deleteDTO);
+    int deleteByIdList(IdListSO<ID> idListSO);
 
     /**
      * 刪除
@@ -46,13 +45,27 @@ public interface CellBaseDao<T> {
     int deleteBySelective(T model);
 
     /**
-     * 批量操作 禁用或啓用
-     * @param banListDTO 對象
-     * param idList 對象ID
-     * param status 對象狀態
+     * 物理 批量刪除
+     * @param idListSO 内含id集合
      * @return int
      */
-    int banOrLeave(BanListDTO banListDTO);
+    int deleteByIdListRe(IdListSO<ID> idListSO);
+
+    /**
+     * 物理 刪除
+     * @param model 泛型对象
+     * @return int
+     */
+    int deleteBySelectiveRe(T model);
+
+    /**
+     * 批量操作 禁用或啓用
+     * @param banListDTO 對象
+     *                   param idList 對象ID
+     *                   param status 對象狀態
+     * @return int
+     */
+    int banOrLeave(BanListDTO<ID> banListDTO);
 
     /**
      * 依據指定的屬性進行更新
@@ -64,33 +77,38 @@ public interface CellBaseDao<T> {
     /**
      * 依據屬性獲取對象集合 粗略查询
      * @param selectLikeSO 泛型对象
-     * Param("model")
+     *                     Param("model")
      * @return 泛型对象集合
      */
-    List<T> selectBySelective(SelectLikeSO<T> selectLikeSO);
+    List<T> selectByLike(SelectLikeSO<T> selectLikeSO);
 
     /**
      * 依據屬性獲取對象集合 准确查询
      * @param selectLikeSO 泛型对象
-     * Param("model")
+     *                     Param("model")
      * @return 泛型对象集合
      */
     List<T> selectByExact(SelectLikeSO<T> selectLikeSO);
 
     /**
+     * 依據 id 屬性獲取對象集合 准确查询
+     * @param idSO id泛型
+     * @return 泛型对象集合
+     */
+    T selectById(IdSO<ID> idSO);
+
+    /**
      * 依據指定的屬性統計數據條數
      * @param selectLikeSO 泛型对象
-     * Param("model")
      * @return int
      */
     Integer countSumByCondition(SelectLikeSO<T> selectLikeSO);
 
     /**
      * 依據指定的屬性獲取指定的集合
-     * @param selectLikeSO
-     * Param("upLimit")
-     * Param("rows")
-     * Param("model")
+     * @param selectLikeSO Param("upLimit")
+     *                     Param("rows")
+     *                     Param("model")
      * @return 泛型对象集合
      */
     List<T> listByCondition(SelectLikeSO<T> selectLikeSO);
@@ -100,5 +118,5 @@ public interface CellBaseDao<T> {
      * @param idListSO 内含汎型對象
      * @return list
      */
-    List<T> selectByIdList(IdListSO idListSO);
+    List<T> selectByIdList(IdListSO<ID> idListSO);
 }

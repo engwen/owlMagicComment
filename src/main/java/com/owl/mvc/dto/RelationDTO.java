@@ -8,41 +8,37 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * 2019/4/29.
  */
-public class RelationDTO {
+public class RelationDTO<MainID, FollowerID> {
     /*
-    * 主id
-    * */
-    private Long id;
+     * 主id
+     * */
+    private MainID id;
     /*
-    * 副id集合
-    * */
-    private List<Long> idList;
+     * 副id集合
+     * */
+    private List<FollowerID> idList;
 
     public RelationDTO() {
     }
 
-    public RelationDTO(Long id, List<Long> idList) {
+    public RelationDTO(MainID id, List<FollowerID> idList) {
         this.id = id;
         this.idList = idList;
     }
 
-    public static RelationDTO getInstance(Long id, List<Long> idList) {
-        return new RelationDTO(id, idList);
-    }
-
-    public Long getId() {
+    public MainID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(MainID id) {
         this.id = id;
     }
 
-    public List<Long> getIdList() {
+    public List<FollowerID> getIdList() {
         return idList;
     }
 
-    public void setIdList(List<Long> idList) {
+    public void setIdList(List<FollowerID> idList) {
         this.idList = idList;
     }
 }

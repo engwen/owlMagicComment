@@ -7,22 +7,18 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * 2019/4/8.
  */
-public class IdListSO {
-    private List<Long> idList;
+public class IdListSO<ID> {
+    private List<ID> idList;
 
-    public IdListSO(List<Long> idList) {
+    public IdListSO(List<ID> idList) {
         this.idList = idList;
     }
 
-    public static IdListSO getInstance(List<Long> idList) {
-        return new IdListSO(idList);
-    }
-
-    public List<Long> getIdList() {
+    public List<ID> getIdList() {
         return idList;
     }
 
-    public void setIdList(List<Long> idList) {
+    public void setIdList(List<ID> idList) {
         this.idList = idList;
     }
 }

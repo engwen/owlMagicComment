@@ -102,7 +102,7 @@ public class OwlSetNullDataAS {
                 }
             } else if (resultDataObj instanceof PageVO) {
                 PageVO pageVO = (PageVO) resultDataObj;
-                Object obj = pageVO.getObjectList();
+                Object obj = pageVO.getResultData();
                 if (!RegexUtil.isEmpty(obj)) {
                     setNullByObject(setNullDatas, obj);
                 }

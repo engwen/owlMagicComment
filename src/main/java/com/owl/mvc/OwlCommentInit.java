@@ -1,6 +1,5 @@
 package com.owl.mvc;
 
-import com.owl.comment.OwlInit;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +12,6 @@ import org.springframework.stereotype.Component;
 public class OwlCommentInit implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
-        OwlInit.print();
+
     }
 }

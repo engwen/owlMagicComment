@@ -8,33 +8,26 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * 2019/2/26.
  */
-public class BanListDTO {
+public class BanListDTO<ID> {
     /*
-    * id集合
-    * */
-    private List<Long> idList;
+     * id集合
+     * */
+    private List<ID> idList;
     /*
-    * 是否禁用
-    * */
+     * 是否禁用
+     * */
     private Boolean isBan;
 
-    public BanListDTO() {
-    }
-
-    private BanListDTO(List<Long> idList, Boolean isBan) {
+    public BanListDTO(List<ID> idList, Boolean isBan) {
         this.idList = idList;
         this.isBan = isBan;
     }
 
-    public static BanListDTO getInstance(List<Long> idList, Boolean isBan) {
-        return new BanListDTO(idList, isBan);
-    }
-
-    public List<Long> getIdList() {
+    public List<ID> getIdList() {
         return idList;
     }
 
-    public void setIdList(List<Long> idList) {
+    public void setIdList(List<ID> idList) {
         this.idList = idList;
     }
 

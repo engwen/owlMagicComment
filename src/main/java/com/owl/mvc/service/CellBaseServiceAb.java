@@ -19,7 +19,7 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/04/22.
  */
-public abstract class CellBaseServiceAb<M extends CellBaseDao<T>, T> implements CellBaseService<T> {
+public abstract class CellBaseServiceAb<M extends CellBaseDao<T, ID>, T, ID> implements CellBaseService<T, ID> {
 
     @Autowired
     private M cellBaseDao;
@@ -60,22 +60,47 @@ public abstract class CellBaseServiceAb<M extends CellBaseDao<T>, T> implements 
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO deleteList(List<Long> idList) {
+    public MsgResultVO deleteList(List<ID> idList) {
         return CellBaseServiceUtil.deleteList(cellBaseDao, idList);
     }
 
     @Override
-    public MsgResultVO deleteList(DeleteDTO deleteDTO) {
+    public MsgResultVO deleteList(DeleteDTO<ID> deleteDTO) {
         return CellBaseServiceUtil.deleteList(cellBaseDao, deleteDTO);
     }
 
+
+    /**
+     * 刪除 更新前需要查询，因此可能返回对象为父类型
+     * @param model 对象
+     * @return 基礎數據
+     */
+    @Override
+    public MsgResultVO deleteRe(T model) {
+        return CellBaseServiceUtil.deleteRe(cellBaseDao, model);
+    }
+
+    /**
+     * 批量刪除 更新前需要查询，因此可能返回对象为父类型
+     * @param idList ID集合
+     * @return 基礎數據
+     */
+    @Override
+    public MsgResultVO deleteListRe(List<ID> idList) {
+        return CellBaseServiceUtil.deleteListRe(cellBaseDao, idList);
+    }
+
+    @Override
+    public MsgResultVO deleteListRe(DeleteDTO<ID> deleteDTO) {
+        return CellBaseServiceUtil.deleteListRe(cellBaseDao, deleteDTO);
+    }
     /**
      * 禁用或啓用
      * @param banDTO 禁用對象
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO banOrLeave(BanDTO banDTO) {
+    public MsgResultVO banOrLeave(BanDTO<ID> banDTO) {
         return CellBaseServiceUtil.banOrLeave(cellBaseDao, banDTO);
     }
 
@@ -86,7 +111,7 @@ public abstract class CellBaseServiceAb<M extends CellBaseDao<T>, T> implements 
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO banOrLeave(Long id, Boolean isBan) {
+    public MsgResultVO banOrLeave(ID id, Boolean isBan) {
         return CellBaseServiceUtil.banOrLeave(cellBaseDao, id, isBan);
     }
 
@@ -98,12 +123,12 @@ public abstract class CellBaseServiceAb<M extends CellBaseDao<T>, T> implements 
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO banOrLeaveList(List<Long> idList, Boolean isBan) {
+    public MsgResultVO banOrLeaveList(List<ID> idList, Boolean isBan) {
         return CellBaseServiceUtil.banOrLeaveList(cellBaseDao, idList, isBan);
     }
 
     @Override
-    public MsgResultVO banOrLeaveList(BanListDTO banListDTO) {
+    public MsgResultVO banOrLeaveList(BanListDTO<ID> banListDTO) {
         return CellBaseServiceUtil.banOrLeaveList(cellBaseDao, banListDTO);
     }
 

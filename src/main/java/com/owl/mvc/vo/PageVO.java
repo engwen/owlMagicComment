@@ -5,7 +5,6 @@ import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.model.MsgConstant;
 import com.owl.util.RegexUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,10 +14,6 @@ import java.util.List;
  * 2017/9/4.
  */
 public final class PageVO<T> extends MsgResultVO<List<T>> {
-
-
-    //對象集合
-    private List<T> objectList;
 
     //縂頁數
     private Integer sumPage = 1;
@@ -33,8 +28,8 @@ public final class PageVO<T> extends MsgResultVO<List<T>> {
     private Integer upLimit = 0;
     //數據請求終點
     private Integer downLimit = 0;
-    //將要顯示的頁數下標
-    private int[] pageList = new int[]{};
+    //將要顯示的頁數下標  前端自帶
+//    private int[] pageList = new int[]{};
     //是否獲取全部對象
     private Boolean getAll = false;
 
@@ -49,8 +44,8 @@ public final class PageVO<T> extends MsgResultVO<List<T>> {
         this.sumPage = 1;
         this.upLimit = 0;
         this.downLimit = this.sum;
-        this.pageList = new int[1];
-        this.pageList[0] = 1;
+//        this.pageList = new int[1];
+//        this.pageList[0] = 1;
     }
 
     /*
@@ -110,40 +105,40 @@ public final class PageVO<T> extends MsgResultVO<List<T>> {
         }
 
 
-        int firstPage = 1, lastPage = this.sumPage, middlePage = 0;
-        //縂頁數小於11，全部顯示
-        if (this.sumPage < 11) {
-            this.pageList = new int[lastPage];
-            for (int i = 0; i < lastPage; i++) {
-                this.pageList[i] = i + 1;
-            }
-        } else {
-            //縂頁數大於11，顯示1，。。。，左-3，請求頁，右-3 ... 尾頁 共11個頁數
-            this.pageList = new int[11];
-            if (this.requestPage < 9) {
-                for (int i = 0; i < 9; i++) {
-                    this.pageList[i] = i + 1;
-                }
-                this.pageList[9] = 0;
-                this.pageList[10] = lastPage;
-            } else {
-                this.pageList[0] = firstPage;
-                this.pageList[1] = middlePage;
-                if (this.requestPage < this.sumPage - 5) {
-                    this.pageList[5] = this.requestPage;
-                    for (int i = 1; i < 4; i++) {
-                        this.pageList[5 - i] = this.requestPage - i;
-                        this.pageList[5 + i] = this.requestPage + i;
-                    }
-                    this.pageList[9] = middlePage;
-                    this.pageList[10] = lastPage;
-                } else {
-                    for (int i = 0; i < 9; i++) {
-                        this.pageList[i + 2] = lastPage - 8 + i;
-                    }
-                }
-            }
-        }
+//        int firstPage = 1, lastPage = this.sumPage, middlePage = 0;
+//        //縂頁數小於11，全部顯示
+//        if (this.sumPage < 11) {
+//            this.pageList = new int[lastPage];
+//            for (int i = 0; i < lastPage; i++) {
+//                this.pageList[i] = i + 1;
+//            }
+//        } else {
+//            //縂頁數大於11，顯示1，。。。，左-3，請求頁，右-3 ... 尾頁 共11個頁數
+//            this.pageList = new int[11];
+//            if (this.requestPage < 9) {
+//                for (int i = 0; i < 9; i++) {
+//                    this.pageList[i] = i + 1;
+//                }
+//                this.pageList[9] = 0;
+//                this.pageList[10] = lastPage;
+//            } else {
+//                this.pageList[0] = firstPage;
+//                this.pageList[1] = middlePage;
+//                if (this.requestPage < this.sumPage - 5) {
+//                    this.pageList[5] = this.requestPage;
+//                    for (int i = 1; i < 4; i++) {
+//                        this.pageList[5 - i] = this.requestPage - i;
+//                        this.pageList[5 + i] = this.requestPage + i;
+//                    }
+//                    this.pageList[9] = middlePage;
+//                    this.pageList[10] = lastPage;
+//                } else {
+//                    for (int i = 0; i < 9; i++) {
+//                        this.pageList[i + 2] = lastPage - 8 + i;
+//                    }
+//                }
+//            }
+//        }
     }
 
     /**
@@ -159,7 +154,7 @@ public final class PageVO<T> extends MsgResultVO<List<T>> {
             newPage.setSum(this.sum);
             newPage.setUpLimit(this.upLimit);
             newPage.setDownLimit(this.downLimit);
-            newPage.setPageList(this.pageList);
+//            newPage.setPageList(this.pageList);
             newPage.setGetAll(this.getAll);
         }
         return newPage;
@@ -184,14 +179,6 @@ public final class PageVO<T> extends MsgResultVO<List<T>> {
 
     private void setSumPage(Integer sumPage) {
         this.sumPage = sumPage;
-    }
-
-    public List<T> getObjectList() {
-        return objectList;
-    }
-
-    public void setObjectList(List<T> objectList) {
-        this.objectList = objectList;
     }
 
     public Integer getSum() {
@@ -233,14 +220,14 @@ public final class PageVO<T> extends MsgResultVO<List<T>> {
     private void setDownLimit(Integer downLimit) {
         this.downLimit = downLimit;
     }
-
-    public int[] getPageList() {
-        return pageList;
-    }
-
-    private void setPageList(int[] pageList) {
-        this.pageList = pageList;
-    }
+//
+//    public int[] getPageList() {
+//        return pageList;
+//    }
+//
+//    private void setPageList(int[] pageList) {
+//        this.pageList = pageList;
+//    }
 
     public Boolean getGetAll() {
         return getAll;

@@ -216,7 +216,25 @@ For example:
     Note <! - The following does not need to be changed - > below is the code that does not need to be modified. But before that, you need to modify the attributes to make it and your database tables
     One-to-one correspondence
 1. Service
-    The Service layer needs to inherit  CellBaseServiceAb<M extends CellBaseDao<T>, T> or RelationBaseServiceAb<M extends RelationBaseDao<T>, T> .
+    The Service layer needs to inherit CellBaseService Ab < T > or RelationBaseService Ab < T >.
+    And through
+
+              @Resource
+                private OwlMenuDao owlMenuDao;
+              @Autowired
+                public void setCellBaseDao() {
+                    super.setCellBaseDao(owlMenuDao);
+                }
+    Or:
+                       
+               @Resource
+               private OwlPageMenuDao owlPageMenuDao;
+           
+               @Autowired
+               public void setRelationBaseDao() {
+                   super.setRelationBaseDao(owlPageMenuDao);
+               }    
+                   
     The method injects the Dao class into the template, and you can rewrite the method in this class so that it can process the business in your way.
 
 1. Controller

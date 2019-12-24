@@ -17,7 +17,7 @@ import java.util.List;
  */
 public abstract class RelationBaseServiceUtil {
 
-    public static <T> MsgResultVO insert(RelationBaseDao<T> relationBaseDao, T model) {
+    public static <T, MainID, FollowerID> MsgResultVO insert(RelationBaseDao<T, MainID, FollowerID> relationBaseDao, T model) {
         List<T> list = relationBaseDao.selectBySelective(ModelSO.getInstance(model));
         if (list.size() > 0) {
             return MsgResultVO.getInstanceSuccess();
@@ -28,32 +28,32 @@ public abstract class RelationBaseServiceUtil {
         }
     }
 
-    public static <T> MsgResultVO insertRelation(RelationBaseDao<T> relationBaseDao, RelationDTO relationDTO) {
+    public static <T, MainID, FollowerID> MsgResultVO insertRelation(RelationBaseDao<T, MainID, FollowerID> relationBaseDao, RelationDTO<MainID, FollowerID> relationDTO) {
         relationBaseDao.insertRelation(relationDTO);
         return MsgResultVO.getInstanceSuccess();
     }
 
-    public static <T> MsgResultVO insertList(RelationBaseDao<T> relationBaseDao, List<T> modelList) {
+    public static <T, MainID, FollowerID> MsgResultVO insertList(RelationBaseDao<T, MainID, FollowerID> relationBaseDao, List<T> modelList) {
         relationBaseDao.insertList(ModelListSO.getInstance(modelList));
         return MsgResultVO.getInstanceSuccess();
     }
 
-    public static <T> MsgResultVO delete(RelationBaseDao<T> relationBaseDao, T model) {
+    public static <T, MainID, FollowerID> MsgResultVO delete(RelationBaseDao<T, MainID, FollowerID> relationBaseDao, T model) {
         relationBaseDao.delete(ModelSO.getInstance(model));
         return MsgResultVO.getInstanceSuccess();
     }
 
-    public static <T> MsgResultVO deleteRelation(RelationBaseDao<T> relationBaseDao, RelationDTO relationDTO) {
+    public static <T, MainID, FollowerID> MsgResultVO deleteRelation(RelationBaseDao<T, MainID, FollowerID> relationBaseDao, RelationDTO<MainID, FollowerID> relationDTO) {
         relationBaseDao.deleteRelation(relationDTO);
         return MsgResultVO.getInstanceSuccess();
     }
 
-    public static <T> MsgResultVO deleteList(RelationBaseDao<T> relationBaseDao, List<T> modelList) {
+    public static <T, MainID, FollowerID> MsgResultVO deleteList(RelationBaseDao<T, MainID, FollowerID> relationBaseDao, List<T> modelList) {
         relationBaseDao.deleteList(ModelListSO.getInstance(modelList));
         return MsgResultVO.getInstanceSuccess();
     }
 
-    public static <T> MsgResultVO<List<T>> list(RelationBaseDao<T> relationBaseDao, T model) {
+    public static <T, MainID, FollowerID> MsgResultVO<List<T>> list(RelationBaseDao<T, MainID, FollowerID> relationBaseDao, T model) {
         return MsgResultVO.getInstanceSuccess(relationBaseDao.selectBySelective(ModelSO.getInstance(model)));
     }
 
