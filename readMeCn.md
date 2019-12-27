@@ -65,7 +65,7 @@
 
 ##### 3. @OwlCountTime    
 
-    方法注解。用来计算方法开始和结束的时间差
+    类、方法注解。用来计算方法开始和结束的时间差
     
             @RequestMapping("signin")
             @OwlCheckParams(notAllNull = {"account", "email", "mobile"}, notNull = {"password"})
@@ -92,11 +92,11 @@
     
 ##### 5. @OwlTry    
     
-    方法注解。使用它就相当于在方法的最外层添加了一个try catch方法。他的返回值为MsgResultVO。
+    类、方法注解。使用它就相当于在方法的最外层添加了一个try catch方法。他的返回值为MsgResultVO。
     
 ##### 6. @OwlBackToObjectAS    
     
-    方法注解。当你不想使用MsgResultVO的时候，使用它可以将MsgResultVO改变成其它类型的返回值。
+    类、方法注解。当你不想使用MsgResultVO的时候，使用它可以将MsgResultVO改变成其它类型的返回值。
     你只需要提供 路径 classPath，以及存在的结果值，结果码，结果信息，结果对象等便可以将返回值变为你想要的
     对象
     
@@ -122,7 +122,7 @@
      
 ##### 7. @OwlBackToMsgResultAS    
     
-    方法注解。当你想使用MsgResultVO作为返回值的时候，使用它可以将其它类型的返回值改变成MsgResultVO。使用方法和 
+    类、方法注解。当你想使用MsgResultVO作为返回值的时候，使用它可以将其它类型的返回值改变成MsgResultVO。使用方法和 
      @OwlBackToObjectAS
     几乎一样。但你不需要指定  classPath
     
