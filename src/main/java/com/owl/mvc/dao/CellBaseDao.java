@@ -75,20 +75,6 @@ public interface CellBaseDao<T, ID> {
     int updateBySelective(T model);
 
     /**
-     * 依據 id 屬性獲取對象 准确查询
-     * @param idSO id泛型
-     * @return 泛型对象集合
-     */
-    T selectById(IdSO<ID> idSO);
-
-    /**
-     * 查詢指定集合
-     * @param idListSO 内含汎型對象
-     * @return list
-     */
-    List<T> selectByIdList(IdListSO<ID> idListSO);
-
-    /**
      * 依據屬性獲取對象集合 粗略查询
      * @param selectLikeSO 泛型对象
      *                     Param("model")
@@ -103,6 +89,13 @@ public interface CellBaseDao<T, ID> {
      * @return 泛型对象集合
      */
     List<T> selectByExact(SelectLikeSO<T> selectLikeSO);
+
+    /**
+     * 依據 id 屬性獲取對象集合 准确查询
+     * @param idSO id泛型
+     * @return 泛型对象集合
+     */
+    T selectById(IdSO<ID> idSO);
 
     /**
      * 依據指定的屬性統計數據條數
@@ -120,4 +113,10 @@ public interface CellBaseDao<T, ID> {
      */
     List<T> listByCondition(SelectLikeSO<T> selectLikeSO);
 
+    /**
+     * 查詢指定集合
+     * @param idListSO 内含汎型對象
+     * @return list
+     */
+    List<T> selectByIdList(IdListSO<ID> idListSO);
 }
