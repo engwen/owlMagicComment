@@ -15,7 +15,7 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/07/16.
  */
-interface CellBaseController<T> {
+interface CellBaseController<T,ID> {
 
     /**
      * 创建
@@ -44,21 +44,34 @@ interface CellBaseController<T> {
      * @param deleteDTO 删除对象DTO
      * @return 结果
      */
-    MsgResultVO deleteList(DeleteDTO deleteDTO);
+    MsgResultVO deleteList(DeleteDTO<ID> deleteDTO);
 
+    /**
+     * 删除功能
+     * @param model 待删除的对象
+     * @return 结果
+     */
+    MsgResultVO deleteRe(T model);
+
+    /**
+     * 批量删除
+     * @param deleteDTO 删除对象DTO
+     * @return 结果
+     */
+    MsgResultVO deleteListRe(DeleteDTO<ID> deleteDTO);
     /**
      * 批量操作 禁用或啓用
      * @param banDTO 禁用对象
      * @return int
      */
-    MsgResultVO banOrLeave(BanDTO banDTO);
+    MsgResultVO banOrLeave(BanDTO<ID> banDTO);
 
     /**
      * 批量操作 禁用或啓用
      * @param banListDTO 禁用对象集合
      * @return int
      */
-    MsgResultVO banOrLeaveList(BanListDTO banListDTO);
+    MsgResultVO banOrLeaveList(BanListDTO<ID> banListDTO);
 
     /**
      * 更新

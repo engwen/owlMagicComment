@@ -5,6 +5,7 @@ import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.dto.DeleteDTO;
 import com.owl.mvc.dto.PageDTO;
 import com.owl.mvc.so.IdListSO;
+import com.owl.mvc.so.IdSO;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/01/22.
  */
-interface CellBaseService<T> {
+interface CellBaseService<T, ID> {
     /**
      * 創建
      * @param model 汎型對象
@@ -44,9 +45,25 @@ interface CellBaseService<T> {
      * @param idList ID集合
      * @return 基礎數據
      */
-    MsgResultVO deleteList(List<Long> idList);
+    MsgResultVO deleteList(List<ID> idList);
 
-    MsgResultVO deleteList(DeleteDTO deleteDTO);
+    MsgResultVO deleteList(DeleteDTO<ID> deleteDTO);
+
+    /**
+     * 物理刪除
+     * @param model 對象
+     * @return
+     */
+    MsgResultVO deleteRe(T model);
+
+    /**
+     * 物理刪除
+     * @param idList ID集合
+     * @return
+     */
+    MsgResultVO deleteListRe(List<ID> idList);
+
+    MsgResultVO deleteListRe(DeleteDTO<ID> deleteDTO);
 
     /**
      * 批量操作 禁用或啓用
@@ -54,9 +71,9 @@ interface CellBaseService<T> {
      * @param status 對象狀態，可以爲空
      * @return 基礎數據
      */
-    MsgResultVO banOrLeave(Long id, Boolean status);
+    MsgResultVO banOrLeave(ID id, Boolean status);
 
-    MsgResultVO banOrLeave(BanDTO banDTO);
+    MsgResultVO banOrLeave(BanDTO<ID> banDTO);
 
     /**
      * 批量操作 禁用或啓用
@@ -64,9 +81,9 @@ interface CellBaseService<T> {
      * @param status 對象狀態
      * @return 基礎數據
      */
-    MsgResultVO banOrLeaveList(List<Long> idList, Boolean status);
+    MsgResultVO banOrLeaveList(List<ID> idList, Boolean status);
 
-    MsgResultVO banOrLeaveList(BanListDTO banListDTO);
+    MsgResultVO banOrLeaveList(BanListDTO<ID> banListDTO);
 
     /**
      * 更新 更新前需要查询，因此可能返回对象为父类型
@@ -81,6 +98,15 @@ interface CellBaseService<T> {
      * @return 汎型對象
      */
     MsgResultVO<T> details(T model);
+
+    /**
+     * 獲取詳情
+     * @param id 汎型對象檢索條件
+     * @return 汎型對象
+     */
+    MsgResultVO<T> detailsById(ID id);
+
+    MsgResultVO<T> detailsById(IdSO<ID> idSO);
 
     /**
      * 獲取分頁列表，添加 model 提供檢索功能
@@ -99,7 +125,7 @@ interface CellBaseService<T> {
      * @param idListSO 内含汎型對象
      * @return list
      */
-    MsgResultVO<List<T>> selectByIdList(IdListSO idListSO);
+    MsgResultVO<List<T>> selectByIdList(IdListSO<ID> idListSO);
 
     /**
      * 獲取所有的對象，添加 model 提供檢索功能

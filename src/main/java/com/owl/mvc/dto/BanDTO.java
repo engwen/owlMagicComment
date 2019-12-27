@@ -6,34 +6,30 @@ package com.owl.mvc.dto;
  * email xiachanzou@outlook.com
  * 2019/2/26.
  */
-public class BanDTO {
+public class BanDTO<ID> {
     /*
-    * 对象id
-    * */
-    private Long id;
+     * 对象id
+     * */
+    private ID id;
     /*
-    * 是否禁用
-    * */
+     * 是否禁用
+     * */
     private Boolean isBan;
 
     public BanDTO() {
 
     }
 
-    private BanDTO(Long id, Boolean isBan) {
+    private BanDTO(ID id, Boolean isBan) {
         this.id = id;
         this.isBan = isBan;
     }
 
-    public static BanDTO getInstance(Long id, Boolean isBan) {
-        return new BanDTO(id, isBan);
-    }
-
-    public Long getId() {
+    public ID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(ID id) {
         this.id = id;
     }
 

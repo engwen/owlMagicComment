@@ -8,48 +8,40 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * 2019/2/26.
  */
-public class DeleteDTO {
+public class DeleteDTO<ID> {
     /*
-    * 主id
+    * id
     * */
-    private Long id;
+    private ID id;
     /*
     * id集合
     * */
-    private List<Long> idList;
+    private List<ID> idList;
 
     public DeleteDTO() {
     }
 
-    private DeleteDTO(Long id) {
+    private DeleteDTO(ID id) {
         this.id = id;
     }
 
-    private DeleteDTO(List<Long> idList) {
+    private DeleteDTO(List<ID> idList) {
         this.idList = idList;
     }
 
-    public static DeleteDTO getInstance(Long id) {
-        return new DeleteDTO(id);
-    }
-
-    public static DeleteDTO getInstance(List<Long> idList) {
-        return new DeleteDTO(idList);
-    }
-
-    public Long getId() {
+    public ID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(ID id) {
         this.id = id;
     }
 
-    public List<Long> getIdList() {
+    public List<ID> getIdList() {
         return idList;
     }
 
-    public void setIdList(List<Long> idList) {
+    public void setIdList(List<ID> idList) {
         this.idList = idList;
     }
 }

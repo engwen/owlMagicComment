@@ -12,7 +12,7 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/10/10.
  */
-public interface RelationBaseDao<T> {
+public interface RelationBaseDao<T,MainID,FollowerID> {
 
     /**
      * 批量插入
@@ -26,7 +26,7 @@ public interface RelationBaseDao<T> {
      * @param relationDTO 内含一對多
      * @return int
      */
-    int insertRelation(RelationDTO relationDTO);
+    int insertRelation(RelationDTO<MainID,FollowerID> relationDTO);
 
     /**
      * 批量刪除或个别删除
@@ -47,7 +47,7 @@ public interface RelationBaseDao<T> {
      * @param relationDTO 内含一對多
      * @return int
      */
-    int deleteRelation(RelationDTO relationDTO);
+    int deleteRelation(RelationDTO<MainID,FollowerID> relationDTO);
 
     /**
      * 查詢是否存在

@@ -13,7 +13,8 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/04/22.
  */
-public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T>, T> implements RelationBaseService<T> {
+public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T, MainID, FollowerID>, T, MainID, FollowerID>
+        implements RelationBaseService<T, MainID, FollowerID> {
     @Autowired
     private M relationBaseDao;
 
@@ -33,7 +34,7 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T>, T> imp
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO insertRelation(RelationDTO relationDTO) {
+    public MsgResultVO insertRelation(RelationDTO<MainID, FollowerID> relationDTO) {
         return RelationBaseServiceUtil.insertRelation(relationBaseDao, relationDTO);
     }
 
@@ -63,7 +64,7 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T>, T> imp
      * @return 基礎數據
      */
     @Override
-    public MsgResultVO deleteRelation(RelationDTO relationDTO) {
+    public MsgResultVO deleteRelation(RelationDTO<MainID, FollowerID> relationDTO) {
         return RelationBaseServiceUtil.deleteRelation(relationBaseDao, relationDTO);
     }
 

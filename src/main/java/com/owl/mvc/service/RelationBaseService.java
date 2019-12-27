@@ -12,7 +12,7 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/01/25.
  */
-interface RelationBaseService<T> {
+interface RelationBaseService<T, MainID, FollowerID> {
 
     /**
      * 插入關係數據
@@ -26,7 +26,7 @@ interface RelationBaseService<T> {
      * @param relationDTO id idList
      * @return 基礎數據
      */
-    MsgResultVO insertRelation(RelationDTO relationDTO);
+    MsgResultVO insertRelation(RelationDTO<MainID, FollowerID> relationDTO);
 
     /**
      * 批量插入
@@ -47,7 +47,7 @@ interface RelationBaseService<T> {
      * @param relationDTO id idList
      * @return 基礎數據
      */
-    MsgResultVO deleteRelation(RelationDTO relationDTO);
+    MsgResultVO deleteRelation(RelationDTO<MainID, FollowerID> relationDTO);
 
     /**
      * 批量刪除
@@ -61,7 +61,7 @@ interface RelationBaseService<T> {
      * @param relationDTO d idList
      * @return 基礎數據
      */
-    MsgResultVO update(RelationDTO relationDTO);
+    MsgResultVO update(RelationDTO<MainID, FollowerID> relationDTO);
 
     /**
      * 查詢

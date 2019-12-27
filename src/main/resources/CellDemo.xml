@@ -135,9 +135,22 @@
 
             update_time = NULL
         </set>
-        where <include refid="Table_ID_Name"/> = #{id,jdbcType=BIGINT} and status = true
+        where <include refid="Table_ID_Name"/> = #{id} and status = true
     </update>
+    <!-- 请添加所需要的属性-->
+    <delete id="deleteBySelectiveRe">
+        delete from <include refid="Table_Name"/>
+        <where>
+            <choose>
+                <when test="id != null">
+                    <include refid="Table_ID_Name"/> = #{id}
+                </when>
+                <otherwise>
 
+                </otherwise>
+            </choose>
+        </where>
+    </delete>
     <!-- 请添加所需要的属性-->
     <update id="deleteBySelective">
         update <include refid="Table_Name"/>
@@ -156,6 +169,13 @@
 
 
     <!-- 以下不需要改變  -->
+    <delete id="deleteByIdListRe">
+        delete from <include refid="Table_Name"/>
+        WHERE <include refid="Table_ID_Name"/> IN
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
     <update id="deleteByIdList">
         update <include refid="Table_Name"/>
@@ -176,7 +196,24 @@
         and status = true
     </update>
 
-    <select id="selectBySelective" resultMap="BaseResultMap">
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="Table_Name"/>
+        where <include refid="Table_ID_Name"/> = #{id}
+    </select>
+
+    <select id="selectByIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="Table_Name"/>
+        WHERE <include refid="Table_ID_Name"/> IN
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectByLike" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from <include refid="Table_Name"/>

@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @SuppressWarnings("unchecked")
-public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T> implements CellBaseController<T> {
+public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T, ID> implements CellBaseController<T, ID> {
 
     @Autowired
     private M cellBaseServiceAb;
@@ -71,9 +71,31 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T> imple
      * @return 结果
      */
     @Override
-    public MsgResultVO deleteList(DeleteDTO deleteDTO) {
+    public MsgResultVO deleteList(DeleteDTO<ID> deleteDTO) {
         defaultBack();
         return cellBaseServiceAb.deleteList(deleteDTO);
+    }
+
+    /**
+     * 删除功能
+     * @param model 待删除的对象
+     * @return 结果
+     */
+    @Override
+    public MsgResultVO deleteRe(T model) {
+        defaultBack();
+        return cellBaseServiceAb.deleteRe(model);
+    }
+
+    /**
+     * 批量删除
+     * @param deleteDTO 删除对象DTO
+     * @return 结果
+     */
+    @Override
+    public MsgResultVO deleteListRe(DeleteDTO<ID> deleteDTO) {
+        defaultBack();
+        return cellBaseServiceAb.deleteListRe(deleteDTO);
     }
 
     /**
@@ -82,7 +104,7 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T> imple
      * @return int
      */
     @Override
-    public MsgResultVO banOrLeave(BanDTO banDTO) {
+    public MsgResultVO banOrLeave(BanDTO<ID> banDTO) {
         defaultBack();
         return cellBaseServiceAb.banOrLeave(banDTO);
     }
@@ -93,7 +115,7 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T> imple
      * @return int
      */
     @Override
-    public MsgResultVO banOrLeaveList(BanListDTO banListDTO) {
+    public MsgResultVO banOrLeaveList(BanListDTO<ID> banListDTO) {
         defaultBack();
         return cellBaseServiceAb.banOrLeaveList(banListDTO);
     }
