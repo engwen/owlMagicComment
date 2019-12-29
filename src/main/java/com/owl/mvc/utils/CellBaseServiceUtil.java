@@ -31,7 +31,7 @@ public abstract class CellBaseServiceUtil {
      * @return 汎型對象
      */
     public static <T, ID> MsgResultVO<T> create(CellBaseDao<T, ID> cellBaseDao, T model) {
-        cellBaseDao.insertSelective(model);
+        cellBaseDao.insert(model);
         return MsgResultVO.getInstanceSuccess(model);
     }
 
@@ -47,7 +47,7 @@ public abstract class CellBaseServiceUtil {
         if (isExist(cellBaseDao, model).getResult()) {
             resultVO.errorResult(MsgConstant.REQUEST_IS_EXITS);
         } else {
-            cellBaseDao.insertSelective(model);
+            cellBaseDao.insert(model);
             resultVO.successResult(model);
         }
         return resultVO;
@@ -101,7 +101,7 @@ public abstract class CellBaseServiceUtil {
      * @return 基礎數據
      */
     public static <T, ID> MsgResultVO deleteRe(CellBaseDao<T, ID> cellBaseDao, T model) {
-        cellBaseDao.deleteBySelectiveRe(model);
+        cellBaseDao.deleteByPrimaryKeyRe(model);
         return MsgResultVO.getInstanceSuccess();
     }
 
@@ -112,7 +112,7 @@ public abstract class CellBaseServiceUtil {
      */
     public static <T, ID> MsgResultVO deleteListRe(CellBaseDao<T, ID> cellBaseDao, List<ID> idList) {
         IdListSO<ID> idListSO = new IdListSO<>(idList);
-        cellBaseDao.deleteByIdListRe(idListSO);
+        cellBaseDao.deleteByPrimaryKeyListRe(idListSO);
         return MsgResultVO.getInstanceSuccess();
     }
 
@@ -184,7 +184,7 @@ public abstract class CellBaseServiceUtil {
     public static <T, ID> MsgResultVO<T> update(CellBaseDao<T, ID> cellBaseDao, T model) {
         MsgResultVO<T> resultVO = new MsgResultVO<>();
         if (isExist(cellBaseDao, model).getResult()) {
-            cellBaseDao.updateBySelective(model);
+            cellBaseDao.updateByPrimaryKey(model);
             resultVO.successResult();
         } else {
             resultVO.errorResult(MsgConstant.REQUEST_NOT_EXITS);
@@ -237,7 +237,7 @@ public abstract class CellBaseServiceUtil {
      * @return list
      */
     public static <T, ID> MsgResultVO<List<T>> selectByIdList(CellBaseDao<T, ID> cellBaseDao, IdListSO idListSO) {
-        return MsgResultVO.getInstanceSuccess(cellBaseDao.selectByIdList(idListSO));
+        return MsgResultVO.getInstanceSuccess(cellBaseDao.selectByPrimaryKeyList(idListSO));
     }
 
     /*
