@@ -126,6 +126,13 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
           System.out.println(ObjectUtil.toJSON(wade.getMementoHistory(0)));//[{"name":"lili","age":"10"},{"name":"lili","age":"13"}]
   
 
+
+
+
+
+[Basic addition, deletion, modification and query function](https://github.com/engwen/owlMagicComment/blob/master/readMeEn.md/#CRUD)
+[基础的增删改查](https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md/#CRUD)
+
 ###  and so on
 
 #  En
@@ -184,8 +191,5 @@ spring springMVC 项目需要在  spring mvc servlet 的配置文件中添加以
  SpringBoot 用户需要在 项目启动类上配置扫描
  
     @ComponentScan(basePackages = { "***","com.owl" ,"***"})
-
-
-
 
 中文详情，请点击 ：<url>https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md

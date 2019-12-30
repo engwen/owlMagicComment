@@ -192,6 +192,9 @@
     抛出事件功能
 
 ------- 
+
+<div id="CRUD"></div>
+
 # >MVC 简写部分（常用的CRUD使用方法）
 
 ##### 1. SpringContextUtil
@@ -314,47 +317,47 @@
       本类中提供以下方法：
       
       
-        /**
-         * 批量插入
-         * @param modelListSO 内含汎型對象
-         * @return int
-         */
-        int insertList(ModelListSO<T> modelListSO);
-    
-        /**
-         * 批量插入
-         * @param relationDTO 内含一對多
-         * @return int
-         */
-        int insertRelation(RelationDTO<MainID,FollowerID> relationDTO);
-    
-        /**
-         * 批量刪除或个别删除
-         * @param modelSO 内含汎型對象
-         * @return int
-         */
-        int delete(ModelSO<T> modelSO);
-    
-        /**
-         * 批量刪除
-         * @param modelListSO 内含汎型對象
-         * @return int
-         */
-        int deleteList(ModelListSO<T> modelListSO);
-    
-        /**
-         * 批量刪除
-         * @param relationDTO 内含一對多
-         * @return int
-         */
-        int deleteRelation(RelationDTO<MainID,FollowerID> relationDTO);
-    
-        /**
-         * 查詢是否存在
-         * @param modelSO 内含汎型對象
-         * @return list
-         */
-        List<T> selectBySelective(ModelSO<T> modelSO);
+            /**
+             * 批量插入
+             * @param modelListSO 内含汎型對象
+             * @return int
+             */
+            int insertList(ModelListSO<T> modelListSO);
+        
+            /**
+             * 批量插入
+             * @param relationDTO 内含一對多
+             * @return int
+             */
+            int insertRelation(RelationDTO<MainID,FollowerID> relationDTO);
+        
+            /**
+             * 批量刪除或个别删除
+             * @param modelSO 内含汎型對象
+             * @return int
+             */
+            int delete(ModelSO<T> modelSO);
+        
+            /**
+             * 批量刪除
+             * @param modelListSO 内含汎型對象
+             * @return int
+             */
+            int deleteList(ModelListSO<T> modelListSO);
+        
+            /**
+             * 批量刪除
+             * @param relationDTO 内含一對多
+             * @return int
+             */
+            int deleteRelation(RelationDTO<MainID,FollowerID> relationDTO);
+        
+            /**
+             * 查詢是否存在
+             * @param modelSO 内含汎型對象
+             * @return list
+             */
+            List<T> selectBySelective(ModelSO<T> modelSO);
 ##### 3. xml
 
    本模板中的 [CellDemo.xml](https://github.com/engwen/owlMagicComment/blob/master/src/main/resources/CellDemo.xml) 和
