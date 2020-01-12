@@ -1,10 +1,29 @@
 # OwlMagicComment
 
-[TOC]
+简介：本工具包提供以下服务
+        
+   1. 基础的 [CRUD](https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md/#CRUD) 模板，并提供实现。除了基本的CRUD，本包还提供批量创建，批量删除，物理删除，逻辑删除（默认不提供，数据库需要有
+            tinyint类型的status字段，对象中为status的boolean），逻辑禁用（默认不提供，数据库需要有tinyint类型的has_ban字段，对象
+            中为hasBan的boolean），分页等功能 ![Image text](https://github.com/engwen/owlMagicImages/owlMagicComment/cellBaseDao.png)
+   2. 设置三级请求参数，分别是model，DTO和SO。在controller层，默认能使用model接收的地方全部使用model，不能使用一概使用DTO对
+            象接收。同理，dao层能使用model的地方，全部使用model，上层传输为DTO对象的，全部使用DTO对象。为了统一xml中的方法，方便后
+            期的修改操作，dao层另外提供SO对象，xml中使用该对象中的model、id、idList、modelList等。PS 该对象不建议在service之外的
+            任何地方使用
+   3. 统一返回参数，所有的请求参数全都为 MsgResultVO<T> 。除了dao之外，所有的service也都返回这个参数，它封装了几乎你能想到的
+            所有的返回参数应该有的方法。如果你之前使用的是另一个返回类，那么我还是推荐修改为 MsgResultVO，不然本包提供的大量注解方法
+            你都将不能使用
+   4. 提供注解方法：检查请求参数（come on，别和我说那个在model里设置notNull的jar——我总不可能就为了使用这个玩意，就新建一个一
+            模一样的model吧？比如create和update，一个model，但是id在update的时候不能为null的情况，所以我还是认为在方法直接使用注解
+            的方式会更好）、改变返回值类型（hei，快别找接口不使用MsgResultVO了，我都给你想好了，唯一麻烦的可能就是前端界面了）、打印
+            日志（算了吧，快别用这个了，它只是个System.out.print）、计算方法花费时长、设置请求参数或者返回参数为Null（过滤无用的请
+            求字段，比如期望的是like查询，但接收使用model，可前端偏偏传了个id。还有，别和我说你会重新写个方法，就为了不查一个字段或
+            者多查一个字段）等等
+   5. 还有一部分功能，那是属于[owlMagicUtil](https://github.com/engwen/owlMagicUtil)的
+   6. 配合我提供的基于mybatis-generator改写的自动生成工具[owlMybatisGenerator](https://github.com/engwen/owlMagicImages/owlMybatisGenerator/)，你还在犹豫什么？
 
 -------
 
-#> 自定义注解
+## 自定义注解
 
 ##### 1. @OwlCheckParams
 
@@ -128,7 +147,7 @@
     
 -------
 
-# >其它模式
+# 其它模式
 
 #####  1. 观察者模式  灵感来自 Flex AS 中的事件监听机制
 
@@ -195,7 +214,7 @@
 
 <div id="CRUD"></div>
 
-# >MVC 简写部分（常用的CRUD使用方法）
+# MVC 简写部分（常用的CRUD使用方法）
 
 ##### 1. SpringContextUtil
     
