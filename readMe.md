@@ -7,6 +7,10 @@ Use my code, please note the source, thank you.
 Thank JetBrains Community Support Team for its support to this project, which provides IntelliJ idea tools 
 for my faster development and iteration. <url>https://www.jetbrains.com/?From=owlMagicComment
 
+中文详情，请点击 ：<url>https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md
+
+En details ,please click <url>https://github.com/engwen/owlMagicComment/blob/master/readMeEn.md
+
 #  To simple principles   至简原则
 
 ### use the jar,you can get like this
