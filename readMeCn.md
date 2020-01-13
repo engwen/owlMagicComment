@@ -4,7 +4,7 @@
         
    1. 基础的 [CRUD](https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md/#CRUD) 模板，并提供实现。除了基本的CRUD，本包还提供批量创建，批量删除，物理删除，逻辑删除（默认不提供，数据库需要有
             tinyint类型的status字段，对象中为status的boolean），逻辑禁用（默认不提供，数据库需要有tinyint类型的has_ban字段，对象
-            中为hasBan的boolean），分页等功能 ![Image text](https://github.com/engwen/owlMagicImages/tree/master/owlMagicComment/cellBaseDao.png)
+            中为hasBan的boolean），分页等功能 ![image](https://github.com/engwen/owlMagicImages/tree/master/owlMagicComment/cellBaseDao.png)
    2. 设置三级请求参数，分别是model，DTO和SO。在controller层，默认能使用model接收的地方全部使用model，不能使用一概使用DTO对
             象接收。同理，dao层能使用model的地方，全部使用model，上层传输为DTO对象的，全部使用DTO对象。为了统一xml中的方法，方便后
             期的修改操作，dao层另外提供SO对象，xml中使用该对象中的model、id、idList、modelList等。PS 该对象不建议在service之外的
@@ -19,7 +19,7 @@
             求字段，比如期望的是like查询，但接收使用model，可前端偏偏传了个id。还有，别和我说你会重新写个方法，就为了不查一个字段或
             者多查一个字段）等等
    5. 还有一部分功能，那是属于[owlMagicUtil](https://github.com/engwen/owlMagicUtil)的
-   6. 配合我提供的基于mybatis-generator改写的自动生成工具[owlMybatisGenerator](https://github.com/engwen/owlMagicImages/owlMybatisGenerator/)，你还在犹豫什么？
+   6. 配合我提供的基于mybatis-generator改写的自动生成工具[owlMybatisGenerator](https://github.com/engwen/owlMagicImages/tree/master/owlMybatisGenerator/)，你还在犹豫什么？
 
 -------
 
