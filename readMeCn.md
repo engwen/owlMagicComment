@@ -4,7 +4,7 @@
         
    1. 基础的 [CRUD](https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md/#CRUD) 模板，并提供实现。除了基本的CRUD，本包还提供批量创建，批量删除，物理删除，逻辑删除（默认不提供，数据库需要有
             tinyint类型的status字段，对象中为status的boolean），逻辑禁用（默认不提供，数据库需要有tinyint类型的has_ban字段，对象
-            中为hasBan的boolean），分页等功能 <img src="https://github.com/engwen/owlMagicImages/tree/master/owlMagicComment/cellBaseDao.png" style="zoom:70%" />
+            中为hasBan的boolean），分页等功能 <img src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/cellBaseDao.png" style="zoom:70%" />
             ![image](https://github.com/engwen/owlMagicImages/tree/master/owlMagicComment/cellBaseDao.png)
    2. 设置三级请求参数，分别是model，DTO和SO。在controller层，默认能使用model接收的地方全部使用model，不能使用一概使用DTO对
             象接收。同理，dao层能使用model的地方，全部使用model，上层传输为DTO对象的，全部使用DTO对象。为了统一xml中的方法，方便后
