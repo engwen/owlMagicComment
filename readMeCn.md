@@ -1,4 +1,4 @@
-# OwlMagicComment
+# OwlMagicComment 猫头鹰的魔法视野
 
 简介：本工具包提供以下服务
         
@@ -10,19 +10,21 @@
                 这也是为什么Spring会支持实体类作为service
                 b. 现在的ide工具很容易就能看到一个类的全部方法，没必要为了一目了然而单独创建一个类（如果你用的idea，按住ctrl+alt+shift+u试试）。
             <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/interfaceUML.png"/>
+            
             默认的，本包中的update是依据id进行更新的，注解 @OwlCheckParams(notNull={"id})
             已经帮你写好，你只需要引包就好啦
             <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/cellBaseDao.png"/>
    2. 设置三级请求参数，分别是model，DTO和SO。在controller层，默认能使用model接收的地方全部使用model，不能使用一概使用DTO对
             象接收。同理，dao层能使用model的地方，全部使用model，上层传输为DTO对象的，全部使用DTO对象。为了统一xml中的方法，方便后
-            期的修改操作，dao层另外提供SO对象，xml中使用该对象中的model、id、idList、modelList等。PS 该对象不建议在service之外的
-            任何地方使用
+            期的修改操作，dao层另外提供SO对象，xml中使用该对象中的model、id、idList、modelList等。PS 该对象只是为了在xml中的代码重用，
+            因为我实在不想让你再改变一个条件时去xml中一个一个更改，我不建议你在service之外的任何地方使用SO对象
+            <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/xmlModel.png"/>
             
    3. 统一返回参数，所有的请求参数全都为 MsgResultVO<T> 。除了dao之外，所有的service也都返回这个参数（还在返回int? 一个service居然需要
             每个controller都自己去封装结果集，能忍？），它封装了几乎你能想到的
             所有的返回参数应该有的方法。如果你之前使用的是另一个返回类，那么我还是推荐修改为 MsgResultVO，不然本包提供的大量注解方法
-            你都将不能使用 (toJSON, toMap, 直接操作附加参数 items，msg，code，result，data，除此之外，如果你还需要什么可以给我留言，
-            我会在下一个版本加以考虑)
+            你都将不能使用 <font color=#7FFF00>(toJSON, toMap, 直接操作附加参数 items，msg，code，result，data，除此之外，如果你还需要什么可以给我留言，
+            我会在下一个版本加以考虑)</font>
             <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/MsgResultVO.png"/>
    4. 提供注解方法：检查请求参数（come on，别和我说那个在model里设置notNull的jar——我总不可能就为了使用这个玩意，就新建一个一
             模一样的model吧？比如create和update，一个model，但是id在update的时候不能为null的情况，所以我还是认为在方法直接使用注解
@@ -31,7 +33,11 @@
             求字段，比如期望的是like查询，但接收使用model，可前端偏偏传了个id。还有，别和我说你会重新写个方法，就为了不查一个字段或
             者多查一个字段）等等
    5. 还有一部分功能，那是属于[owlMagicUtil](https://github.com/engwen/owlMagicUtil)的
-   6. 配合我提供的基于mybatis-generator改写的自动生成工具[owlMybatisGenerator](https://github.com/engwen/owlMagicImages/tree/master/owlMybatisGenerator)，你还在犹豫什么？
+   6. 配合我提供的基于mybatis-generator改写的自动生成工具[owlMybatisGenerator](https://github.com/engwen/owlMagicImages/tree/master/owlMybatisGenerator)，
+            从 model 到 dao，到 service，到 controller，到 xml，我都已经做好了完整的一套逻辑（感谢[mybatis-generator](https://github.com/mybatis/generator)开源项目，
+            看命名就知道了，我的项目就是基于他们的源码改动的），去除掉了那些无用的注释（<font color=#7FFF00>如果你的数据库表中有注释的话，默认model就会
+            加载数据库中的注释哦</font>）
+            你还在犹豫什么？
 
 -------
 
