@@ -4,15 +4,26 @@
         
    1. 基础的 [CRUD](https://github.com/engwen/owlMagicComment/blob/master/readMeCn.md/#CRUD) 模板，并提供实现。除了基本的CRUD，本包还提供批量创建，批量删除，物理删除，逻辑删除（默认不提供，数据库需要有
             tinyint类型的status字段，对象中为status的boolean），逻辑禁用（默认不提供，数据库需要有tinyint类型的has_ban字段，对象
-            中为hasBan的boolean），分页等功能 <img src="https://github.com/engwen/owlMagicImages/tree/master/owlMagicComment/cellBaseDao.png" style="zoom:70%" />
-            ![image](https://github.com/engwen/owlMagicImages/tree/master/owlMagicComment/cellBaseDao.png)
+            中为hasBan的boolean），分页等功能。我舍弃了常规的service 接口-实现类模式，采用了更为激进的 service 实体类继承抽象类（
+            该抽象类实现默认接口的模式），理由如下
+                a. 绝大多数情况下——我想可能有99%，你绝对不会用两个service实现类去实现同一个接口，这个接口已经失去了意义，
+                这也是为什么Spring会支持实体类作为service
+                b. 现在的ide工具很容易就能看到一个类的全部方法，没必要为了一目了然而单独创建一个类（如果你用的idea，按住ctrl+alt+shift+u试试）。
+            <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/interfaceUML.png"/>
+            默认的，本包中的update是依据id进行更新的，注解 @OwlCheckParams(notNull={"id})
+            已经帮你写好，你只需要引包就好啦
+            <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/cellBaseDao.png"/>
    2. 设置三级请求参数，分别是model，DTO和SO。在controller层，默认能使用model接收的地方全部使用model，不能使用一概使用DTO对
             象接收。同理，dao层能使用model的地方，全部使用model，上层传输为DTO对象的，全部使用DTO对象。为了统一xml中的方法，方便后
             期的修改操作，dao层另外提供SO对象，xml中使用该对象中的model、id、idList、modelList等。PS 该对象不建议在service之外的
             任何地方使用
-   3. 统一返回参数，所有的请求参数全都为 MsgResultVO<T> 。除了dao之外，所有的service也都返回这个参数，它封装了几乎你能想到的
+            
+   3. 统一返回参数，所有的请求参数全都为 MsgResultVO<T> 。除了dao之外，所有的service也都返回这个参数（还在返回int? 一个service居然需要
+            每个controller都自己去封装结果集，能忍？），它封装了几乎你能想到的
             所有的返回参数应该有的方法。如果你之前使用的是另一个返回类，那么我还是推荐修改为 MsgResultVO，不然本包提供的大量注解方法
-            你都将不能使用
+            你都将不能使用 (toJSON, toMap, 直接操作附加参数 items，msg，code，result，data，除此之外，如果你还需要什么可以给我留言，
+            我会在下一个版本加以考虑)
+            <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/MsgResultVO.png"/>
    4. 提供注解方法：检查请求参数（come on，别和我说那个在model里设置notNull的jar——我总不可能就为了使用这个玩意，就新建一个一
             模一样的model吧？比如create和update，一个model，但是id在update的时候不能为null的情况，所以我还是认为在方法直接使用注解
             的方式会更好）、改变返回值类型（hei，快别找接口不使用MsgResultVO了，我都给你想好了，唯一麻烦的可能就是前端界面了）、打印
@@ -20,7 +31,7 @@
             求字段，比如期望的是like查询，但接收使用model，可前端偏偏传了个id。还有，别和我说你会重新写个方法，就为了不查一个字段或
             者多查一个字段）等等
    5. 还有一部分功能，那是属于[owlMagicUtil](https://github.com/engwen/owlMagicUtil)的
-   6. 配合我提供的基于mybatis-generator改写的自动生成工具[owlMybatisGenerator](https://github.com/engwen/owlMagicImages/tree/master/owlMybatisGenerator/)，你还在犹豫什么？
+   6. 配合我提供的基于mybatis-generator改写的自动生成工具[owlMybatisGenerator](https://github.com/engwen/owlMagicImages/tree/master/owlMybatisGenerator)，你还在犹豫什么？
 
 -------
 
@@ -424,7 +435,7 @@
         <dependency>
                <groupId>com.github.engwen</groupId>
                <artifactId>owlMagicUtil</artifactId>
-               <version>2.3</version>
+               <version>3.0.0</version>
         </dependency>
         <!--aop 核心依赖以及完成本功能所需依赖 -->
        <dependency>
@@ -459,6 +470,11 @@
 
 
 -------
+ #####  3.0.0
+
+ -- 优化
+ 1. 配合 owl-mybatis-generator 进行修改，自动生成 MVC 的代码和本包中的方法全面对接
+ 2. 部分方法修改
 
  ##### 1.2.2
  
@@ -477,7 +493,7 @@
  2. 现在 OwlObserved 支持直接使用 String 的方法名作为添加监听的依据，如 mimi.addEventListen(outName, "toString"); 注意，toString方法必须出现在对象 mimi 的类中，不然将会找不到这个方法
  3. 现在 OwlObserved 支持使用多个参数的 lambda 表达式，但是派发的事件参数个数一定要和 lambda 中的参数一致
  4. PageVO 类整改，现在 PageVO 对象加入 MsgResultVO 中的部分方法
- 
+
 
  #####  1.2.0
  
