@@ -10,7 +10,6 @@
                 这也是为什么Spring会支持实体类作为service
                 b. 现在的ide工具很容易就能看到一个类的全部方法，没必要为了一目了然而单独创建一个类（如果你用的idea，按住ctrl+alt+shift+u试试）。
             <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/interfaceUML.png"/>
-            
             默认的，本包中的update是依据id进行更新的，注解 @OwlCheckParams(notNull={"id})
             已经帮你写好，你只需要引包就好啦
             <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/cellBaseDao.png"/>
