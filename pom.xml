@@ -22,7 +22,7 @@
         <aspectj-aspectj.version>1.9.4</aspectj-aspectj.version>
         <aspectj-aspectjweaver.version>1.9.4</aspectj-aspectjweaver.version>
         <spring-web.version>4.2.5.RELEASE</spring-web.version>
-        <jackson-databind.version>2.9.5</jackson-databind.version>
+        <jackson-databind.version>2.9.10.3</jackson-databind.version>
     </properties>
 
 
