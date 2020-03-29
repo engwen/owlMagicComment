@@ -38,6 +38,12 @@ interface CellBaseController<T,ID> {
      */
     MsgResultVO delete(T model);
 
+    /**
+     * 依据 id 删除
+     * @param id 删除对象DTO
+     * @return 结果
+     */
+    MsgResultVO deleteById(ID id);
 
     /**
      * 批量删除
@@ -74,11 +80,13 @@ interface CellBaseController<T,ID> {
     MsgResultVO banOrLeaveList(BanListDTO<ID> banListDTO);
 
     /**
-     * 更新
+     * 全量更新
      * @param model 将要被更新的对象
      * @return 结果
      */
     MsgResultVO<?> update(T model);
+
+    MsgResultVO<?> updateByNotNull(T model);
 
     /**
      * 获取详情
@@ -100,7 +108,7 @@ interface CellBaseController<T,ID> {
      * @param model 检索条件
      * @return 结果集合
      */
-    MsgResultVO<List<T>> getAll(T model);
+    MsgResultVO<List<T>> list(T model);
 
     /**
      * 檢查数据是否存在

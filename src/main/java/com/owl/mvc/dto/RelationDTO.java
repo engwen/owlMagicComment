@@ -18,6 +18,10 @@ public class RelationDTO<MainID, FollowerID> {
      * */
     private List<FollowerID> idList;
 
+    public static <MainID, FollowerID> RelationDTO getInstance(MainID id, List<FollowerID> idList) {
+        return new RelationDTO<>(id, idList);
+    }
+
     public RelationDTO() {
     }
 

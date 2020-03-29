@@ -23,13 +23,6 @@ interface RelationBaseService<T, MainID, FollowerID> {
 
     /**
      * 批量插入
-     * @param relationDTO id idList
-     * @return 基礎數據
-     */
-    MsgResultVO insertRelation(RelationDTO<MainID, FollowerID> relationDTO);
-
-    /**
-     * 批量插入
      * @param modelList 汎型對象
      * @return 基礎數據
      */
@@ -48,20 +41,6 @@ interface RelationBaseService<T, MainID, FollowerID> {
      * @return 基礎數據
      */
     MsgResultVO deleteRelation(RelationDTO<MainID, FollowerID> relationDTO);
-
-    /**
-     * 批量刪除
-     * @param modelList 汎型對象
-     * @return 基礎數據
-     */
-    MsgResultVO deleteList(List<T> modelList);
-
-    /**
-     * 更新
-     * @param relationDTO d idList
-     * @return 基礎數據
-     */
-    MsgResultVO update(RelationDTO<MainID, FollowerID> relationDTO);
 
     /**
      * 查詢

@@ -10,16 +10,26 @@ import java.util.List;
  */
 public class DeleteDTO<ID> {
     /*
-    * id
-    * */
+     * id
+     * */
     private ID id;
     /*
-    * id集合
-    * */
+     * id集合
+     * */
     private List<ID> idList;
+
+    public static <ID> DeleteDTO getInstance(ID id, List<ID> idList) {
+        return new DeleteDTO<>(id, idList);
+    }
 
     public DeleteDTO() {
     }
+
+    public DeleteDTO(ID id, List<ID> idList) {
+        this.id = id;
+        this.idList = idList;
+    }
+
 
     private DeleteDTO(ID id) {
         this.id = id;

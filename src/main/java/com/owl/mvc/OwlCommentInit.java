@@ -1,5 +1,6 @@
 package com.owl.mvc;
 
+import com.owl.util.LogPrintUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,6 @@ import org.springframework.stereotype.Component;
 public class OwlCommentInit implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
-
+        LogPrintUtil.info("owlMagicComment`s AOP init success");
     }
 }

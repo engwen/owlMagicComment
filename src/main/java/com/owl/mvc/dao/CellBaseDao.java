@@ -4,6 +4,7 @@ import com.owl.mvc.dto.BanListDTO;
 import com.owl.mvc.so.IdListSO;
 import com.owl.mvc.so.IdSO;
 import com.owl.mvc.so.ModelListSO;
+import com.owl.mvc.so.ModelSO;
 import com.owl.mvc.so.SelectLikeSO;
 
 import java.util.List;
@@ -30,6 +31,12 @@ public interface CellBaseDao<T, ID> {
      */
     int insertList(ModelListSO<T> modelListSO);
 
+    /**
+     * 物理 刪除
+     * @param idSO 泛型对象
+     * @return int
+     */
+    int deleteByPrimaryKeyRe(IdSO<ID> idSO);
 
     /**
      * 物理 批量刪除
@@ -40,22 +47,27 @@ public interface CellBaseDao<T, ID> {
 
     /**
      * 物理 刪除
+     * @param modelSO 泛型对象
+     * @return int
+     */
+    int deleteBySelectiveRe(ModelSO<T> modelSO);
+
+    /**
+     * 全屬性進行更新
      * @param model 泛型对象
      * @return int
      */
-    int deleteByPrimaryKeyRe(T model);
-
+    int updateByPrimaryKey(T model);
 
     /**
      * 依據指定的屬性進行更新
      * @param model 泛型对象
      * @return int
      */
-    int updateByPrimaryKey(T model);
-
+    int updateByPrimaryKeySelective(T model);
 
     /**
-     * 依據 id 屬性獲取對象集合 准确查询
+     * 依據 id 屬性獲取對象 准确查询
      * @param idSO id泛型
      * @return 泛型对象集合
      */
@@ -84,7 +96,6 @@ public interface CellBaseDao<T, ID> {
      */
     List<T> selectByLike(SelectLikeSO<T> selectLikeSO);
 
-
     /**
      * 依據指定的屬性統計數據條數
      * @param selectLikeSO 泛型对象
@@ -101,15 +112,28 @@ public interface CellBaseDao<T, ID> {
      */
     List<T> listByCondition(SelectLikeSO<T> selectLikeSO);
 
+    /*--------------------    需要适配的接口    --------------------*/
 
+    /**
+     * 逻辑 刪除
+     * @param idSO 泛型对象
+     * @return int
+     */
+    int deleteByPrimaryKey(IdSO<ID> idSO);
 
+    /**
+     * 批量逻辑 刪除
+     * @param idListSO 内含id集合
+     * @return int
+     */
+    int deleteByPrimaryKeyList(IdListSO<ID> idListSO);
 
-
-
-
-
-
-/*-------------------------------      以下提供但是需要自己实现      ---------------------------------*/
+    /**
+     * 逻辑 刪除
+     * @param modelSO 泛型对象封装
+     * @return int
+     */
+    int deleteBySelective(ModelSO<T> modelSO);
 
     /**
      * 批量操作 禁用或啓用
@@ -119,19 +143,4 @@ public interface CellBaseDao<T, ID> {
      * @return int
      */
     int banOrLeave(BanListDTO<ID> banListDTO);
-
-    /**
-     * 批量刪除
-     * @param idListSO 内含id集合
-     * @return int
-     */
-    int deleteByIdList(IdListSO<ID> idListSO);
-
-    /**
-     * 刪除
-     * @param model 泛型对象
-     * @return int
-     */
-    int deleteBySelective(T model);
-
 }

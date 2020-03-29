@@ -12,7 +12,15 @@ import java.util.List;
  * email xiachanzou@outlook.com
  * time 2018/10/10.
  */
-public interface RelationBaseDao<T,MainID,FollowerID> {
+public interface RelationBaseDao<T, MainID, FollowerID> {
+
+
+    /**
+     * 直接插入
+     * @param model 泛型对象
+     * @return int
+     */
+    int insert(T model);
 
     /**
      * 批量插入
@@ -20,13 +28,6 @@ public interface RelationBaseDao<T,MainID,FollowerID> {
      * @return int
      */
     int insertList(ModelListSO<T> modelListSO);
-
-    /**
-     * 批量插入
-     * @param relationDTO 内含一對多
-     * @return int
-     */
-    int insertRelation(RelationDTO<MainID,FollowerID> relationDTO);
 
     /**
      * 批量刪除或个别删除
@@ -37,17 +38,10 @@ public interface RelationBaseDao<T,MainID,FollowerID> {
 
     /**
      * 批量刪除
-     * @param modelListSO 内含汎型對象
-     * @return int
-     */
-    int deleteList(ModelListSO<T> modelListSO);
-
-    /**
-     * 批量刪除
      * @param relationDTO 内含一對多
      * @return int
      */
-    int deleteRelation(RelationDTO<MainID,FollowerID> relationDTO);
+    int deleteRelation(RelationDTO<MainID, FollowerID> relationDTO);
 
     /**
      * 查詢是否存在

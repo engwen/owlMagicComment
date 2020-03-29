@@ -9,7 +9,6 @@ import com.owl.mvc.service.CellBaseServiceAb;
 import com.owl.mvc.vo.MsgResultVO;
 import com.owl.mvc.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -66,6 +65,17 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T, ID> i
     }
 
     /**
+     * 删除功能
+     * @param id 待删除的对象id
+     * @return 结果
+     */
+    @Override
+    public MsgResultVO deleteById(ID id) {
+        defaultBack();
+        return cellBaseServiceAb.deleteById(id);
+    }
+
+    /**
      * 批量删除
      * @param deleteDTO 删除对象DTO
      * @return 结果
@@ -95,7 +105,7 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T, ID> i
     @Override
     public MsgResultVO deleteListRe(DeleteDTO<ID> deleteDTO) {
         defaultBack();
-        return cellBaseServiceAb.deleteListRe(deleteDTO);
+        return cellBaseServiceAb.deleteByIdListRe(deleteDTO);
     }
 
     /**
@@ -121,7 +131,7 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T, ID> i
     }
 
     /**
-     * 更新
+     * 全量更新
      * @param model 将要被更新的对象
      * @return 结果
      */
@@ -130,6 +140,18 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T, ID> i
         defaultBack();
         return cellBaseServiceAb.update(model);
     }
+
+    /**
+     * 增量更新
+     * @param model 将要被更新的对象
+     * @return 结果
+     */
+    @Override
+    public MsgResultVO<?> updateByNotNull(T model) {
+        defaultBack();
+        return cellBaseServiceAb.updateByNotNull(model);
+    }
+
 
     /**
      * 获取详情
@@ -159,9 +181,9 @@ public abstract class CellBaseControllerAb<M extends CellBaseServiceAb, T, ID> i
      * @return 结果集合
      */
     @Override
-    public MsgResultVO<List<T>> getAll(T model) {
+    public MsgResultVO<List<T>> list(T model) {
         defaultBack();
-        return cellBaseServiceAb.getAll(model);
+        return cellBaseServiceAb.listByExact(model);
     }
 
     /**

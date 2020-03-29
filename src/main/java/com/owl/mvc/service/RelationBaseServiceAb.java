@@ -2,10 +2,12 @@ package com.owl.mvc.service;
 
 import com.owl.mvc.dao.RelationBaseDao;
 import com.owl.mvc.dto.RelationDTO;
-import com.owl.mvc.utils.RelationBaseServiceUtil;
+import com.owl.mvc.so.ModelListSO;
+import com.owl.mvc.so.ModelSO;
 import com.owl.mvc.vo.MsgResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,17 +27,14 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T, MainID,
      */
     @Override
     public MsgResultVO insert(T model) {
-        return RelationBaseServiceUtil.insert(relationBaseDao, model);
-    }
-
-    /**
-     * 批量插入
-     * @param relationDTO id idList
-     * @return 基礎數據
-     */
-    @Override
-    public MsgResultVO insertRelation(RelationDTO<MainID, FollowerID> relationDTO) {
-        return RelationBaseServiceUtil.insertRelation(relationBaseDao, relationDTO);
+        List<T> list = relationBaseDao.selectBySelective(ModelSO.getInstance(model));
+        if (list.size() > 0) {
+            return MsgResultVO.getInstanceSuccess();
+        } else {
+            List<T> temp = new ArrayList<>();
+            temp.add(model);
+            return insertList(temp);
+        }
     }
 
     /**
@@ -45,7 +44,8 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T, MainID,
      */
     @Override
     public MsgResultVO insertList(List<T> modelList) {
-        return RelationBaseServiceUtil.insertList(relationBaseDao, modelList);
+        relationBaseDao.insertList(ModelListSO.getInstance(modelList));
+        return MsgResultVO.getInstanceSuccess();
     }
 
     /**
@@ -55,7 +55,8 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T, MainID,
      */
     @Override
     public MsgResultVO delete(T model) {
-        return RelationBaseServiceUtil.delete(relationBaseDao, model);
+        relationBaseDao.delete(ModelSO.getInstance(model));
+        return MsgResultVO.getInstanceSuccess();
     }
 
     /**
@@ -65,17 +66,8 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T, MainID,
      */
     @Override
     public MsgResultVO deleteRelation(RelationDTO<MainID, FollowerID> relationDTO) {
-        return RelationBaseServiceUtil.deleteRelation(relationBaseDao, relationDTO);
-    }
-
-    /**
-     * 批量刪除
-     * @param modelList 汎型對象
-     * @return 基礎數據
-     */
-    @Override
-    public MsgResultVO deleteList(List<T> modelList) {
-        return RelationBaseServiceUtil.deleteList(relationBaseDao, modelList);
+        relationBaseDao.deleteRelation(relationDTO);
+        return MsgResultVO.getInstanceSuccess();
     }
 
     /**
@@ -85,6 +77,6 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T, MainID,
      */
     @Override
     public MsgResultVO<List<T>> list(T model) {
-        return RelationBaseServiceUtil.list(relationBaseDao, model);
+        return MsgResultVO.getInstanceSuccess(relationBaseDao.selectBySelective(ModelSO.getInstance(model)));
     }
 }

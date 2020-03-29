@@ -34,63 +34,47 @@ interface CellBaseService<T, ID> {
     MsgResultVO<?> createList(List<T> modelList);
 
     /**
-     * 刪除 更新前需要查询，因此可能返回对象为父类型
-     * @param model 对象
-     * @return 基礎數據
-     */
-    MsgResultVO delete(T model);
-
-    /**
-     * 批量刪除 更新前需要查询，因此可能返回对象为父类型
-     * @param idList ID集合
-     * @return 基礎數據
-     */
-    MsgResultVO deleteList(List<ID> idList);
-
-    MsgResultVO deleteList(DeleteDTO<ID> deleteDTO);
-
-    /**
      * 物理刪除
      * @param model 對象
-     * @return
+     * @return 汎型對象
      */
     MsgResultVO deleteRe(T model);
 
+    MsgResultVO deleteByIdRe(ID id);
+
     /**
      * 物理刪除
      * @param idList ID集合
-     * @return
+     * @return 汎型對象
      */
-    MsgResultVO deleteListRe(List<ID> idList);
+    MsgResultVO deleteByIdListRe(List<ID> idList);
 
-    MsgResultVO deleteListRe(DeleteDTO<ID> deleteDTO);
+    MsgResultVO deleteByIdListRe(DeleteDTO<ID> deleteDTO);
+
 
     /**
-     * 批量操作 禁用或啓用
-     * @param id     對象ID
-     * @param status 對象狀態，可以爲空
-     * @return 基礎數據
-     */
-    MsgResultVO banOrLeave(ID id, Boolean status);
-
-    MsgResultVO banOrLeave(BanDTO<ID> banDTO);
-
-    /**
-     * 批量操作 禁用或啓用
-     * @param idList 對象ID
-     * @param status 對象狀態
-     * @return 基礎數據
-     */
-    MsgResultVO banOrLeaveList(List<ID> idList, Boolean status);
-
-    MsgResultVO banOrLeaveList(BanListDTO<ID> banListDTO);
-
-    /**
-     * 更新 更新前需要查询，因此可能返回对象为父类型
+     * 全部属性更新
      * @param model 汎型對象
      * @return 基礎數據
      */
     MsgResultVO<?> update(T model);
+
+    /**
+     * 增量属性更新
+     * @param model 汎型對象
+     * @return 基礎數據
+     */
+    MsgResultVO<?> updateByNotNull(T model);
+
+
+    /**
+     * 獲取詳情
+     * @param id id
+     * @return 汎型對象
+     */
+    MsgResultVO<T> detailsById(ID id);
+
+    MsgResultVO<T> detailsById(IdSO<ID> idSO);
 
     /**
      * 獲取詳情
@@ -99,14 +83,6 @@ interface CellBaseService<T, ID> {
      */
     MsgResultVO<T> details(T model);
 
-    /**
-     * 獲取詳情
-     * @param id 汎型對象檢索條件
-     * @return 汎型對象
-     */
-    MsgResultVO<T> detailsById(ID id);
-
-    MsgResultVO<T> detailsById(IdSO<ID> idSO);
 
     /**
      * 獲取分頁列表，添加 model 提供檢索功能
@@ -121,6 +97,14 @@ interface CellBaseService<T, ID> {
     PageVO<T> list(PageDTO<T> pageDTO);
 
     /**
+     * 獲取所有的對象，添加 model 提供檢索功能,精确查询
+     * @param model 检索条件
+     * @return 對象集合
+     */
+    MsgResultVO<List<T>> listByExact(T model);
+
+
+    /**
      * 查詢指定集合
      * @param idListSO 内含汎型對象
      * @return list
@@ -128,17 +112,51 @@ interface CellBaseService<T, ID> {
     MsgResultVO<List<T>> selectByIdList(IdListSO<ID> idListSO);
 
     /**
-     * 獲取所有的對象，添加 model 提供檢索功能
-     * @param model 检索条件
-     * @return 對象集合
-     */
-    MsgResultVO<List<T>> getAll(T model);
-
-    /**
      * 檢查数据是否存在
      * @param model 检索条件
      * @return Boolean
      */
     MsgResultVO<?> isExist(T model);
+
+    /*------------------------------------------------------------------------*/
+
+    /**
+     * 刪除 更新前需要查询，因此可能返回对象为父类型
+     * @param model 对象
+     * @return 基礎數據
+     */
+    MsgResultVO delete(T model);
+
+    MsgResultVO deleteById(ID id);
+    /**
+     * 批量刪除 更新前需要查询，因此可能返回对象为父类型
+     * @param idList ID集合
+     * @return 基礎數據
+     */
+    MsgResultVO deleteList(List<ID> idList);
+
+    MsgResultVO deleteList(DeleteDTO<ID> deleteDTO);
+
+
+    /**
+     * 批量操作 禁用或啓用
+     * @param id     對象ID
+     * @param status 對象狀態，可以爲空
+     * @return 基礎數據
+     */
+    MsgResultVO banOrLeave(ID id, Boolean status);
+
+    MsgResultVO banOrLeave(BanDTO<ID> banDTO);
+
+
+    /**
+     * 批量操作 禁用或啓用
+     * @param idList 對象ID
+     * @param status 對象狀態
+     * @return 基礎數據
+     */
+    MsgResultVO banOrLeaveList(List<ID> idList, Boolean status);
+
+    MsgResultVO banOrLeaveList(BanListDTO<ID> banListDTO);
 
 }
