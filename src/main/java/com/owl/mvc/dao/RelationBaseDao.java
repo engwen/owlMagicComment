@@ -29,6 +29,8 @@ public interface RelationBaseDao<T, MainID, FollowerID> {
      */
     int insertList(ModelListSO<T> modelListSO);
 
+    int insertRelation(RelationDTO<MainID, FollowerID> relationDTO);
+
     /**
      * 批量刪除或个别删除
      * @param modelSO 内含汎型對象

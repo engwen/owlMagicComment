@@ -48,6 +48,12 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T, MainID,
         return MsgResultVO.getInstanceSuccess();
     }
 
+    @Override
+    public MsgResultVO insertRelation(RelationDTO<MainID, FollowerID> relationDTO) {
+        relationBaseDao.insertRelation(relationDTO);
+        return MsgResultVO.getInstanceSuccess();
+    }
+
     /**
      * 刪除關係數據
      * @param model 汎型對象
@@ -79,4 +85,6 @@ public abstract class RelationBaseServiceAb<M extends RelationBaseDao<T, MainID,
     public MsgResultVO<List<T>> list(T model) {
         return MsgResultVO.getInstanceSuccess(relationBaseDao.selectBySelective(ModelSO.getInstance(model)));
     }
+
+
 }
