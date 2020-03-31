@@ -9,11 +9,11 @@ for my faster development and iteration. <url>https://www.jetbrains.com/?From=ow
 
 En details ,please click <url>https://github.com/engwen/owlMagicComment/blob/master/readMeEn.md
 
-# OwlMagicComment 猫头鹰的魔法视野
+# OwlMagicComment 猫头鹰魔法视野
 
 ###目录
  
-   1.[MVC部分--规则的制定者](https://github.com/engwen/owlMagicComment/blob/master/readMe.md/#MVC) 
+   1.[MVC部分--如何少写重复的代码](https://github.com/engwen/owlMagicComment/blob/master/readMe.md/#MVC) 
    
    2.[注解部分--如果你想少些 N 行的代码这个你不得不看](https://github.com/engwen/owlMagicComment/blob/master/readMe.md/#annotations) 
    
