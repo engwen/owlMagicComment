@@ -37,8 +37,7 @@ En details ,please click <url>https://github.com/engwen/owlMagicComment/blob/mas
                 这也是为什么Spring会支持实体类作为service
                 b. 现在的ide工具很容易就能看到一个类的全部方法，没必要为了一目了然而单独创建一个类（如果你用的idea，按住ctrl+alt+shift+u试试）。
             <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/interfaceUML.png"/>
-            默认的，本包中的update是依据id进行更新的，注解 @OwlCheckParams(notNull={"id})
-            已经帮你写好，你只需要引包就好啦
+            默认的，本包中的update是依据id进行更新的，默认注解 @OwlCheckParams(notNull={"id})，在开启swugger注解之后自动生成代码将会变更为            swugger注解校验已经帮你写好，你只需要引包就好啦
             <image src="https://raw.githubusercontent.com/engwen/owlMagicImages/master/owlMagicComment/cellBaseDao.png"/>
    2. 设置三级请求参数，分别是model，DTO和SO。在controller层，默认能使用model接收的地方全部使用model，不能使用一概使用DTO对
             象接收。同理，dao层能使用model的地方，全部使用model，上层传输为DTO对象的，全部使用DTO对象。为了统一xml中的方法，方便后
