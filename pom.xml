@@ -21,7 +21,7 @@
         <javax-javaee-api.version>8.0.1</javax-javaee-api.version>
         <aspectj-aspectj.version>1.9.4</aspectj-aspectj.version>
         <aspectj-aspectjweaver.version>1.9.4</aspectj-aspectjweaver.version>
-        <spring-web.version>4.2.5.RELEASE</spring-web.version>
+        <spring-web.version>4.2.7.RELEASE</spring-web.version>
         <jackson-databind.version>2.9.10.7</jackson-databind.version>
     </properties>
 
